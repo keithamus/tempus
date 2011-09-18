@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8"/>
+    <title>QUnit Test Suite</title>
+    <link rel="stylesheet" href="qunit/qunit/qunit.css" type="text/css" media="screen">
+    <script type="text/javascript" src="qunit/qunit/qunit.js"></script>
+    <script type="text/javascript" src="qunit-logging/qunit-logging.js"></script>
+
+    <script type="text/javascript" src="test.bootstrap.js"></script>
+    <script type="text/javascript" src="qunit.testcoverage.js"></script>
+
+    <script type="text/javascript">
+        QUnit.config.reorder = false;
+        QUnit.done = done;
+        QUnit.config.hidepassed = true;
+        QUnit.config.urlConfig = ['notrycatch', 'logPassed', 'logFailed'];
+        QUnit.urlParams.noglobals = true;
+        
+        QUnit.logging.logPassed = QUnit.urlParams.logPassed === 'true';
+        QUnit.logging.logFailed = QUnit.urlParams.logFailed === 'true';
+    </script>
+
+    <script type="text/javascript" src="../tempus.js"></script>
+    <script type="text/javascript" src="../tempus.timer.js"></script>
+    <!--script type="text/javascript" src="../tempusinterval.js"></script-->
+
+    <script type="text/javascript">
+        Date = oldDate;
+        this.setInterval = oldSetInterval;
+        this.setTimeout = oldSetTimeout;
+        this.clearInterval = oldClearInterval;
+        this.clearTimeout = oldClearTimeout;
+    </script>
+
+    <script type="text/javascript" src="tempus.test.creation.js"></script>
+    <script type="text/javascript" src="tempus.test.originalMethods.js"></script>
+    <script type="text/javascript" src="tempus.test.dateMethods.js"></script>
+    <script type="text/javascript" src="tempus.test.utilityMethods.js"></script>
+    <script type="text/javascript" src="tempus.test.yearMethods.js"></script>
+    <script type="text/javascript" src="tempus.test.monthMethods.js"></script>
+    <script type="text/javascript" src="tempus.test.weekMethods.js"></script>
+    <script type="text/javascript" src="tempus.test.dayMethods.js"></script>
+    <script type="text/javascript" src="tempus.test.timeMethods.js"></script>
+    <script type="text/javascript" src="tempus.test.timezoneMethods.js"></script>
+    <script type="text/javascript" src="tempus.test.stringMethods.js"></script>
+    <script type="text/javascript" src="tempus.test.timer.js"></script>
+</head>
+<body>
+<h1 id="qunit-header">QUnit Test Suite</h1>
+
+<h2 id="qunit-banner"></h2>
+
+<div id="qunit-testrunner-toolbar"></div>
+<h2 id="qunit-userAgent"></h2>
+<ol id="qunit-tests"></ol>
+<div id="qunit-coverage"></div>
+<div id="qunit-fixture">test markup</div>
+</body>
+</html>
