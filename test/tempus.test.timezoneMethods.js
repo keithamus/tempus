@@ -1,6 +1,6 @@
 QUnit.module('Timezone Methods');
 
-covers(Tempus.prototype, 'Tempus', 'getTimezone', 'timezone', 'getISOTimezone', 'ISOTimezone', 'timezoneOffset', 'setTimezone', 'setISOTimezone');
+covers(Tempus.prototype, 'Tempus', 'getTimezone', 'timezone', 'getISOTimezone', 'ISOTimezone', 'timezoneOffset', 'getTimezoneOffset', 'setTimezoneOffset', 'setTimezone', 'setISOTimezone');
 QUnit.test("getTimezone()/timezone() and getISOTimezone()/ISOTimezone() and timezoneOffset() and setTimezone()/timezone(n) and setISOTimezone()/ISOTimezone(n)", function () {
     
     var newdate = new Tempus(2011, 8, 11, 9, 30, 0);
@@ -11,6 +11,7 @@ QUnit.test("getTimezone()/timezone() and getISOTimezone()/ISOTimezone() and time
     equal(newdate.getISOTimezone(), '+01:00', String(newdate));
     equal(newdate.ISOTimezone(), '+01:00', String(newdate));
     equal(newdate.timezoneOffset(), -60, String(newdate));
+    equal(newdate.getTimezoneOffset(), -60, String(newdate));
     equal(newdate.hours(), 9, '9AM');
     equal(newdate.UTCHours(), 8, '8AM UTC');
 
@@ -21,6 +22,7 @@ QUnit.test("getTimezone()/timezone() and getISOTimezone()/ISOTimezone() and time
     equal(newdate.getISOTimezone(), '+02:00', String(newdate));
     equal(newdate.ISOTimezone(), '+02:00', String(newdate));
     equal(newdate.timezoneOffset(), -120, String(newdate));
+    equal(newdate.getTimezoneOffset(), -120, String(newdate));
     equal(newdate.hours(), 10, '10AM');
     equal(newdate.UTCHours(), 8, '8AM UTC');
 
@@ -39,6 +41,7 @@ QUnit.test("getTimezone()/timezone() and getISOTimezone()/ISOTimezone() and time
     equal(newdate.getISOTimezone(), '+08:00', String(newdate));
     equal(newdate.ISOTimezone(), '+08:00', String(newdate));
     equal(newdate.timezoneOffset(), -480, String(newdate));
+    equal(newdate.getTimezoneOffset(), -480, String(newdate));
     equal(newdate.hours(), 17, '5PM');
     equal(newdate.UTCHours(), 9, '9AM UTC');
 
@@ -49,6 +52,7 @@ QUnit.test("getTimezone()/timezone() and getISOTimezone()/ISOTimezone() and time
     equal(newdate.getISOTimezone(), '+02:00', String(newdate));
     equal(newdate.ISOTimezone(), '+02:00', String(newdate));
     equal(newdate.timezoneOffset(), -120, String(newdate));
+    equal(newdate.getTimezoneOffset(), -120, String(newdate));
     equal(newdate.hours(), 11, '11AM');
     equal(newdate.UTCHours(), 9, '9AM UTC');
 
@@ -59,16 +63,18 @@ QUnit.test("getTimezone()/timezone() and getISOTimezone()/ISOTimezone() and time
     equal(newdate.getISOTimezone(), '+01:00', String(newdate));
     equal(newdate.ISOTimezone(), '+01:00', String(newdate));
     equal(newdate.timezoneOffset(), -60, String(newdate));
+    equal(newdate.getTimezoneOffset(), -60, String(newdate));
     equal(newdate.hours(), 10, '10AM');
     equal(newdate.UTCHours(), 9, '9AM UTC');
 
-    newdate.timezoneOffset(-120);
+    newdate.setTimezoneOffset(-120);
 
     equal(newdate.getTimezone(), '+0200', String(newdate));
     equal(newdate.timezone(), '+0200', String(newdate));
     equal(newdate.getISOTimezone(), '+02:00', String(newdate));
     equal(newdate.ISOTimezone(), '+02:00', String(newdate));
     equal(newdate.timezoneOffset(), -120, String(newdate));
+    equal(newdate.getTimezoneOffset(), -120, String(newdate));
     equal(newdate.hours(), 11, '11AM');
     equal(newdate.UTCHours(), 9, '9AM UTC');
 
