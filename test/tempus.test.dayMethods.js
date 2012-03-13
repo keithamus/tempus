@@ -169,16 +169,18 @@ QUnit.test('eachDayOfMonth()', function () {
     ,   days = [31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31]
     ,   dateObj;
     
-    expect(730);
+    expect(1460);
     
     while(i--) {
         newdate = new Tempus(2011, i);
+        dateObj = new Date(+newdate);
         c = 0;
-        dateObj = new Tempus(newdate);
         newdate.eachDayOfMonth(function (dayI, date) {
             equal(dayI, ++c, 'First argument is day in ' + date.getMonthName());
+            ok(date instanceof Tempus, 'Second argument is Tempus object');
             dateObj.setDate(dayI);
             equal(Number(date), Number(dateObj), 'Second argument is date obj ' + String(date));
+            equal(this === newdate, true, '`this` is fixed to the original date: ' + String(date));
         });
     }
     
@@ -187,7 +189,7 @@ QUnit.test('eachDayOfMonth()', function () {
 
 covers(Tempus.prototype, 'Tempus', 'eachDayOfYear');
 QUnit.test("eachDayOfYear()", function () {
-    expect(1464);
+    expect(2196);
 
     var lastDate = 0
     ,   newdate = new Tempus(2011, 0, 1)
@@ -201,15 +203,17 @@ QUnit.test("eachDayOfYear()", function () {
 
     equal(lastDate, 365);
 
-     // Leap year
+    // Leap year
     lastDate = 0;
     newdate = new Tempus(2012, 0, 1);
     dateObj = new FakeDate(2012, 0, 0);
     
     newdate.eachDayOfYear(function (dayI, date) {
         equal(dayI, ++lastDate, 'First argument is day in ' + date.getMonthName());
+        ok(date instanceof Tempus, 'Second argument is Tempus object');
         dateObj.setDate(dateObj.getDate()+1);
         equal(Number(date), Number(dateObj), 'Second argument is date obj ' + String(date));
+        equal(this === newdate, true, '`this` is fixed to the original date: ' + String(date));
     });
 
     equal(lastDate, 366);
