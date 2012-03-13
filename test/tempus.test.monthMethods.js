@@ -5,13 +5,12 @@ QUnit.test('getMonth()/month() and getMonth(true)/getOneIndexedMonth()/oneIndexe
     var newdate
     ,   i = 12;
     
-    expect(60);
+    expect(48);
     
     while(i--) {
         newdate = new Tempus(2011, i);
         strictEqual(newdate.month(), i, String(newdate));
         strictEqual(newdate.getMonth(), i, String(newdate));
-        strictEqual(newdate.getMonth(true), i+1, String(newdate));
         strictEqual(newdate.oneIndexedMonth(), i+1, String(newdate));
         strictEqual(newdate.getOneIndexedMonth(), i+1, String(newdate));
     }

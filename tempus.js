@@ -336,10 +336,6 @@
             return this._date.getMonth();
         },
         
-        getMonth: function (zi) {
-            return this.month() + (zi ? 1 : 0);
-        },
-        
         oneIndexedMonth: function (month) {
             if (0 in arguments) return this.month(month - 1);
 
