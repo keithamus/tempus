@@ -366,21 +366,11 @@
         /*************************************/
         
         week: function (setter) {
-            var first = new Date(this.fullYear(), 0, 1),
-                week;
-            if (0 in arguments) {
-                return this.setDay(1);
-            }
-
-            week = ((+this - first) / 86400000)+.5|0;
-            week += first.getDay();
-            week = week / 7;
-            week -= 1;
-            week = Math.ceil(week);
-            week += this.isLeapYear();
-            week = week > 0 ? week : 52 + (week);
-            
-            return week;
+            return (0 in arguments) ?
+                this.dayOfYear(setter * 7 - this.isLeapYear()).day(4)
+            :
+                Math.ceil(Tempus(this).day(4).dayOfYear() / 7)
+            ;
         },
         
         getWeekOrdinal: function () {
