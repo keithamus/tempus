@@ -35,9 +35,9 @@
     }
     
     // A standard iterator we'll use quite a bit for each*of* methods
-    function eachDate(i, count, plus, setMethod, getMethod, callback) {
+    function eachDate(i, count, plus, setMethod, getMethod, callback, dateObj) {
         for (var d; i <= count; i += plus) {
-            d = new Tempus(this)[setMethod](i);
+            d =  Tempus(dateObj || this)[setMethod](i);
             callback.call(this, d[getMethod](), d);
         }
         return this;
@@ -378,11 +378,12 @@
         },
         
         eachWeekOfMonth: function (callback) {
-            return eachDate.call(this, this.clone().date(1).week(), this.clone().date(this.getLastDayOfMonth()).week(), 1, 'week', 'week', callback);
+            var d = Tempus(this);
+            return eachDate.call(this, d.date(1).week(), d.date(d.getLastDayOfMonth()).week(), 1, 'week', 'week', callback, d);
         },
         
         eachWeekOfYear: function (callback) {
-            return eachDate.call(this, 0, 53, 1, 'week', 'week', callback);
+            return eachDate.call(this, 1, 53, 1, 'week', 'week', callback);
         },
         
         /*************************************/

@@ -288,26 +288,65 @@ QUnit.test('getWeekOrdinal()', function () {
     equal(newdate.getWeekOrdinal(), 'th', String(newdate));
 });
 
-//covers(Tempus.prototype, 'Tempus', 'eachWeekOfMonth');
-//test('Test eachWeekOfMonth', function () {
-//    var newdate
-//    ,   c
-//    ,   i = 12
-//    ,   months = [1, 5, 9, 13, 17, 22, 26, 31, 35, 39, 44, 47]
-//    ,   dateObj;
-//    
-//    expect(204);
-//    
-//    while(i--) {
-//        newdate = new Tempus(2011, i);
-//        c = 47;
-//        dateObj = new Tempus(newdate);
-//        newdate.eachWeekOfMonth(function (weekI, date) {
-//            equal(weekI, ++c, 'First argument is week in ' + date.getMonthName());
-//            equal(Number(date), Number(dateObj), 'Second argument is date obj ' + String(date));
-//            ok(this instanceof Tempus, '`this` is Tempus object');
-//            equal(Number(this), Number(dateObj), '`this` is date obj ' + String(date))
-//        });
-//    }
-//    
-//});
+covers(Tempus.prototype, 'Tempus', 'eachWeekOfMonth');
+test('Test eachWeekOfMonth', function () {
+    var newdate
+    ,   c
+    ,   n
+    ,   ni
+    ,   i = 12
+    ,   months = [0, 4, 8, 12, 16, 21, 25, 30, 34, 38, 43, 47]
+    ,   thursdays = [[2, 9, 16, 23, 30],
+                    [3, 10, 17, 24, 3],
+                    [3, 10, 17, 24, 31],
+                    [31, 7, 14, 21, 28],
+                    [28, 5, 12, 19, 26, 2],
+                    [2, 9, 16, 23, 30],
+                    [30, 7, 14, 21, 28],
+                    [4, 11, 18, 25, 1],
+                    [1, 8, 15, 22, 29],
+                    [29, 6, 13, 20, 27, 3],
+                    [3, 10, 17, 24, 1],
+                    [1, 8, 15, 22, 29]]
+    ,   dateObj;
+
+    expect(228);
+
+    while(--i >= 0) {
+       newdate = new Tempus(2011, i);
+       c = months[newdate.month()];
+       n = thursdays[newdate.month()];
+       ni = 0;
+       newdate.eachWeekOfMonth(function (weekI, date) {
+           equal(weekI, ++c, 'First argument is week in ' + newdate.getMonthName());
+           ok(date instanceof Tempus, 'Second argument is Tempus object');
+           equal(date.date(), n[ni], 'Second argument has date set to the current iterations thursday ('+n[ni]+'): ' + String(date));
+           equal(this === newdate, true, '`this` is fixed to the original date: ' + String(date));
+           ni++;
+       });
+    }
+   
+});
+
+covers(Tempus.prototype, 'Tempus', 'eachWeekOfYear');
+test('Test eachWeekOfYear', function () {
+    var newdate
+    ,   i = 0
+    ,   thursdays = [6, 13, 20, 27, 3, 10, 17, 24, 3, 10, 17, 24, 31, 7, 14, 21, 28, 5, 12, 19, 
+                    26, 2, 9, 16, 23, 30, 7, 14, 21, 28, 4, 11, 18, 25, 1, 8, 15, 22, 29, 6, 13,
+                    20, 27, 3, 10, 17, 24, 1, 8, 15, 22, 29, 5]
+    ,   dateObj;
+
+    expect(212);
+
+    newdate = new Tempus(2011, 0);
+    var dateObj = new Date(+newdate);
+
+    newdate.eachWeekOfYear(function (weekI, date) {
+       equal(weekI, i+1 > 52 ? 53 - i : i+1, 'First argument is week in year ' + newdate.getMonthName());
+       ok(date instanceof Tempus, 'Second argument is Tempus object');
+       equal(date.date(), thursdays[i++], 'Second argument has date set to the current iterations thursday ('+thursdays[i]+'): ' + String(date));
+       equal(this === newdate, true, '`this` is fixed to the original date: ' + String(date));
+    });
+
+});
