@@ -435,6 +435,16 @@
         getDateOrdinal: function () {
             return getOrdinal(this.date());
         },
+
+        eachDayOfWeek: function (callback) {
+            var d = this.clone().day(0);
+            return eachDate.call(this, d.date(), d.date() + 6, 1, 'date', 'date', callback, d);
+        },
+
+        eachISODayOfWeek: function (callback) {
+            var d = this.clone().ISODay(1);
+            return eachDate.call(this, d.date(), d.date() + 6, 1, 'date', 'date', callback, d);
+        },
         
         eachDayOfMonth: function (callback) {
             return eachDate.call(this, 1, this.getLastDayOfMonth(), 1, 'date', 'date', callback);

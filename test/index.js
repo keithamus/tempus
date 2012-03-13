@@ -18,6 +18,7 @@ var tests = [
     'dayMethods',
     'timeMethods',
     'stringMethods',
+    'highLevelFunctionality',
     'timer'
 ];
 

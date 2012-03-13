@@ -160,6 +160,28 @@ QUnit.test('getDateOrdinal()', function () {
     equal(newdate.getDateOrdinal(), 'th', '30th');
 });
 
+covers(Tempus.prototype, 'Tempus', 'eachDayOfWeek');
+QUnit.test('eachDayOfWeek()', function () {
+    
+    var newdate = new Tempus(2012, 2, 13)
+    ,   i = 0
+    ,   dateDay = 11
+    ,   dateObj = new Date(+newdate);
+
+    expect(28);
+
+    newdate.eachDayOfWeek(function (dayI, date) {
+        equal(dayI, dateDay, 'First argument is day in ' + String(date));
+        ok(date instanceof Tempus, 'Second argument is Tempus object');
+        dateObj.setDate(dateDay);
+        equal(Number(date), Number(dateObj), 'Second argument is date obj ' + String(date));
+        equal(this === newdate, true, '`this` is fixed to the original date: ' + String(date));
+        ++i;
+        ++dateDay;
+    });
+    
+});
+
 covers(Tempus.prototype, 'Tempus', 'eachDayOfMonth');
 QUnit.test('eachDayOfMonth()', function () {
     var newdate
