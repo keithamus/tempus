@@ -8,45 +8,49 @@ QUnit.test('getDay()/day() and getISODay()/ISODay()', function () {
     
     expect(28);
     
-    equal(newdate.getDay(), 0, String(newdate));
-    equal(newdate.day(), 0, String(newdate));
-    equal(newdate.getISODay(), 7, String(newdate));
-    equal(newdate.ISODay(), 7, String(newdate));
+    equal(newdate.getDay(), 0, String(newdate) + 'getDay');
+    equal(newdate.day(), 0, String(newdate) + 'day');
+    equal(newdate.getISODay(), 7, String(newdate) + 'getISODay');
+    equal(newdate.ISODay(), 7, String(newdate) + ' ISODay');
     
     while(i-- > 5) {
         newdate.setDate(i);
-        equal(newdate.getDay(), n, String(newdate));
-        equal(newdate.day(), n, String(newdate));
-        equal(newdate.getISODay(), --n, String(newdate));
-        equal(newdate.ISODay(), n, String(newdate));
+        equal(newdate.getDay(), n, String(newdate) + ' getDay');
+        equal(newdate.day(), n, String(newdate) + ' day');
+        equal(newdate.getISODay(), n, String(newdate) + ' getISODay');
+        equal(newdate.ISODay(), n, String(newdate) + ' ISODay');
+        --n;
     }
 });
 
-covers(Tempus.prototype, 'Tempus', 'setDay', 'setISODay', 'getISODay');//, 'addDay', 'addISODay', 'subDay', 'subISODay');
+covers(Tempus.prototype, 'Tempus', 'setDay', 'setISODay', 'getISODay', 'addDay', 'addISODay', 'subDay', 'subISODay');
 QUnit.test('setDay() and setDay(true)/setISODay()', function () {
     var newdate = new Tempus(2011, 8, 9)
-    ,   n = 7;
+    ,   n = 0;
     
-    expect(21);
+    expect(44);
     
     newdate.setDay(0);
     equal(newdate.getDay(), 0, String(newdate) + ' setDay(0) with getDay');
-    equal(newdate.getDay(true), 7, String(newdate) + ' setDay(0) with getDay(true)');
     equal(newdate.getISODay(), 7, String(newdate) + ' setDay(0) with getISODay');
     newdate.setISODay(7);
     equal(newdate.getDay(), 0, String(newdate) + ' setISODay(7) with getDay');
-    equal(newdate.getDay(true), 7, String(newdate) + ' setISODay(7) with getDay(true)');
     equal(newdate.getISODay(), 7, String(newdate) + ' setISODay(7) with getISODay');
-    
-    while(n-- > 0) {
+
+    while(++n < 6) {
         newdate.setDay(n);
-        equal(newdate.getDay(), n-1, String(newdate) + ' setDay(' + n + ') with getDay');
-        equal(newdate.getDay(true), n, String(newdate) + ' setDay(' + n + ') with getDay(true)');
+        equal(newdate.getDay(), n, String(newdate) + ' setDay(' + n + ') with getDay');
         equal(newdate.getISODay(), n, String(newdate) + ' setDay(' + n + ') with getISODay');
-        newdate.setISODay(n+1);
+        newdate.setISODay(n);
         equal(newdate.getDay(), n, String(newdate) + ' setISODay(' + n + ') with getDay');
-        equal(newdate.getDay(true), n+1, String(newdate) + ' setISODay(' + n + ') with getDay(true)');
-        equal(newdate.getISODay(), n+1, String(newdate) + ' setISODay(' + n + ') with getISODay');
+        equal(newdate.getISODay(), n, String(newdate) + ' setISODay(' + n + ') with getISODay');
+
+        newdate.addDay();
+        equal(newdate.getDay(), n+1, String(newdate) + ' addDay() with getDay');
+        equal(newdate.getISODay(), n+1, String(newdate) + ' addDay() with getISODay');
+        newdate.subDay(1);
+        equal(newdate.getDay(), n, String(newdate) + ' subDay(2) with getDay');
+        equal(newdate.getISODay(), n, String(newdate) + ' subDay(2) with getISODay');
     }
 });
 

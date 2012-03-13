@@ -400,24 +400,25 @@
         /*************************************/
         
         day: function (setter, reverse) {
-            if (0 in arguments) {
-                var today = this.getDay();
-                setter = reverse ?
-                    (today < setter ? setter - today : 7 - (setter - today))
-                :
-                    (today < setter ? setter - today : 7 - (setter - today))
-                ;
-
-                return this.date(this.date() - setter);
-            }
-            return this._date.getDay();
+            return (0 in arguments) ?
+                // The setter given is a day number, say, 4 (Thursday), so this op will set the
+                // date to the nearest Thursday, by taking the current date, adding the daynum (so 4
+                // for Thursday), taking away the ISO day of week. Look at this table:
+                // | Day Name | +4, the day is |  Take away | Ending With |
+                // |  Monday  |     Friday     |      1     |   Thursday  |
+                // | Tuesday  |    Saturday    |      2     |   Thursday  |
+                // | Wednesday|     Sunday     |      3     |   Thursday  |
+                // | Thursday |     Monday     |      4     |   Thursday  |
+                // |  Friday  |    Tuesday     |      5     |   Thursday  |
+                // | Saturday |    Wednesday   |      6     |   Thursday  |
+                // |  Sunday  |    Thursday    |      7     |   Thursday  |
+                this.day() !== setter ? this.addDate(setter - this.ISODay()) : this
+            :
+                this._date.getDay();
         },
         
         ISODay: function (setter) {
-            if (0 in arguments) return this.day(setter === 7 ? 0 : setter-1);
-
-            var day = this.day();
-            return day - 1 < 0 ? 7 : day - 1;
+            return (0 in arguments) ? this.day(setter === 7 ? 0 : setter) : this.day() || 7;
         },
         
         getDayName: function (full) {
