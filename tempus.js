@@ -70,7 +70,7 @@
      *
      */
     function arrIndexOf(a, v) {
-        for (var i = 0; i != a.length; ++i) if (a[i] === v) return i;
+        for (var i = 0; i in a; ++i) if (a[i] === v) return i;
         return -1;
     }
         
@@ -238,7 +238,7 @@
                 
                 for (var i = 0, module; module = modules[i]; ++i) {
                     var exC = module.length;
-                    if (ar.length < module.length) continue;
+                    if (ar.length < exC) continue;
                     if (exC > 1) {
                         while (exC--) {
                             if (ar[exC] !== undef && realTypeOf(ar[exC]) != module.exp[exC]) {
@@ -869,7 +869,7 @@
             format = format == undef ? DEFAULT_REVERSE_FORMATTER : format;
 
             if (realTypeOf(format) == TYPE_ARRAY) {
-                for(i = 0; i != format.length; i++)
+                for(i = 0; i in format; i++)
                     try { return this.set(string, format[i]) } catch(e){};
                 throw new Error('Cannot parse "' + string + '" with "' + format + '"');
             }
