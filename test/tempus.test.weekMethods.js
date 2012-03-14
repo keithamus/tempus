@@ -2,7 +2,12 @@ QUnit.module('New Week Methods');
 
 covers(Tempus.prototype, 'Tempus', 'getWeek', 'week');
 QUnit.test('getWeek()/week()', function () {
-    var newdate = new Tempus(2011, 0, 1);
+	
+	var newdate = new Tempus(2012, 1, 13),
+		week = newdate.week();
+	equal(newdate.week(week).week(), week, 'week should be idempotent');
+	
+    newdate = new Tempus(2011, 0, 1);
     equal(newdate.getWeek(), 52, String(newdate));
     equal(newdate.week(), 52, String(newdate));
     
