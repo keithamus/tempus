@@ -422,7 +422,7 @@
             
             day = this.date();
             var i = this.month()
-            ,   d = this.clone();
+            ,   d = Tempus(this);
             
             while(i--) day += d.month(i + 1).date(-1).date() + 1;
             
@@ -434,12 +434,12 @@
         },
 
         eachDayOfWeek: function (callback) {
-            var d = this.clone().day(0);
+            var d = Tempus(this).day(0);
             return eachDate.call(this, d.date(), d.date() + 6, 1, 'date', 'date', callback, d);
         },
 
         eachISODayOfWeek: function (callback) {
-            var d = this.clone().ISODay(1);
+            var d = Tempus(this).ISODay(1);
             return eachDate.call(this, d.date(), d.date() + 6, 1, 'date', 'date', callback, d);
         },
         
