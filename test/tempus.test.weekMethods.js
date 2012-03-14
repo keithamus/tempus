@@ -3,93 +3,115 @@ QUnit.module('New Week Methods');
 covers(Tempus.prototype, 'Tempus', 'getWeek', 'week');
 QUnit.test('getWeek()/week()', function () {
 	
-	var newdate = new Tempus(2012, 1, 13),
-		week = newdate.week();
-	equal(newdate.week(week).week(), week, 'week should be idempotent');
+	var newdate = new Tempus(2012, 1, 13);
+	equal(newdate.getWeek(), 7, String(newdate));
+    equal(newdate.week(), 7, String(newdate));
+    equal(newdate.week(7).week(), 7, 'week should be idempotent (' + String(newdate) + ')');
 	
     newdate = new Tempus(2011, 0, 1);
     equal(newdate.getWeek(), 52, String(newdate));
     equal(newdate.week(), 52, String(newdate));
+    equal(newdate.week(52).week(), 52, 'week should be idempotent (' + String(newdate) + ')');
     
     newdate = new Tempus(2011, 0, 3);
     equal(newdate.getWeek(), 1, String(newdate));
     equal(newdate.week(), 1, String(newdate));
+    equal(newdate.week(1).week(), 1, 'week should be idempotent (' + String(newdate) + ')');
 
     newdate = new Tempus(2011, 0, 9);
     equal(newdate.getWeek(), 1, String(newdate));
     equal(newdate.week(), 1, String(newdate));
+    equal(newdate.week(1).week(), 1, 'week should be idempotent (' + String(newdate) + ')');
     
     newdate = new Tempus(2011, 0, 10);
     equal(newdate.getWeek(), 2, String(newdate));
     equal(newdate.week(), 2, String(newdate));
+    equal(newdate.week(2).week(), 2, 'week should be idempotent (' + String(newdate) + ')');
     
     newdate = new Tempus(2011, 0, 17);
     equal(newdate.getWeek(), 3, String(newdate));
     equal(newdate.week(), 3, String(newdate));
+    equal(newdate.week(3).week(), 3, 'week should be idempotent (' + String(newdate) + ')');
     
     newdate = new Tempus(2011, 0, 24);
     equal(newdate.getWeek(), 4, String(newdate));
     equal(newdate.week(), 4, String(newdate));
+    equal(newdate.week(4).week(), 4, 'week should be idempotent (' + String(newdate) + ')');
     
     newdate = new Tempus(2011, 3, 11);
     equal(newdate.getWeek(), 15, String(newdate));
     equal(newdate.week(), 15, String(newdate));
+    equal(newdate.week(15).week(), 15, 'week should be idempotent (' + String(newdate) + ')');
     
     newdate = new Tempus(2011, 4, 16);
     equal(newdate.getWeek(), 20, String(newdate));
     equal(newdate.week(), 20, String(newdate));
+    equal(newdate.week(20).week(), 20, 'week should be idempotent (' + String(newdate) + ')');
     
     newdate = new Tempus(2011, 6, 25);
     equal(newdate.getWeek(), 30, String(newdate));
     equal(newdate.week(), 30, String(newdate));
+    equal(newdate.week(30).week(), 30, 'week should be idempotent (' + String(newdate) + ')');
     
     newdate = new Tempus(2011, 8, 11);
     equal(newdate.getWeek(), 36, String(newdate));
     equal(newdate.week(), 36, String(newdate));
+    equal(newdate.week(36).week(), 36, 'week should be idempotent (' + String(newdate) + ')');
     
     newdate = new Tempus(2008, 0, 1);
     equal(newdate.getWeek(), 1, String(newdate));
     equal(newdate.week(), 1, String(newdate));
+    equal(newdate.week(1).week(), 1, 'week should be idempotent (' + String(newdate) + ')');
     
     newdate = new Tempus(2008, 1, 1);
     equal(newdate.getWeek(), 5, String(newdate));
     equal(newdate.week(), 5, String(newdate));
+    equal(newdate.week(5).week(), 5, 'week should be idempotent (' + String(newdate) + ')');
     
     newdate = new Tempus(2008, 1, 24);
     equal(newdate.getWeek(), 8, String(newdate));
     equal(newdate.week(), 8, String(newdate));
+    equal(newdate.week(8).week(), 8, 'week should be idempotent (' + String(newdate) + ')');
     
     newdate = new Tempus(2008, 1, 28);
     equal(newdate.getWeek(), 9, String(newdate));
     equal(newdate.week(), 9, String(newdate));
+    equal(newdate.week(9).week(), 9, 'week should be idempotent (' + String(newdate) + ')');
     
     newdate = new Tempus(2008, 1, 29);
     equal(newdate.getWeek(), 9, String(newdate));
     equal(newdate.week(), 9, String(newdate));
-    
+    equal(newdate.week(9).week(), 9, 'week should be idempotent (' + String(newdate) + ')');
+
     newdate = new Tempus(2008, 2, 1);
     equal(newdate.getWeek(), 9, String(newdate));
     equal(newdate.week(), 9, String(newdate));
+    equal(newdate.week(9).week(), 9, 'week should be idempotent (' + String(newdate) + ')');
     
     newdate = new Tempus(2008, 2, 3);
     equal(newdate.getWeek(), 10, String(newdate));
     equal(newdate.week(), 10, String(newdate));
+    equal(newdate.week(10).week(), 10, 'week should be idempotent (' + String(newdate) + ')');
     
     newdate = new Tempus(2011, 6, 14);
     equal(newdate.getWeek(), 28, String(newdate));
     equal(newdate.week(), 28, String(newdate));
+    equal(newdate.week(28).week(), 28, 'week should be idempotent (' + String(newdate) + ')');
     
     newdate = new Tempus(2005, 11, 25);
     equal(newdate.getWeek(), 51, String(newdate));
     equal(newdate.week(), 51, String(newdate));
+    equal(newdate.week(51).week(), 51, 'week should be idempotent (' + String(newdate) + ')');
     
     newdate = new Tempus(2004, 1, 29);
     equal(newdate.getWeek(), 9, String(newdate));
     equal(newdate.week(), 9, String(newdate));
+    equal(newdate.week(9).week(), 9, 'week should be idempotent (' + String(newdate) + ')');
     
     newdate = new Tempus(1999, 11, 13);
     equal(newdate.getWeek(), 50, String(newdate));
     equal(newdate.week(), 50, String(newdate));
+    equal(newdate.week(50).week(), 50, 'week should be idempotent (' + String(newdate) + ')');
 });
 
 covers(Tempus.prototype, 'Tempus', 'setWeek', 'addWeek', 'subWeek');
