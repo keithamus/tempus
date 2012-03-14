@@ -9,7 +9,7 @@
  *
  * @author Keith Cirkel ('keithamus') <tempus@keithcirkel.co.uk>
  * @license http://keithamus.mit-license.org/
- * @copyright Copyright © 2011, Keith Cirkel
+ * @copyright (C) 2012, Keith Cirkel
  *
  */
 (function (global, Date, ArSlice, undef) {
