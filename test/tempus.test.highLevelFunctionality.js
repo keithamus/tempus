@@ -1,4 +1,4 @@
-QUnit.module('New Day Methods');
+QUnit.module('High Level Functions');
 
 QUnit.test('making a calendar', function () {
     

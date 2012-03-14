@@ -23,7 +23,8 @@ var covers = function (object, ObjectName) {
 var done = function (args) {
     if ( args.passed && args.total && !reallyDone) {
         reallyDone = true;
-        QUnit.test('Test Coverage Analysis', function () {
+        QUnit.module('Test Coverage');
+        QUnit.test('Analysis', function () {
             var fnNames
             ,   ob
             ,   success;
