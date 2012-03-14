@@ -1,4 +1,4 @@
-/*
+/**
  * Tempus - Time for a new Date()
  *
  * Tempus is a full replacement for Date(), the standard Date class in JavaScript.
