@@ -72,7 +72,7 @@
     function arrIndexOf(a, v) {
         for (var i = 0; i != a.length; ++i) if (a[i] === v) return i;
         return -1;
-    };
+    }
         
     /**
      * Get the number's ordinal suffix appended to the number, as a string
