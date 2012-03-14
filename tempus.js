@@ -252,10 +252,11 @@
                         return module.parse.apply(this, arguments);
                     }
                 }
+            }
             
             // We got all the way down to here without a date object, lets just
             // give up and throw a friendly error message
-            } else {
+            if (isNaN(+this._date)) {
                 throw new Error('Invalid Date');
             }
             
