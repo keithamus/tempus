@@ -700,7 +700,7 @@
             }
         }
 
-        !/^UTC|[cw]e|one|AMPM|i?s?o?time[sz]|dayo/i.test(methodname) && PDateSetMethod('UTC' + methodname);
+        !/^UTC|[cw]e|one|AMPM|i?s?o?time[sz]|time$|dayo/i.test(methodname) && PDateSetMethod('UTC' + methodname);
     }
     
     i = dateSetMethods.length;
