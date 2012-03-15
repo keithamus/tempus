@@ -364,7 +364,8 @@
         
         week: function (setter) {
             return (0 in arguments) ?
-                this.dayOfYear(setter * 7 - (this.isLeapYear() * 7)).day(4)
+				// subtract the number of days since the last Friday on Jan 1st.
+				this.dayOfYear(setter * 7 - (this.dayOfYear(1).day() + 2) % 7)
             :
                 Math.ceil(Tempus(this).day(4).dayOfYear() / 7)
             ;
