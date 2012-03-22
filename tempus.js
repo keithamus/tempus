@@ -178,7 +178,9 @@
 
     Tempus.SHORTMONTHS = [];
 
-    for (i in Tempus.FULLMONTHS) {
+    var i = 0,
+        max = Tempus.FULLMONTHS.length;
+    for (;i<max;++i) {
         Tempus.SHORTMONTHS[i] = Tempus.FULLMONTHS[i].substr(0, 3);
     }
     
@@ -194,7 +196,9 @@
 
     Tempus.SHORTDAYS = [];
 
-    for (i in Tempus.FULLDAYS) {
+    i = 0,
+    max = Tempus.FULLDAYS.length;
+    for (;i<max;++i) {
         Tempus.SHORTDAYS[i] = Tempus.FULLDAYS[i].substr(0, 3);
         Tempus.FULLDAYS[i] += 'day';
     }
