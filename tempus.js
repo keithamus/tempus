@@ -30,7 +30,11 @@
 
     // The constructor, basically calls `set`
     function Tempus() {
-        if (!(this instanceof Tempus)) return new Tempus(arguments);
+        if (!(this instanceof Tempus)) {
+            t = new Tempus();
+            t.set.apply(t, !(1 in arguments) && /ar/.test(realTypeOf(arguments[0])) ? arguments[0] : arguments);
+            return t;
+        }
         this.set.apply(this, !(1 in arguments) && /ar/.test(realTypeOf(arguments[0])) ? arguments[0] : arguments);
     }
     
