@@ -30,7 +30,11 @@
 
     // The constructor, basically calls `set`
     function Tempus() {
-        if (!(this instanceof Tempus)) return new Tempus(arguments);
+        if (!(this instanceof Tempus)) {
+            t = new Tempus();
+            t.set.apply(t, !(1 in arguments) && /ar/.test(realTypeOf(arguments[0])) ? arguments[0] : arguments);
+            return t;
+        }
         this.set.apply(this, !(1 in arguments) && /ar/.test(realTypeOf(arguments[0])) ? arguments[0] : arguments);
     }
     
@@ -178,7 +182,9 @@
 
     Tempus.SHORTMONTHS = [];
 
-    for (i in Tempus.FULLMONTHS) {
+    var i = 0,
+        max = Tempus.FULLMONTHS.length;
+    for (;i<max;++i) {
         Tempus.SHORTMONTHS[i] = Tempus.FULLMONTHS[i].substr(0, 3);
     }
     
@@ -194,7 +200,9 @@
 
     Tempus.SHORTDAYS = [];
 
-    for (i in Tempus.FULLDAYS) {
+    i = 0,
+    max = Tempus.FULLDAYS.length;
+    for (;i<max;++i) {
         Tempus.SHORTDAYS[i] = Tempus.FULLDAYS[i].substr(0, 3);
         Tempus.FULLDAYS[i] += 'day';
     }
