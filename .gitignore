@@ -1,3 +1,4 @@
 _site
 *.gz
 .sass-cache
+*.min.js
