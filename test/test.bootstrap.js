@@ -55,3 +55,6 @@ this.fakeSetInterval = this.setInterval = function (fn, time) {
 fakeClearInterval = this.clearInterval = fakeClearTimeout = this.clearTimeout = function (timer) {
     timer.cleared = true;
 };
+
+// Modifiy Array prototype to ensure no sloppy looping code:
+Array.prototype[13] = 'FAIL';

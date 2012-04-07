@@ -177,8 +177,8 @@
     ];
 
     Tempus.SHORTMONTHS = [];
-
-    for (i in Tempus.FULLMONTHS) {
+    i = 12;
+    while (i--) {
         Tempus.SHORTMONTHS[i] = Tempus.FULLMONTHS[i].substr(0, 3);
     }
     
@@ -193,8 +193,8 @@
     ];
 
     Tempus.SHORTDAYS = [];
-
-    for (i in Tempus.FULLDAYS) {
+    i = 7;
+    while (i--) {
         Tempus.SHORTDAYS[i] = Tempus.FULLDAYS[i].substr(0, 3);
         Tempus.FULLDAYS[i] += 'day';
     }
