@@ -248,7 +248,7 @@
                         }
                     }
                     if (module.test.apply(this, ar)) {
-                        this._date = new Date();
+                        this._date = new Date(0);
                         this.setTimezoneToLocale();
                         return module.parse.apply(this, arguments);
                     }
