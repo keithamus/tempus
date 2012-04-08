@@ -410,12 +410,12 @@
             return (0 in arguments) ? this.day(setter === 7 ? 0 : setter) : this.day() || 7;
         },
         
-        getDayName: function (full) {
-            return Tempus[full ? 'FULLDAYS' : 'SHORTDAYS'][this.day()];
+        getDayName: function () {
+            return Tempus.SHORTDAYS[this.day()];
         },
         
         getFullDayName: function () {
-            return this.getDayName(true);
+            return Tempus.FULLDAYS[this.day()];
         },
         
         dayOfYear: function (day) {
