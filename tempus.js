@@ -148,8 +148,9 @@
     
     var std_time_format = '%a, %d %b %Y %T %z'
     ,   TIME_FORMATS = Tempus.TIME_FORMATS = {
-            COOKIE: '%A, %d-%b-%y %T %Z',
+            ISO8601Date: '%Y-%m-%d',
             ISO8601: '%Y-%m-%dT%T.%L%z',
+            COOKIE: '%A, %d-%b-%y %T %Z',
             RFC822: '%a, %d %b %y %T %z',
             RFC850: '%A, %d-%b-%y %T %Z',
             RFC1036: '%a, %d %b %y %T %z',

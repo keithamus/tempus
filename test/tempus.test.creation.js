@@ -83,7 +83,30 @@ QUnit.test('Date initialise with additional tz param', function () {
 
 QUnit.module('Date parsing');
 
-QUnit.test('Initialise with ISO8601 dates', function () {   
+QUnit.test('Initialise with ISO8601 dates', function () {
+    var x = new Tempus('2011-09-11');
+    equal(''+new FakeDate(Number(x)), ''+new FakeDate(1315695600000), "2011-09-11 (" + String(x) + ")");
+
+    x = new Tempus('2008-01-01');
+    equal(''+new FakeDate(Number(x)), ''+new FakeDate(1199145600000), "2008-01-01 (" + String(x) + ")");
+
+    x = new Tempus('2024-12-31');
+    equal(''+new FakeDate(Number(x)), ''+new FakeDate(1735603200000), "2024-12-31 (" + String(x) + ")");
+
+    x = new Tempus('1986-04-24');
+    equal(''+new FakeDate(Number(x)), ''+new FakeDate(514681200000), "1986-04-24 (" + String(x) + ")");
+
+    x = new Tempus('2008-02-28');
+    equal(''+new FakeDate(Number(x)), ''+new FakeDate(1204156800000), "2008-02-29 (" + String(x) + ")");
+
+    x = new Tempus('1970-01-01');
+    equal(''+new FakeDate(Number(x)), ''+new FakeDate(0), "1970-01-01 (" + String(x) + ")");
+
+    x = new Tempus('2012-12-21');
+    equal(''+new FakeDate(Number(x)), ''+new FakeDate(1356048000000), "2012-12-21 (" + String(x) + ")");
+});
+
+QUnit.test('Initialise with ISO8601 datetimes', function () {
     var x = new Tempus('2011-09-11T20:48:43.519Z');
     equal(''+new FakeDate(Number(x)), ''+new FakeDate(1315774123519), "2011-09-11T20:48:43.519Z (" + String(x) + ")");
 
