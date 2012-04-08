@@ -856,7 +856,7 @@
             b = realTypeOf(b) == TYPE_ARRAY && 0 in b? b[0] : b;
             return !!TIME_FORMATS[b]
                 || strftimeRegExp.test(b)
-                || !!DEFAULT_REVERSE_FORMATTER_REGEX.test(a);
+                || DEFAULT_REVERSE_FORMATTER_REGEX.test(a);
         },
         function (string, format) {
             var match
