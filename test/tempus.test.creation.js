@@ -130,16 +130,16 @@ QUnit.test('Initialise with ISO8601 datetimes', function () {
 });
     
 QUnit.test('Initialise with new ISO8601 intervals', function () {   
-    equal(Number(new Tempus('P3D')), 1316033323519, "P3D: Wed Sep 14 2011 21:48:43 GMT+0100 (BST)");
-    equal(Number(new Tempus('P1D2M')), 1321134523519, "P1D2M: Mon Nov 12 2011 21:48:43 GMT+0000 (GMT)");
-    equal(Number(new Tempus('P1D2M1Y')), 1352756923519, "P1D2M1Y: Mon Nov 12 2012 21:48:43 GMT+0000 (GMT)");
-    equal(Number(new Tempus('P6D4M3Y')), 1421531323519, "P6D4M3Y: Sat Jan 17 2015 21:48:43 GMT+0000 (GMT)");
-    equal(Number(new Tempus('PT2H30M')), 1315783123519, "PT2H30M: Mon Sep 12 2011 00:18:43 GMT+0100 (BST)");
-    equal(Number(new Tempus('PT30M')), 1315775923519, "P30M: Sun Sep 11 2011 22:18:43 GMT+0100 (BST)");
-    equal(Number(new Tempus('PT2S')), 1315774125519, "P2S: Sun Sep 11 2011 21:48:45 GMT+0100 (BST)");
-    equal(Number(new Tempus('P3Y6M4DT12H30M5S')), 1426501128519, "P3Y6M4DT12H30M5S: Wed Sep 14 2011 21:48:43 GMT+0100 (BST)");
-    equal(Number(new Tempus('-P3D')), 1315514923519, "-P3D: Thu Sep 08 2011 21:48:43 GMT+0100 (BST)");
-    equal(Number(new Tempus('-P1D2M')), 1310330923519, "-P1D2M: Sun Jul 10 2011 21:48:43 GMT+0100 (BST)");
+    equal(''+new Date(+(new Tempus('P3D'))), ''+new Date(1316033323519), "P3D: Wed Sep 14 2011 21:48:43 GMT+0100 (BST)");
+    equal(''+new Date(+(new Tempus('P1D2M'))), ''+new Date(1321134523519), "P1D2M: Mon Nov 12 2011 21:48:43 GMT+0000 (GMT)");
+    equal(''+new Date(+(new Tempus('P1D2M1Y'))), ''+new Date(1352756923519), "P1D2M1Y: Mon Nov 12 2012 21:48:43 GMT+0000 (GMT)");
+    equal(''+new Date(+(new Tempus('P6D4M3Y'))), ''+new Date(1421531323519), "P6D4M3Y: Sat Jan 17 2015 21:48:43 GMT+0000 (GMT)");
+    equal(''+new Date(+(new Tempus('PT2H30M'))), ''+new Date(1315783123519), "PT2H30M: Mon Sep 12 2011 00:18:43 GMT+0100 (BST)");
+    equal(''+new Date(+(new Tempus('PT30M'))), ''+new Date(1315775923519), "P30M: Sun Sep 11 2011 22:18:43 GMT+0100 (BST)");
+    equal(''+new Date(+(new Tempus('PT2S'))), ''+new Date(1315774125519), "P2S: Sun Sep 11 2011 21:48:45 GMT+0100 (BST)");
+    equal(''+new Date(+(new Tempus('P3Y6M4DT12H30M5S'))), ''+new Date(1426501128519), "P3Y6M4DT12H30M5S: Wed Sep 14 2011 21:48:43 GMT+0100 (BST)");
+    equal(''+new Date(+(new Tempus('-P3D'))), ''+new Date(1315514923519), "-P3D: Thu Sep 08 2011 21:48:43 GMT+0100 (BST)");
+    equal(''+new Date(+(new Tempus('-P1D2M'))), ''+new Date(1310330923519), "-P1D2M: Sun Jul 10 2011 21:48:43 GMT+0100 (BST)");
 });
     
 QUnit.test('Initialize date with array of reverse formatters', function () {   
