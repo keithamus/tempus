@@ -4,6 +4,12 @@ Tempus is a full replacement for the Date object. It's official home is at
 [tempus-js.com](http://tempus-js.com), you can read lots more about the project
 there.
 
+## License
+
+Tempus is licensed as MIT: http://keithamus.mit-license.org/ meaning it is free
+for anyone to use. If you submit a pull request you agree to be bound by this
+licensing, and agree to sign off all copyrights to Keith Cirkel.
+
 ## Clone, Test, Build the repository
 
 You can clone the repository by running 
