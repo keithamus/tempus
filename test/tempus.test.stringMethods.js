@@ -91,7 +91,7 @@ QUnit.test('toString([fomat constants])', function () {
         equal(this.newdate['to' + i + 'String'](), methods[i], i + ' - ' + methods[i]);
     }
 
-    equal(this.newdate.toGMTString(), 'Sun, 11 Sep 2011 12:00:00 GMT', 'GMT');
+    equal(this.newdate.toGMTString(), this.date.toGMTString(), 'GMT');
     
 });
 
