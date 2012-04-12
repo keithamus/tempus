@@ -339,9 +339,11 @@
         },
         
         oneIndexedMonth: function (month) {
-            if (0 in arguments) return this.month(month - 1);
-
-            return this.month()+1;
+            return (0 in arguments) ? this.month(month - 1) : this.month()+1;
+        },
+        
+        UTCOneIndexedMonth: function (month) {
+            return (0 in arguments) ? this.UTCMonth(month - 1) : this.UTCMonth()+1;
         },
         
         getMonthName: function (full) {
@@ -389,7 +391,7 @@
         /*           New Day Methods         */
         /*************************************/
         
-        day: function (setter, reverse) {
+        day: function (setter) {
             return (0 in arguments) ?
                 // The setter given is a day number, say, 4 (Thursday), so this op will set the
                 // date to the nearest Thursday, by taking the current date, adding the daynum (so 4
@@ -407,8 +409,30 @@
                 this._date.getDay();
         },
         
+        UTCDay: function (setter) {
+            return (0 in arguments) ?
+                // The setter given is a day number, say, 4 (Thursday), so this op will set the
+                // date to the nearest Thursday, by taking the current date, adding the daynum (so 4
+                // for Thursday), taking away the ISO day of week. Look at this table:
+                // | Day Name | +4, the day is |  Take away | Ending With |
+                // |  Monday  |     Friday     |      1     |   Thursday  |
+                // | Tuesday  |    Saturday    |      2     |   Thursday  |
+                // | Wednesday|     Sunday     |      3     |   Thursday  |
+                // | Thursday |     Monday     |      4     |   Thursday  |
+                // |  Friday  |    Tuesday     |      5     |   Thursday  |
+                // | Saturday |    Wednesday   |      6     |   Thursday  |
+                // |  Sunday  |    Thursday    |      7     |   Thursday  |
+                this.UTCDay() !== setter ? this.addUTCDate(setter - this.UTCISODay()) : this
+            :
+                this._date.getUTCDay();
+        },
+        
         ISODay: function (setter) {
             return (0 in arguments) ? this.day(setter === 7 ? 0 : setter) : this.day() || 7;
+        },
+        
+        UTCISODay: function (setter) {
+            return (0 in arguments) ? this.UTCDay(setter === 7 ? 0 : setter) : this.UTCDay() || 7;
         },
         
         getDayName: function () {
@@ -702,7 +726,7 @@
             }
         }
 
-        !/^UTC|[cw]e|one|AMPM|i?s?o?time[sz]|time$|dayo/i.test(methodname) && PDateSetMethod('UTC' + methodname);
+        !/^UTC|[cw]e|AMPM|i?s?o?time[sz]|time$|dayo/i.test(methodname) && PDateSetMethod('UTC' + methodname);
     }
     
     i = dateSetMethods.length;
