@@ -878,6 +878,8 @@
     Tempus.addParser(
         function (a, b) {
             b = realTypeOf(b) == TYPE_ARRAY && 0 in b? b[0] : b;
+            // lastIndex needs to be reset for some browsers, i.e Safari. Issue #11
+            strftimeRegExp.lastIndex = 0;
             return !!TIME_FORMATS[b]
                 || strftimeRegExp.test(b)
                 || DEFAULT_REVERSE_FORMATTER_REGEX.test(a);

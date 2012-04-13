@@ -129,7 +129,7 @@ QUnit.test('Initialise with ISO8601 datetimes', function () {
     equal(''+new FakeDate(Number(x)), ''+new FakeDate(1356041166666), "2012-12-21T06:06:06.666+0800 (" + String(x) + ")");
 });
     
-QUnit.test('Initialise with new ISO8601 intervals', function () {   
+QUnit.test('Initialise with new ISO8601 intervals', function () {
     equal(''+new Date(+(new Tempus('P3D'))), ''+new Date(1316033323519), "P3D: Wed Sep 14 2011 21:48:43 GMT+0100 (BST)");
     equal(''+new Date(+(new Tempus('P1D2M'))), ''+new Date(1321134523519), "P1D2M: Mon Nov 12 2011 21:48:43 GMT+0000 (GMT)");
     equal(''+new Date(+(new Tempus('P1D2M1Y'))), ''+new Date(1352756923519), "P1D2M1Y: Mon Nov 12 2012 21:48:43 GMT+0000 (GMT)");
@@ -141,8 +141,22 @@ QUnit.test('Initialise with new ISO8601 intervals', function () {
     equal(''+new Date(+(new Tempus('-P3D'))), ''+new Date(1315514923519), "-P3D: Thu Sep 08 2011 21:48:43 GMT+0100 (BST)");
     equal(''+new Date(+(new Tempus('-P1D2M'))), ''+new Date(1310330923519), "-P1D2M: Sun Jul 10 2011 21:48:43 GMT+0100 (BST)");
 });
+
+QUnit.test('many incorrect parsers invalidates further ones [#11][Safari]', function () {
+    var newdate = Tempus('05-02-2011', ['%d-%m-%Y', '%Y-%m-%d']);
+    equal(''+new Date(+newdate), ''+new Date(2011, 1, 5), String(newdate));
     
-QUnit.test('Initialize date with array of reverse formatters', function () {   
+    newdate = Tempus('05-02-2011', ['%d-%m-%Y', '%Y-%m-%d']);
+    equal(''+new Date(+newdate), ''+new Date(2011, 1, 5), String(newdate));
+    
+    newdate = Tempus('05-02-2011', ['%d-%m-%Y', '%Y-%m-%d']);
+    equal(''+new Date(+newdate), ''+new Date(2011, 1, 5), String(newdate));
+    
+    newdate = Tempus('05-02-2011', ['%d-%m-%Y', '%Y-%m-%d']);
+    equal(''+new Date(+newdate), ''+new Date(2011, 1, 5), String(newdate));
+});
+    
+QUnit.test('Initialize date with array of reverse formatters', function () {
     
     var newdate = Tempus('2011-02-05', ['%d-%m-%Y', '%Y-%m-%d']);
     equal(newdate.fullYear(), 2011, String(newdate));
