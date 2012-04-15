@@ -108,7 +108,7 @@
      *
      */
     function stringPad(string, width, padString) {
-        width -= (string = ''+string).length;
+        width -= (''+string).length;
         return (width > 0 ? ( new Array(width+1) ).join( padString || 0 ) : '') + string;
     }
 
