@@ -80,7 +80,7 @@
      *
      */
     function arrIndexOf(a, v) {
-        for (var i = 0; i in a; ++i) if (a[i] === v) return i;
+        for (var i = 0; i < a.length; ++i) if (a[i] === v) return i;
         return -1;
     }
         
