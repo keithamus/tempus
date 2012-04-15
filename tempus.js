@@ -55,9 +55,19 @@
      * @returns {String} One of 'array, regexp, string, number, function, date, object, undefined, null'
      *
      */
-    function realTypeOf(v) {
+    var realTypeOf = function(v) {
         if (v === undef || v === null) return ''+v; // undefined
         return ({}).toString.call(v).match(/\w+/g)[1].toLowerCase();
+    };
+
+    // Firefox <3, IEs, `arguments` is an [object Object], not [object Argument].
+    // We can fix this:
+    if (realTypeOf(arguments) != 'arguments') {
+        var _realTypeOf = realTypeOf;
+        realTypeOf = function (v) {
+           if (v && v.hasOwnProperty && v.hasOwnProperty('callee')) return 'arguments';
+           return _realTypeOf(v);
+        };
     }
         
     /**
