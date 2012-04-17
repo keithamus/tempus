@@ -1,3 +1,4 @@
+/*jslint laxcomma: true */
 /**
  * Tempus - Time for a new Date()
  *
@@ -19,7 +20,7 @@
     var setTimeout = global.setTimeout
     ,   setInterval = global.setInterval
     ,   clearTimeout = global.clearTimeout
-    ,   clearInterval = global.clearInterval; 
+    ,   clearInterval = global.clearInterval;
 
 
     /***********************************************/

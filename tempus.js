@@ -1,3 +1,4 @@
+/*jslint laxcomma: true */
 /**
  * Tempus - Time for a new Date()
  *
@@ -93,7 +94,7 @@
      *
      */
     function getOrdinal(num) {
-        return  ~~((num % 100) / 10) == 1 ? 'th' : [,'st','nd','rd'][num % 10] || 'th';
+        return [0, 'st', 'nd', 'rd'][num / 10 % 10 ^ 1 && num % 10] || 'th';
     }
 
         
@@ -247,7 +248,7 @@
             // any dateParser modules.
             } else if ((modules = TempusParsers[aType])) {
                 
-                for (var i = 0, module; module = modules[i]; ++i) {
+                for (var i = 0, module; (module = modules[i]); ++i) {
                     var exC = module.length;
                     if (ar.length < exC) continue;
                     if (exC > 1) {
@@ -629,15 +630,15 @@
         /*************************************/
 
         isEqual: function () {
-            return +(this) == +TProto.set.apply(new Tempus, arguments);
+            return +(this) == +Tempus(arguments);
         },
 
         isBefore: function () {
-            return +(this) < +TProto.set.apply(new Tempus, arguments);
+            return +(this) < +Tempus(arguments);
         },
         
         isAfter: function () {
-            return +(this) > +TProto.set.apply(new Tempus, arguments);
+            return +(this) > +Tempus(arguments);
         }
     };
     
@@ -651,7 +652,7 @@
         };
     }
 
-    for (var i in TIME_FORMATS) PTimeFormat(i);
+    for (i in TIME_FORMATS) PTimeFormat(i);
 
     var dateMethods = [
         'toDateString',
@@ -693,9 +694,13 @@
         if (!TProto['get' + methodname]) {
             TProto['get' + methodname] =
             TProto[lmethodname] ?
-                function () { return this[lmethodname]() }
+                function () {
+                    return this[lmethodname]();
+                }
             :
-                function () { return this._date['get' + methodname].call(this._date) }
+                function () {
+                    return this._date['get' + methodname].call(this._date);
+                }
             ;
         }
         
@@ -733,10 +738,11 @@
                 } else {
                     return this['get' + methodname]();
                 }
-            }
+            };
         }
 
-        !/^UTC|[cw]e|AMPM|i?s?o?time[sz]|time$|dayo/i.test(methodname) && PDateSetMethod('UTC' + methodname);
+        if (!/^UTC|[cw]e|AMPM|i?s?o?time[sz]|time$|dayo/i.test(methodname))
+            PDateSetMethod('UTC' + methodname);
     }
     
     i = dateSetMethods.length;
@@ -818,7 +824,7 @@
     ,   rg_spacedigit = '(?:\\s|\\d)\\d'
     ,   rg_time = '\\d{2}:\\d{2}:\\d{2}'
     ,   rg_date = '\\d{4}-\\d{2}-\\d{2}'
-    ,   rg_tz = 'Z|GMT|(?:GMT)?[-\+]\\d{2}\\:?\\d{2}';
+    ,   rg_tz = 'Z|GMT|(?:GMT)?[-+]\\d{2}\\:?\\d{2}';
     
     Tempus.REVERSE_FORMAT_PROCESSORS = {
         a: ['(?:' + Tempus.SHORTDAYS.join('|') + ')?,?'],
@@ -866,7 +872,7 @@
 
     function makeReverseRegex(format, formatFunction) {
         return format
-            .replace(/[-[\]{}()*+?.,\\^$|#\s]/g, "\\$&")
+            .replace(/[\-\[\]{}()*+?.,\\\^$|#\s]/g, "\\$&")
             .replace(strftimeRegExp, function (chunk, prefix, proc) {
                 var newproc = Tempus.REVERSE_FORMAT_PROCESSORS[proc];
                 if (!newproc) return chunk;
@@ -878,9 +884,9 @@
     }
 
     var DEFAULT_REVERSE_FORMATTER = [], DEFAULT_REVERSE_FORMATTER_REGEX = [];
-    for (i in TIME_FORMATS) {
-        DEFAULT_REVERSE_FORMATTER.push(i);
-        DEFAULT_REVERSE_FORMATTER_REGEX.push(makeReverseRegex(TIME_FORMATS[i], []));
+    for (var fmt in TIME_FORMATS) {
+        DEFAULT_REVERSE_FORMATTER.push(fmt);
+        DEFAULT_REVERSE_FORMATTER_REGEX.push(makeReverseRegex(TIME_FORMATS[fmt], []));
     }
 
     DEFAULT_REVERSE_FORMATTER_REGEX = new RegExp('^'+ DEFAULT_REVERSE_FORMATTER_REGEX.join('|') + '$');
@@ -890,9 +896,7 @@
             b = realTypeOf(b) == TYPE_ARRAY && 0 in b? b[0] : b;
             // lastIndex needs to be reset for some browsers, i.e Safari. Issue #11
             strftimeRegExp.lastIndex = 0;
-            return !!TIME_FORMATS[b]
-                || strftimeRegExp.test(b)
-                || DEFAULT_REVERSE_FORMATTER_REGEX.test(a);
+            return !!TIME_FORMATS[b] || strftimeRegExp.test(b) || DEFAULT_REVERSE_FORMATTER_REGEX.test(a);
         },
         function (string, format) {
             var match
@@ -908,7 +912,7 @@
 
             if (realTypeOf(format) == TYPE_ARRAY) {
                 for(i = 0; i in format; i++)
-                    try { return this.set(string, format[i]) } catch(e){};
+                    try { return this.set(string, format[i]); } catch(e){}
                 throw new Error('Cannot parse "' + string + '" with "' + format + '"');
             }
 
@@ -954,7 +958,7 @@
     if (typeof module != 'undefined' && module.exports) {
         module.exports = Tempus;
     } else if (typeof define == "function" && define.amd) {
-        define('Tempus', [], function () { return Tempus });
+        define('Tempus', [], function () { return Tempus; });
     } else {
         global.Tempus = Tempus;
     }
