@@ -5,7 +5,6 @@
     <title>QUnit Test Suite</title>
     <link rel="stylesheet" href="qunit/qunit/qunit.css" type="text/css" media="screen">
     <script type="text/javascript" src="qunit/qunit/qunit.js"></script>
-    <script type="text/javascript" src="qunit-logging/qunit-logging.js"></script>
 
     <script type="text/javascript" src="test.bootstrap.js"></script>
     <script type="text/javascript" src="qunit.testcoverage.js"></script>
@@ -13,11 +12,8 @@
     <script type="text/javascript">
         QUnit.config.reorder = false;
         QUnit.done = done;
-        QUnit.config.urlConfig = ['notrycatch', 'logPassed', 'logFailed'];
+        QUnit.config.urlConfig = ['notrycatch'];
         QUnit.urlParams.noglobals = true;
-        
-        QUnit.logging.logPassed = QUnit.urlParams.logPassed === 'true';
-        QUnit.logging.logFailed = QUnit.urlParams.logFailed === 'true';
     </script>
 
     <script type="text/javascript" src="../tempus.js"></script>
