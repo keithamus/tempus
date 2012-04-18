@@ -175,7 +175,7 @@ QUnit.test('Bad dates in reverse formatter throws error', function () {
         function () {
             Tempus('this-aint-gonna-work', '%d-%m-%Y');
         },
-        /^Error: Cannot parse "this-aint-gonna-work" with "%d-%m-%Y"$/,
+        /^Error: Cannot parse 'this-aint-gonna-work' with '%d-%m-%Y'$/,
         'Error thrown'
     );
     
@@ -183,7 +183,7 @@ QUnit.test('Bad dates in reverse formatter throws error', function () {
         function () {
             Tempus('this-aint-gonna-work', ['%d-%m-%Y', '%Y-%m-%d']);
         },
-        /^Error: Cannot parse "this-aint-gonna-work" with "%d-%m-%Y,%Y-%m-%d"$/,
+        /^Error: Cannot parse 'this-aint-gonna-work' with '%d-%m-%Y,%Y-%m-%d'$/,
         'Error thrown'
     );
 });

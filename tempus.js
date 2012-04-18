@@ -913,7 +913,7 @@
             if (realTypeOf(format) == TYPE_ARRAY) {
                 for(i = 0; i in format; i++)
                     try { return this.set(string, format[i]); } catch(e){}
-                throw new Error('Cannot parse "' + string + '" with "' + format + '"');
+                throw new Error("Cannot parse '" + string + "' with '" + format + "'");
             }
 
             if (TIME_FORMATS[format]) format = TIME_FORMATS[format];
@@ -922,7 +922,7 @@
             match = string.match('^' + formatReg + '$');
             
             if (!match)
-                throw new Error('Cannot parse "' + string + '" with "' + format + '"');
+                throw new Error("Cannot parse '" + string + "' with '" + format + "'");
             
             i = match.length;
             while(i--) {
