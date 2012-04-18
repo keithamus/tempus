@@ -7,11 +7,13 @@ require('./test.bootstrap.js');
 
 covers = function () {};
 
-var tempus = require('../tempus.js');
+Tempus = require('../tempus.js');
+require('../tempus.timer.js')
+require('../tempus.interval.js')
 
 Date = oldDate;
 setInterval = oldSetInterval;
 setTimeout = oldSetTimeout;
 clearInterval = oldClearInterval;
 clearTimeout = oldClearTimeout;
-module.exports = tempus;
+module.exports = Tempus;
