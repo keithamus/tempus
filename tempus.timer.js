@@ -16,11 +16,10 @@
 (function (global, Tempus, undef) {
     // ^ Get some methods from the global object, close scope on them for protection
 
-
-    var setTimeout = global.setTimeout
-    ,   setInterval = global.setInterval
-    ,   clearTimeout = global.clearTimeout
-    ,   clearInterval = global.clearInterval;
+    var tsetTimeout = setTimeout
+    ,   tsetInterval = setInterval
+    ,   tclearTimeout = clearTimeout
+    ,   tclearInterval = clearInterval;
 
 
     /***********************************************/
@@ -70,7 +69,7 @@
         },
 
         start: function () {
-            var timerFn = this.interval ? setInterval : setTimeout,
+            var timerFn = this.interval ? tsetInterval : tsetTimeout,
                 self = this;
             if (this.ms == undef) this.ms = (+new Tempus(this.runOn)) - (+new Tempus());
 
@@ -88,7 +87,7 @@
         },
 
         stop: function () {
-            var clearFn = this.isInterval ? clearInterval : clearTimeout;
+            var clearFn = this.isInterval ? tclearInterval : tclearTimeout;
 
             if (this.timer) clearFn(this.timer);
             return this;
