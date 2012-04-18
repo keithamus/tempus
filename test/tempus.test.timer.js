@@ -111,13 +111,12 @@ QUnit.test("run()", function () {
 
 });
 
-var globalContext = typeof global === 'undefined' ? window : global;
 covers(Tempus.Timer.prototype, 'Timer', 'context');
 QUnit.test("context()", function () {
     var timer = new Tempus.Timer()
     ,   context = { my: 'context' };
 
-    equal(timer.ctx === globalContext, true);
+    equal(timer.ctx === timer, true, 'Context should default to the Tempus.Timer instance');
 
     timer.context(context);
     deepEqual(timer.ctx, context);

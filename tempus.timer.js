@@ -30,7 +30,7 @@
         if (!(this instanceof Timer)) return new Timer(fn, after);
 
         this.isInterval = false;
-        this.ctx = ctx || global;
+        this.ctx = ctx || this;
         this.runCount = 0;
         if (typeof fn == 'function') this.run(fn);
         if (after) this.after(after);
