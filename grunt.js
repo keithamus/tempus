@@ -1,103 +1,141 @@
 /*jslint laxcomma: true, loopfunc: true */
-var terminal  = require('child_process')
-,   fs        = require('fs')
-,   path      = require('path')
-,   nodequnit = require('qunit');
-
-// Helper for terminal commands
-function sh(line, callback) {
-    var term = terminal.exec(line)
-    ,   data = '';
-
-    term.stdout.on('data', function (out) {
-        data+=out;
-    });
-
-    term.on('exit', function (code) {
-        if (callback) {
-            callback(code, data);
-        }
-    });
-
-}
-
 module.exports = function (grunt) {
 
     grunt.initConfig({
+        // We want the 3 main JS files to be linted.
         lint: {
             all: ['tempus.js', 'tempus.interval.js', 'tempus.timer.js']
         },
-        min: {
-            tempus: {
-                src: ['tempus.js'],
-                dest: 'tempus.min.js',
-                size_target: 4505
-            },
-            tempus_timer: {
-                src: ['tempus.timer.js'],
-                dest: 'tempus.timer.min.js'  
-            },
-            tempus_interval: {
-                src: ['tempus.interval.js'],
-                dest: 'tempus.interval.min.js'  
-            },
-            tempus_with_interval: {
-                src: ['tempus.with.interval.js'],
-                dest: 'tempus.with.interval.min.js'  
-            },
-            tempus_with_timer: {
-                src: ['tempus.with.timer.js'],
-                dest: 'tempus.with.timer.min.js'  
-            },
-            tempus_with_timer_and_interval: {
-                src: ['tempus.with.timer.and.interval.js'],
-                dest: 'tempus.with.timer.and.interval.min.js'  
-            }
-        },
-        uglify: {
-            mangle: { top_level: true }
-        },
+        // We want to generate 3 new files, which are part of the release build...
         concat: {
+            // With timer, which is Tempus and Tempus.Timer in one export
             with_timer: {
                 src: ['tempus.js', 'tempus.timer.js'],
                 dest: './tempus.with.timer.min.js'
             },
+            // With interval, which is Tempus and Tempus.Interval in one export
             with_interval: {
                 src: ['tempus.js', 'tempus.interval.js'],
                 dest: './tempus.with.interval.min.js'
             },
+            // With timer and interval; both modules inside one export with Tempus
             with_timer_and_interval: {
                 src: ['tempus.js', 'tempus.interval.js', 'tempus.timer.js'],
                 dest: './tempus.with.timer.and.interval.min.js'
             }
         },
+        min: {
+            // Minifiy Tempus JS, and also specify a target size when gzipped
+            tempus: {
+                src: ['tempus.js'],
+                dest: 'tempus.min.js',
+                size_target: 4505
+            },
+            // Minifiy Tempus.Timer
+            tempus_timer: {
+                src: ['tempus.timer.js'],
+                dest: 'tempus.timer.min.js'
+            },
+            // Minify Tempus.Interval
+            tempus_interval: {
+                src: ['tempus.interval.js'],
+                dest: 'tempus.interval.min.js'
+            },
+            // Minify our concated tempus.with.timer
+            tempus_with_timer: {
+                src: ['tempus.with.timer.js'],
+                dest: 'tempus.with.timer.min.js'
+            },
+            // Minify our concated tempus.with.interval
+            tempus_with_interval: {
+                src: ['tempus.with.interval.js'],
+                dest: 'tempus.with.interval.min.js'
+            },
+            // Minify our concated tempus.with.timer.and.interval
+            // with a target size of 7k
+            tempus_with_timer_and_interval: {
+                src: ['tempus.with.timer.and.interval.js'],
+                dest: 'tempus.with.timer.and.interval.min.js',
+                size_target: 7168
+            }
+        },
+        // We want to make sure that UglifyJS compresses as much as it can
+        uglify: {
+            mangle: { top_level: true }
+        },
+        // We can load in the QUnit test files for phantom.
         qunit: {
             index: ['test/index.html']
+        },
+        // We'll load in the specific files Node-QUnit will test:
+        'qunit-node': {
+            testFiles:
+                [   'utils'
+                ,   'creation'
+                ,   'originalMethods'
+                ,   'dateMethods'
+                ,   'utilityMethods'
+                ,   'yearMethods'
+                ,   'monthMethods'
+                ,   'weekMethods'
+                ,   'dayMethods'
+                ,   'timeMethods'
+                ,   'timezoneMethods'
+                ,   'utcMethods'
+                ,   'stringMethods'
+                ,   'highLevelFunctionality'
+                ,   'timer'
+                ]
         }
     });
 
-    grunt.registerTask('qunit-node', function () {
-        var done = this.async()
-        ,   testFiles = 
-            [   'utils'
-            ,   'creation'
-            ,   'originalMethods'
-            ,   'dateMethods'
-            ,   'utilityMethods'
-            ,   'yearMethods'
-            ,   'monthMethods'
-            ,   'weekMethods'
-            ,   'dayMethods'
-            ,   'timeMethods'
-            ,   'timezoneMethods'
-            ,   'utcMethods'
-            ,   'stringMethods'
-            ,   'highLevelFunctionality'
-            ,   'timer'
-            ]
-        , tests = [];
+    /*******************************************************/
+    /************************ TASKS ************************/
+    /*******************************************************/
 
-        if (this.length > 0) {
+    // We want to overload the min_max_info helper, which is part of the
+    // minify helper. We're overloading it to work with the size_target
+    // delcaration in the initConfig
+    grunt.registerHelper('min_max_info', function(min, max) {
+        var gzipSize     = String(grunt.helper('gzip', min).length)
+        ,   expectedSize = grunt.task.current.data.size_target || false;
+
+        grunt.log.writeln('Uncompressed size: ' + String(max.length).green + ' bytes.');
+
+        // If size_target doesn't exist, do what min_max_info normally does.
+        if (!expectedSize) {
+            grunt.log.writeln('Compressed size: ' + gzipSize.green + ' bytes gzipped '+
+                '(' + String(min.length).green + ' bytes minified).');
+
+            return;
+        }
+        
+        // Get the difference in bytes between the two sizes
+        var diff = Math.abs(expectedSize - gzipSize);
+
+        // If we're over, flash up a RED size and say we're over
+        if (gzipSize > expectedSize) {
+            grunt.log.error('Compressed size: ' + gzipSize.red + ' bytes ' +
+                '(' + String(diff).red + ' bytes over ' + expectedSize + ' byte target) gzipped ' +
+                '(' + String(min.length).green + ' bytes minified).');
+        
+        // If we're under, flash up a GREEN size and say we're under
+        } else {
+            grunt.log.writeln('Compressed size: ' + gzipSize.green + ' bytes ' +
+                '(' + String(diff).green + ' bytes under ' + expectedSize + ' byte target) gzipped ' +
+                '(' + String(min.length).green + ' bytes minified).');
+        }
+    });
+
+    grunt.registerTask('qunit-node', 'Run QUnit unit tests in a NodeJS instance.', function () {
+        var nodequnit = require('qunit')
+        ,   done = this.async()
+        ,   testFiles = grunt.config()['qunit-node'].testFiles
+        ,   tests = [];
+
+        // Filter tests down if given args
+        if (this.args.length > 0) {
+            grunt.log.writeln('Filtering to ' + this.args);
             this.args.forEach(function (test) {
                 if (testFiles.indexOf(test) !== -1) {
                     tests.push(test);
@@ -128,6 +166,7 @@ module.exports = function (grunt) {
             }
         };
 
+        // Grab the final stats
         var stats = {};
         nodequnit.log.summary = function (o) {
             stats = o;
@@ -143,6 +182,7 @@ module.exports = function (grunt) {
             code: { path: './test/node.test.bootstrap.js', namespace: 'Tempus' },
             tests: tests.map(function (f) { return './test/tempus.test.' + f + '.js'; })
         }, function () {
+            // Log out all failures.
             grunt.log.writeln();
             failures.forEach(function (failure) {
                 grunt.log.error((failure.module ? failure.module + ' - ' : '') + failure.test);
@@ -168,34 +208,6 @@ module.exports = function (grunt) {
             done();
         });
         grunt.log.writeln();
-    });
-
-    grunt.registerHelper('min_max_info', function(min, max) {
-        var gzipSize     = String(grunt.helper('gzip', min).length)
-        ,   expectedSize = grunt.task.current.data.size_target || false;
-
-        grunt.log.writeln('Uncompressed size: ' + String(max.length).green + ' bytes.');
-
-        if (!expectedSize) {
-            grunt.log.writeln('Compressed size: ' + gzipSize.green + ' bytes gzipped '+
-                '(' + String(min.length).green + ' bytes minified).');
-
-            return;
-        }
-        
-        var diff;
-
-        if (gzipSize > expectedSize) {
-            diff = gzipSize - expectedSize;
-            grunt.log.error('Compressed size: ' + gzipSize.red + ' bytes ' +
-                '(' + String(diff).red + ' bytes over ' + expectedSize + ' byte target) gzipped ' +
-                '(' + String(min.length).green + ' bytes minified).');
-        } else {
-            diff = expectedSize - gzipSize;
-            grunt.log.writeln('Compressed size: ' + gzipSize.green + ' bytes ' +
-                '(' + String(diff).green + ' bytes under ' + expectedSize + ' byte target) gzipped ' +
-                '(' + String(min.length).green + ' bytes minified).');
-        }
     });
 
     grunt.registerTask('default', 'lint concat min qunit qunit-node');
