@@ -1,7 +1,7 @@
 QUnit.module('Test Utils');
 
 covers(Tempus.util, 'Tempus.util', 'realTypeOf');
-QUnit.test('realTypeOf with primivites', function () {
+QUnit.test('realTypeOf with primitives', function () {
 
     equal(Tempus.util.realTypeOf([]), 'array', '[] is "array"');
     equal(Tempus.util.realTypeOf({}), 'object', '{} is "object"');
