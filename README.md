@@ -35,3 +35,8 @@ If you want to develop Tempus, best place is to start off with the [developer
 preface](http://tempus-js.com/docs/developer-preface), which tells you 
 everything you need. The most important thing is to __ALWAYS__ submit tests with
 your code.
+
+## Working on the Website
+
+If you want to work on the Website itself, then please go over to the 
+[tempus-js.com git repository](http://github.com/keithamus/tempus-js.com).
