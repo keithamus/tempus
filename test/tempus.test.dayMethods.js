@@ -60,18 +60,23 @@ QUnit.test('getDayName(), and getFullDayName()', function () {
     ,   i = 11
     ,   n = 6;
     
-    expect(15);
+    expect(13);
+
+    var SHORTDAYS = [
+        'Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'
+    ]
+    ,   FULLDAYS = [
+        'Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'
+    ];
+
+
     
-    deepEqual(Tempus.FULLDAYS, ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday',
-        'Friday', 'Saturday'], 'Test FULLDAYS');
-    deepEqual(Tempus.SHORTDAYS, ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'], 'Test SHORTDAYS');
-    
-    equal(newdate.getDayName(), Tempus.SHORTDAYS[0], String(newdate));
+    equal(newdate.getDayName(), SHORTDAYS[0], String(newdate));
     
     while(i-- > 5) {
         newdate.setDate(i);
-        equal(newdate.getDayName(), Tempus.SHORTDAYS[n], String(newdate));
-        equal(newdate.getFullDayName(), Tempus.FULLDAYS[n], String(newdate));
+        equal(newdate.getDayName(), SHORTDAYS[n], String(newdate));
+        equal(newdate.getFullDayName(), FULLDAYS[n], String(newdate));
         --n;
     }
 });

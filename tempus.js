@@ -20,6 +20,7 @@
     // Get the timemethods missing 'g' or 's' to save duplication
     var strftimeRegExp = /\%([OE])?([a-z%])/gi
     ,   TempusParsers = {} // our parsers (closed in scope)
+    ,   LOCALES = {}       // locale info (closed in scope)
     // for minification purposes...
     ,   TProto
     ,   TYPE_STRING = 'string'
@@ -32,6 +33,7 @@
     // The constructor, basically calls `set`
     function Tempus() {
         if (!(this instanceof Tempus)) return new Tempus(arguments);
+        this.LOCALE = Tempus.LOCALE;
         this.set.apply(this, !(1 in arguments) && /ar/.test(realTypeOf(arguments[0])) ? arguments[0] : arguments);
     }
     
@@ -180,37 +182,37 @@
     /*               Language Constants            */
     /*         (Set outside of the prototype)      */
     /***********************************************/
-    
-    Tempus.FULLMONTHS = [
-            'January',     'February',     'March',
-            'April',       'May',          'June',
-            'July',        'August',       'September',
-            'October',     'November',     'December'
+
+    Tempus.addLocale = function (localeName, FM, SM, FD, SD, AM) {
+        LOCALES[localeName] = {
+            FM: FM,
+            SM: SM,
+            FD: FD,
+            SD: SD,
+            AM: AM
+        };
+    };
+
+    var SD = [], SM = [], FM = [
+        'January',      'February', 'March',    'April',
+        'May',          'June',     'July',     'August',
+        'September',    'October',  'November', 'December'
+    ], FD = [
+        'Sun', 'Mon', 'Tues', 'Wednes', 'Thurs', 'Fri', 'Satur'
     ];
 
-    Tempus.SHORTMONTHS = [];
     i = 12;
     while (i--) {
-        Tempus.SHORTMONTHS[i] = Tempus.FULLMONTHS[i].substr(0, 3);
+        SM[i] = FM[i].substr(0, 3);
+        if (i < 7) {
+            SD[i] = FD[i].substr(0, 3);
+            FD[i] += 'day';
+        }
     }
-    
-    Tempus.FULLDAYS = [
-        'Sun',
-        'Mon',
-        'Tues',
-        'Wednes',
-        'Thurs',
-        'Fri',
-        'Satur'
-    ];
 
-    Tempus.SHORTDAYS = [];
-    i = 7;
-    while (i--) {
-        Tempus.SHORTDAYS[i] = Tempus.FULLDAYS[i].substr(0, 3);
-        Tempus.FULLDAYS[i] += 'day';
-    }
-    
+    Tempus.addLocale('en', FM, SM, FD, SD, ['AM', 'PM', 'am', 'pm']);
+    Tempus.LOCALE = 'en';
+
     /***********************************************/
     /*               Prototype Methods             */
     /*              (Main Functionality)           */
@@ -338,8 +340,8 @@
             if (0 in arguments) {
                 var newsetter;
                 if (realTypeOf(setter) == TYPE_STRING) {
-                    newsetter = arrIndexOf(Tempus.FULLMONTHS, setter);
-                    newsetter = newsetter !== -1 ? newsetter : arrIndexOf(Tempus.SHORTMONTHS, setter);
+                    newsetter = arrIndexOf(LOCALES[this.LOCALE].FM, setter);
+                    newsetter = newsetter !== -1 ? newsetter : arrIndexOf(LOCALES[this.LOCALE].SM, setter);
                 } else {
                     newsetter = +setter;
                 }
@@ -358,11 +360,11 @@
         },
         
         getMonthName: function (full) {
-            return Tempus[full ? 'FULLMONTHS' : 'SHORTMONTHS'][this.month()];
+            return LOCALES[this.LOCALE].SM[this.month()];
         },
         
         getFullMonthName: function () {
-            return this.getMonthName(true);
+            return LOCALES[this.LOCALE].FM[this.month()];
         },
         
         getLastDayOfMonth: function () {
@@ -447,11 +449,11 @@
         },
         
         getDayName: function () {
-            return Tempus.SHORTDAYS[this.day()];
+            return LOCALES[this.LOCALE].SD[this.day()];
         },
         
         getFullDayName: function () {
-            return Tempus.FULLDAYS[this.day()];
+            return LOCALES[this.LOCALE].FD[this.day()];
         },
         
         dayOfYear: function (day) {
@@ -535,13 +537,12 @@
         
         AMPM: function (setter) {
             if (0 in arguments) return this.hours(this.hours() + (this.AMPM() === setter.toUpperCase() ? 0 : /am/i.test(setter) ? -12 : 12));
-
-            return this.hours() > 11 ? 'PM' : 'AM';
+            return this.hours() > 11 ? LOCALES[this.LOCALE].AM[1] : LOCALES[this.LOCALE].AM[0];
         },
         
         ampm: function (setter) {
             if (0 in arguments) return this.AMPM(setter);
-            return this.AMPM().toLowerCase();
+            return this.hours() > 11 ? LOCALES[this.LOCALE].AM[3] : LOCALES[this.LOCALE].AM[2];
         },
 
         timeString: function (setter) {
@@ -827,10 +828,10 @@
     ,   rg_tz = 'Z|GMT|(?:GMT)?[-+]\\d{2}\\:?\\d{2}';
     
     Tempus.REVERSE_FORMAT_PROCESSORS = {
-        a: ['(?:' + Tempus.SHORTDAYS.join('|') + ')?,?'],
-        A: ['(?:' + Tempus.FULLDAYS.join('|') + ')?,?'],
-        b: ['(?:' + Tempus.SHORTMONTHS.join('|') + ')', TProto.month],
-        B: ['(?:' + Tempus.FULLMONTHS.join('|') + ')', TProto.month],
+        a: ['(?:\\w+)?,?'],
+        A: ['(?:\\w+)?,?'],
+        b: ['(?:\\w+)', TProto.month],
+        B: ['(?:\\w+)', TProto.month],
         C: [rg_digit2, TProto.century],
         d: [rg_digit2, TProto.date],
         D: [rg_date, ''],
@@ -872,7 +873,7 @@
 
     function makeReverseRegex(format, formatFunction) {
         return format
-            .replace(/[\-\[\]{}()*+?.,\\\^$|#\s]/g, "\\$&")
+            .replace(/[\-\[\]{}()*+?\.,\\\^$|#\s]/g, "\\$&")
             .replace(strftimeRegExp, function (chunk, prefix, proc) {
                 var newproc = Tempus.REVERSE_FORMAT_PROCESSORS[proc];
                 if (!newproc) return chunk;

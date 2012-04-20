@@ -103,6 +103,7 @@ module.exports = function (grunt) {
                 ,   'utcMethods'
                 ,   'stringMethods'
                 ,   'highLevelFunctionality'
+                ,   'coremethods'
                 ,   'timer'
                 ]
         }

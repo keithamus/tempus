@@ -106,18 +106,24 @@ QUnit.test('getMonthName() and getMonthName(true)/fullMonthName()', function () 
     var newdate
     ,   i = 12;
     
-    expect(38);
-    
-    deepEqual(Tempus.FULLMONTHS, ['January', 'February', 'March', 'April', 'May', 'June', 'July',
-        'August', 'September', 'October', 'November', 'December'], 'Test FULLMONTHS');
-    deepEqual(Tempus.SHORTMONTHS, ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug',
-        'Sep', 'Oct', 'Nov', 'Dec'], 'Test SHORTMONTHS');
+    expect(24);
+
+    SHORTMONTHS = [
+        'Jan',          'Feb',      'Mar',      'Apr',
+        'May',          'Jun',      'Jul',      'Aug',
+        'Sep',          'Oct',      'Nov',      'Dec'
+    ];
+    FULLMONTHS = [
+        'January',      'February', 'March',    'April',
+        'May',          'June',     'July',     'August',
+        'September',    'October',  'November', 'December'
+    ];
     
     while(i--) {
         newdate = new Tempus(2011, i);
-        equal(newdate.getMonthName(), Tempus.SHORTMONTHS[i], String(newdate));
-        equal(newdate.getMonthName(true), Tempus.FULLMONTHS[i], String(newdate));
-        equal(newdate.getFullMonthName(), Tempus.FULLMONTHS[i], String(newdate));
+        newdate.locale = 'en';
+        equal(newdate.getMonthName(), SHORTMONTHS[i], String(newdate));
+        equal(newdate.getFullMonthName(), FULLMONTHS[i], String(newdate));
     } 
 });
 
