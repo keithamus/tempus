@@ -2,27 +2,46 @@
 module.exports = function (grunt) {
 
     grunt.initConfig({
-        // We want the 3 main JS files to be linted.
-        lint: {
-            all: ['tempus.js', 'tempus.interval.js', 'tempus.timer.js']
-        },
         // We want to generate 3 new files, which are part of the release build...
         concat: {
             // With timer, which is Tempus and Tempus.Timer in one export
             with_timer: {
-                src: ['tempus.js', 'tempus.timer.js'],
-                dest: './tempus.with.timer.min.js'
+                src: [
+                    'tempus.js'
+                ,   'tempus.timer.js'
+                ],
+                dest: './tempus.with.timer.js'
             },
             // With interval, which is Tempus and Tempus.Interval in one export
             with_interval: {
-                src: ['tempus.js', 'tempus.interval.js'],
-                dest: './tempus.with.interval.min.js'
+                src: [
+                    'tempus.js'
+                ,   'tempus.interval.js'
+                ],
+                dest: './tempus.with.interval.js'
             },
             // With timer and interval; both modules inside one export with Tempus
             with_timer_and_interval: {
-                src: ['tempus.js', 'tempus.interval.js', 'tempus.timer.js'],
-                dest: './tempus.with.timer.and.interval.min.js'
+                src: [
+                    'tempus.js'
+                ,   'tempus.interval.js'
+                ,   'tempus.timer.js'
+                ],
+                dest: './tempus.with.timer.and.interval.js'
             }
+        },
+        // We want the 3 main JS files to be linted, and the concated ones
+        lint: {
+            all: [
+                'tempus.js'
+            ,   'tempus.interval.js'
+            ,   'tempus.timer.js'
+            ],
+            concated: [
+                'tempus.with.timer.js'
+            ,   'tempus.with.interval.js'
+            ,   'tempus.with.interval.and.timer.js'
+            ]
         },
         min: {
             // Minifiy Tempus JS, and also specify a target size when gzipped
@@ -93,8 +112,8 @@ module.exports = function (grunt) {
     /************************ TASKS ************************/
     /*******************************************************/
 
-    // We want to overload the min_max_info helper, which is part of the
-    // minify helper. We're overloading it to work with the size_target
+    // We want to overload the min_max_info helper, which is log output
+    // minify task. We're overloading it to work with the size_target
     // delcaration in the initConfig
     grunt.registerHelper('min_max_info', function(min, max) {
         var gzipSize     = String(grunt.helper('gzip', min).length)
@@ -125,6 +144,36 @@ module.exports = function (grunt) {
                 '(' + String(diff).green + ' bytes under ' + expectedSize + ' byte target) gzipped ' +
                 '(' + String(min.length).green + ' bytes minified).');
         }
+    });
+
+    // We want to overload the concat helpr, which is the meat of the concat task.
+    // We're overloading it to strip down the closures of the modules and to insert
+    // them into the core's closure, for a better, smaller codebase
+    grunt.registerHelper('concat', function(files, options) {
+        options = grunt.utils._.defaults(options || {}, {
+            separator: grunt.utils.linefeed
+        });
+
+        // Get the first file to inject all subsequent files into.
+        parent_file = grunt.task.directive(files.shift(), grunt.file.read);
+
+        // Replace the bit which says "// <% MODULE_INJECTION %> //" in the first file, with 
+        // the stripped down contents of all remaining files....
+        return parent_file.replace(/\s+\/\/ <% MODULE_INJECTION %> \/\//, files ? files.map(function(f) {
+            var file = grunt.task.directive(f, grunt.file.read);
+
+            // Find the closure function declaration ...
+            var match = file.match(/\(function \(.*\n/);
+            if (match) {
+                // ... and remove everything before it ...
+                file = file.substr(match.index)
+                    // ... plus the declaration itself, and the next line,
+                    // and the last line.
+                    .split("\n").slice(2, -1).join("\n");
+            }
+            // Add a new line plus file comment to the top for formatting
+            return "\n\n\t// " + f + " injected\n" + file + "\n\t// End " + f + "\n";
+        }).join(grunt.utils.normalizelf(options.separator)) : '');
     });
 
     grunt.registerTask('qunit-node', 'Run QUnit unit tests in a NodeJS instance.', function () {
@@ -210,5 +259,5 @@ module.exports = function (grunt) {
         grunt.log.writeln();
     });
 
-    grunt.registerTask('default', 'lint concat min qunit qunit-node');
+    grunt.registerTask('default', 'concat lint min qunit qunit-node');
 };

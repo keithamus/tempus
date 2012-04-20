@@ -955,6 +955,8 @@
         TYPE_STRING
     );
 
+    // <% MODULE_INJECTION %> //
+
     if (typeof module != 'undefined' && module.exports) {
         module.exports = Tempus;
     } else if (typeof define == "function" && define.amd) {
