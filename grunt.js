@@ -30,27 +30,27 @@ module.exports = function (grunt) {
                 dest: './tempus.with.timer.and.interval.js'
             }
         },
-        // We want the 3 main JS files to be linted, and the concated ones
+        // We want the 3 main JS files to be linted, and the concatenated ones
         lint: {
             all: [
                 'tempus.js'
             ,   'tempus.interval.js'
             ,   'tempus.timer.js'
             ],
-            concated: [
+            concatenated: [
                 'tempus.with.timer.js'
             ,   'tempus.with.interval.js'
             ,   'tempus.with.interval.and.timer.js'
             ]
         },
         min: {
-            // Minifiy Tempus JS, and also specify a target size when gzipped
+            // Minify Tempus JS, and also specify a target size when gzipped
             tempus: {
                 src: ['tempus.js'],
                 dest: 'tempus.min.js',
                 size_target: 4505
             },
-            // Minifiy Tempus.Timer
+            // Minify Tempus.Timer
             tempus_timer: {
                 src: ['tempus.timer.js'],
                 dest: 'tempus.timer.min.js'
@@ -60,17 +60,17 @@ module.exports = function (grunt) {
                 src: ['tempus.interval.js'],
                 dest: 'tempus.interval.min.js'
             },
-            // Minify our concated tempus.with.timer
+            // Minify our concatenated tempus.with.timer
             tempus_with_timer: {
                 src: ['tempus.with.timer.js'],
                 dest: 'tempus.with.timer.min.js'
             },
-            // Minify our concated tempus.with.interval
+            // Minify our concatenated tempus.with.interval
             tempus_with_interval: {
                 src: ['tempus.with.interval.js'],
                 dest: 'tempus.with.interval.min.js'
             },
-            // Minify our concated tempus.with.timer.and.interval
+            // Minify our concatenated tempus.with.timer.and.interval
             // with a target size of 7k
             tempus_with_timer_and_interval: {
                 src: ['tempus.with.timer.and.interval.js'],
@@ -115,7 +115,7 @@ module.exports = function (grunt) {
 
     // We want to overload the min_max_info helper, which is log output
     // minify task. We're overloading it to work with the size_target
-    // delcaration in the initConfig
+    // declaration in the initConfig
     grunt.registerHelper('min_max_info', function(min, max) {
         var gzipSize     = String(grunt.helper('gzip', min).length)
         ,   expectedSize = grunt.task.current.data.size_target || false;
@@ -147,7 +147,7 @@ module.exports = function (grunt) {
         }
     });
 
-    // We want to overload the concat helpr, which is the meat of the concat task.
+    // We want to overload the concat helper, which is the meat of the concat task.
     // We're overloading it to strip down the closures of the modules and to insert
     // them into the core's closure, for a better, smaller codebase
     grunt.registerHelper('concat', function(files, options) {
@@ -195,7 +195,7 @@ module.exports = function (grunt) {
             tests = testFiles;
         }
 
-        // Node-nodeQunit shouldnt log stuff
+        // Node-Qunit shouldn’t log stuff
         nodequnit.log.stats = nodequnit.log.reset = nodequnit.log.print = function () {};
         nodequnit.options = {
             assertions: false,
