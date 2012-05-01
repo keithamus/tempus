@@ -26,6 +26,11 @@
     // modules that `set` iterates through (see Tempus.addParser)
     ,   TempusParsers = {}
 
+    // Declaring FORMAT_PROCESSORS and REVERSE_FORMAT_PROCESSORS here as a "private" var. These will
+    // become the list of format processors used for strftime and strptime
+    ,   FORMAT_PROCESSORS
+    ,   REVERSE_FORMAT_PROCESSORS
+
     // Declaring LOCALES as a "private" var, which will be populates with locale info
     // (see addLocale)
     ,   LOCALES = {}
@@ -642,7 +647,7 @@
             if (TIME_FORMATS[format]) format = TIME_FORMATS[format];
             
             return format.replace(strftimeRegExp, function (chunk, prefix, proc) {
-                var newproc = Tempus.FORMAT_PROCESSORS[proc];
+                var newproc = FORMAT_PROCESSORS[proc];
             
                 if (!newproc) return chunk;
                 
@@ -792,7 +797,7 @@
     /*********************************************/
     /*        Format Processors (strftime)       */
     /*********************************************/
-    Tempus.FORMAT_PROCESSORS = {
+    FORMAT_PROCESSORS = {
         a: TProto.getDayName,                 // (Py, Rb, PHP) The weekday name: Sun to Sat
         A: TProto.getFullDayName,             // (Py, Rb, PHP) The full weekday name: Sunday to Saturday
         b: TProto.getMonthName,               // (Py, Rb, PHP) Month name Jan to Dec
@@ -859,7 +864,7 @@
     ,   rg_date = '\\d{4}-\\d{2}-\\d{2}'
     ,   rg_tz = 'Z|GMT|(?:GMT)?[-+]\\d{2}\\:?\\d{2}';
     
-    Tempus.REVERSE_FORMAT_PROCESSORS = {
+    REVERSE_FORMAT_PROCESSORS = {
         a: ['(?:\\w+)?,?'],
         A: ['(?:\\w+)?,?'],
         b: ['(?:\\w+)', TProto.month],
@@ -908,7 +913,7 @@
         return format
             .replace(/[\-\[\]{}()*+?\.,\\\^$|#\s]/g, "\\$&")
             .replace(strftimeRegExp, function (chunk, prefix, proc) {
-                var newproc = Tempus.REVERSE_FORMAT_PROCESSORS[proc];
+                var newproc = REVERSE_FORMAT_PROCESSORS[proc];
                 if (!newproc) return chunk;
                 
                 formatFunction.push(newproc[1]);
