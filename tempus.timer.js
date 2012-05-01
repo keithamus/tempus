@@ -27,11 +27,15 @@
     /***********************************************/
 
     function Timer(fn, after, ctx) {
+        // If this was called without "new " then be friendly and do it for the user.
         if (!(this instanceof Timer)) return new Timer(fn, after);
 
+        // Set some defaults
         this.isInterval = false;
         this.ctx = ctx || this;
         this.runCount = 0;
+
+        // Set the optional arguments.
         if (typeof fn == 'function') this.run(fn);
         if (after) this.after(after);
     }

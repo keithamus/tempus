@@ -16,24 +16,49 @@
 (function (global, Date, ArSlice, undef) {
     // ^ Get some methods from the global object, close scope on them for protection
     
-
-    // Get the timemethods missing 'g' or 's' to save duplication
+    // strftimeRegExp is a RegExp used to capture fragments of an strftime or strptime string. The
+    // str(f/p)time standard stipulates that a %, optionally followed by a O or E, followed by a
+    // letter of the alphabet (or a % symbol) is an strptime fragment. (See the strftime parser
+    // for more)
     var strftimeRegExp = /\%([OE])?([a-z%])/gi
-    ,   TempusParsers = {} // our parsers (closed in scope)
-    ,   LOCALES = {}       // locale info (closed in scope)
-    // for minification purposes...
+
+    // Declaring TempusParsers here as a "private" var. This will become the list of parser
+    // modules that `set` iterates through (see Tempus.addParser)
+    ,   TempusParsers = {}
+
+    // Declaring LOCALES as a "private" var, which will be populates with locale info
+    // (see addLocale)
+    ,   LOCALES = {}
+    
+    // TProto is shorthand for Tempus.prototype, and will minify down nicely.
     ,   TProto
+
+    // These are type constants, and are defined so they minify down nicely.
     ,   TYPE_STRING = 'string'
     ,   TYPE_FUNCTION = 'function'
     ,   TYPE_NUMBER = 'number'
     ,   TYPE_ARRAY = 'array'
     ,   TYPE_REGEXP = 'regexp'
+
+    // i is very commonly used, might as well put it up here to save multiple `var` declarations
     ,   i;
 
-    // The constructor, basically calls `set`
+
+    /**
+     * Make an new Tempus instance.
+     *
+     * @params {Mixed} Date information to extrapolate into a date object.
+     * @returns {Tempus} A tempus object.
+    **/
     function Tempus() {
+        // If this was called without "new " then be friendly and do it for the user.
         if (!(this instanceof Tempus)) return new Tempus(arguments);
+        
+        // Set the LOCALE from the base LOCALE. This way we can have per-instance LOCALEs
         this.LOCALE = Tempus.LOCALE;
+
+        // Run set, but if we were only given 1 argument - an array - then use that as the arguments
+        // to run set with, otherwise just use arguments.
         this.set.apply(this, !(1 in arguments) && /ar/.test(realTypeOf(arguments[0])) ? arguments[0] : arguments);
     }
     
@@ -63,8 +88,8 @@
         return ({}).toString.call(v).match(/\w+/g)[1].toLowerCase();
     };
 
-    // Firefox <3, IEs, `arguments` is an [object Object], not [object Argument].
-    // We can fix this:
+    // """Firefox < 3, IE < 9""" `arguments` is an [object Object], not [object Arguments].
+    // So re-make the realTypeOf method, this time using a looser check for `arguments`
     if (realTypeOf(arguments) != 'arguments') {
         var _realTypeOf = realTypeOf;
         realTypeOf = function (v) {
@@ -92,7 +117,7 @@
      *
      * @param {Number} num. The number you want to suffix
      *
-     * @returns {String} An ordinal number string like '1st', '2nd', '3rd'
+     * @returns {String} An ordinal number string like 'st', 'nd', 'rd'
      *
      */
     function getOrdinal(num) {
@@ -115,7 +140,10 @@
         return (width > 0 ? ( new Array(width+1) ).join( padString || 0 ) : '') + string;
     }
 
-    // Expose the above util functions
+    // Expose the above utilility functions under the Tempus namespace. We could all of the
+    // functions as an object literal, rather than referencing the named functions in here, but this
+    // way is better for 2 reasons: 1. Named functions minify better, 2. If the user tried to
+    // overwrite one of these, they won't replace our named functions, meaning Tempus doesn't break.
     Tempus.util = {
         realTypeOf: realTypeOf,
         arrIndexOf: arrIndexOf,
@@ -125,8 +153,9 @@
     
     
     /*********************************************/
-    /*                addParser                  */
-    /*   (For registering custom date parsers)   */
+    /*           Global methods                  */
+    /*  (These methods apply to all instances of */
+    /*  Tempus, so don't put them on the proto)  */
     /*********************************************/
     
     /**
@@ -134,8 +163,8 @@
      *
      * @param {Mixed} tester Function/RegExp Expects boolean. Is this parserModule able to parse the date?
      * @param {Function} parser Turn `this` (T) into a usable date.
-     * @param {String} arg1Exepcts What your parser module expects arg1 to be
-     * @param {String} argNExepcts What your parser module expects argN to be
+     * @param {String} arg1Exepcts What type your parser module expects arg1 to be
+     * @param {String} argNExepcts What type your parser module expects argN to be
      *
      */
     Tempus.addParser = function (tester, parser, len) {
@@ -154,11 +183,33 @@
         return ((TempusParsers[ex] || (TempusParsers[ex] = [])).push(ob));
     };
 
+    /**
+     * Add a locale to Tempus
+     *
+     * @param {String} localeName The name of your locale, e.g 'en-GB', 'en-US'
+     * @param {Array} fullMonths 0 = January to 11 = December in the locale
+     * @param {Array} shortMonths Shorthand versions of fullMonths, e.g Jan-Dec
+     * @param {Array} fullDays 0 = Sunday to 6 = Saturday in the locale
+     * @param {Array} shortDays Shorthand versions of fullDays, e.g Sun-Sat
+     * @param {Array} ampm "Lowercase" versions of AM, PM, followed by "uppercase" versions
+     *
+     */
+    Tempus.addLocale = function (localeName, FM, SM, FD, SD, AM) {
+        LOCALES[localeName] = {
+            FM: FM,
+            SM: SM,
+            FD: FD,
+            SD: SD,
+            AM: AM
+        };
+    };
+
     /**************************************/
     /*          TIME FORMATS              */
-    /*   (Set outside of the prototype)   */
     /**************************************/
     
+    // Register the default set of time formats. These can be extended at will by the user, and are
+    // used globally by all instances, so don't put them on the prototype.
     var std_time_format = '%a, %d %b %Y %T %z'
     ,   TIME_FORMATS = Tempus.TIME_FORMATS = {
             ISO8601Date: '%Y-%m-%d',
@@ -176,42 +227,6 @@
             GMT: '%a, %d %b %Y %T GMT',
             NCC1701: '%Y.%j'
         };
-    
-    
-    /***********************************************/
-    /*               Language Constants            */
-    /*         (Set outside of the prototype)      */
-    /***********************************************/
-
-    Tempus.addLocale = function (localeName, FM, SM, FD, SD, AM) {
-        LOCALES[localeName] = {
-            FM: FM,
-            SM: SM,
-            FD: FD,
-            SD: SD,
-            AM: AM
-        };
-    };
-
-    var SD = [], SM = [], FM = [
-        'January',      'February', 'March',    'April',
-        'May',          'June',     'July',     'August',
-        'September',    'October',  'November', 'December'
-    ], FD = [
-        'Sun', 'Mon', 'Tues', 'Wednes', 'Thurs', 'Fri', 'Satur'
-    ];
-
-    i = 12;
-    while (i--) {
-        SM[i] = FM[i].substr(0, 3);
-        if (i < 7) {
-            SD[i] = FD[i].substr(0, 3);
-            FD[i] += 'day';
-        }
-    }
-
-    Tempus.addLocale('en', FM, SM, FD, SD, ['AM', 'PM', 'am', 'pm']);
-    Tempus.LOCALE = 'en';
 
     /***********************************************/
     /*               Prototype Methods             */
@@ -219,40 +234,51 @@
     /***********************************************/
     
     TProto = Tempus.prototype = {
-        
+
         constructor: Tempus,
-        
+
         set: function () {
+            // Like we did in Tempus(), if we're given 1 argument - an array - use that as arguments
+            // otherwise just use "arguments"
             var ar = !(1 in arguments) && /ar/.test(realTypeOf(arguments[0])) ? arguments[0] : arguments
+
+            // We check on the first arguments type a lot, so let's var it for speed/size
             ,   aType = realTypeOf(ar[0])
+
+            // Declare needed variables up front.
             ,   modules;
 
             // No arguments means set to "now"
             if (!(0 in ar)) {
                 this._date = new Date();
             
-            // If only argument is a T object, then copy(T);
+            // If only argument is a Tempus object, then copy(Tempus);
             } else if (ar[0] instanceof Tempus) {
                 return this.copy(ar[0]);
             
-            // If we only have one arg, and its a Date obj, or its a string and
-            // matches the UTCREGEX (which all browsers' Date() can handle), or
-            // its a number, then we can reasonably just new up a Date() object
+            // If we only have one arg, and its a Date obj, or its a number, then we can reasonably
+            // just new up a Date() object with it and use that.
             } else if (!(1 in ar) && /numb|date/.test(aType)) {
                 this._date = new Date(ar[0]);
                 
-            // If the first arg is a number, and the second arg is a number,
-            // lets just new up a Date() with numbers
+            // If the first arg is a number, and the second arg is a number, assume that Tempus has
+            // been given a set of numbers as arguments and can defer to Date() for parsing
             } else if (aType == TYPE_NUMBER && realTypeOf(ar[1]) == TYPE_NUMBER) {
                 this._date = new Date(ar[0], ar[1], ar[2] || 1, ar[3] || 0, ar[4] || 0, ar[5] || 0, ar[6] || 0);
             
-            // None of the standard attempts for date-parsing worked, lets try
-            // any dateParser modules.
+            // None of the standard attempts for date-parsing worked, lets try looping through
+            // our date parser modules. Start with a subset that can accept the first argument.
             } else if ((modules = TempusParsers[aType])) {
                 
                 for (var i = 0, module; (module = modules[i]); ++i) {
+
+                    // If this module expects more arguments than we the amount given to us, then
+                    // just move to the next module.
                     var exC = module.length;
                     if (ar.length < exC) continue;
+
+                    // Go through each argument and match up the type to the type that the module
+                    // expects, and if any don't match, we can move to the next module.
                     if (exC > 1) {
                         while (exC--) {
                             if (ar[exC] !== undef && realTypeOf(ar[exC]) != module.exp[exC]) {
@@ -260,7 +286,13 @@
                             }
                         }
                     }
+
+                    // As a last attempt for the module to declar itself out, run the test method
+                    // which can quickly check if the module can accept these arguments.
                     if (module.test.apply(this, ar)) {
+
+                        // The module test has passed, so this parser module is the one we need.
+                        // Give it a blank date to work with, and let it do it's stuff.
                         this._date = new Date(0);
                         this.setTimezoneToLocale();
                         return module.parse.apply(this, arguments);
@@ -274,11 +306,10 @@
                 throw new Error('Invalid Date');
             }
             
-            // Get REAL tz by flipping it, cache tz offset
+            // Always start with the timezone in the locale of the user.
             this.setTimezoneToLocale();
             
-            // If we were passed `ar[8]` then someone wants a timezone, set it,
-            // otherwise set it from the Date() object
+            // If we were passed `ar[7]` then we'll set a timezone.
             if (!!ar[7]) return this.timezone(ar[7]).hours(ar[3]);
             
             return this.setTimezoneToLocale();
@@ -815,9 +846,10 @@
     
     /***********************************************/
     /*               Reverse Formatter             */
-    /*           (for T(string, string))           */
+    /*         (for Tempus(string, string))        */
     /***********************************************/
     
+    // Define the set of reverse format processors to use
     var rg_word_boundary = '[^\\b]+'
     ,   rg_digit2 = '\\d{2}'
     ,   rg_digit3 = '\\d{3}'
@@ -871,6 +903,7 @@
         '%': ['%']
     };
 
+    // makeReverseRegex is a function to turn format strings into their regexp counterparts
     function makeReverseRegex(format, formatFunction) {
         return format
             .replace(/[\-\[\]{}()*+?\.,\\\^$|#\s]/g, "\\$&")
@@ -884,21 +917,30 @@
             });
     }
 
+    // Collect all of the default formats and put them in an array of reverse formatters.
     var DEFAULT_REVERSE_FORMATTER = [], DEFAULT_REVERSE_FORMATTER_REGEX = [];
     for (var fmt in TIME_FORMATS) {
         DEFAULT_REVERSE_FORMATTER.push(fmt);
         DEFAULT_REVERSE_FORMATTER_REGEX.push(makeReverseRegex(TIME_FORMATS[fmt], []));
     }
-
     DEFAULT_REVERSE_FORMATTER_REGEX = new RegExp('^'+ DEFAULT_REVERSE_FORMATTER_REGEX.join('|') + '$');
 
+    // Add the Reverse Formatter to parser modules...
     Tempus.addParser(
+        // The test function
         function (a, b) {
+            // If the second arg (formats) is array of formats, use the first one.
             b = realTypeOf(b) == TYPE_ARRAY && 0 in b? b[0] : b;
+            
             // lastIndex needs to be reset for some browsers, i.e Safari. Issue #11
             strftimeRegExp.lastIndex = 0;
-            return !!TIME_FORMATS[b] || strftimeRegExp.test(b) || DEFAULT_REVERSE_FORMATTER_REGEX.test(a);
+
+            // If second arg is a time format name, a strftime string, then we can parse this date.
+            // If b doesnt exist and we can parse this date with our default regexp, then we'll do
+            // that instead.
+            return !!TIME_FORMATS[b] || strftimeRegExp.test(b) || (!b && DEFAULT_REVERSE_FORMATTER_REGEX.test(a));
         },
+        // Parser function
         function (string, format) {
             var match
             ,   self = this
@@ -951,17 +993,46 @@
         // We expect a minimum of one argument.
         1,
         // We expect 1st arg to be string
-        TYPE_STRING,
-        // And the second arg (if present) should also be a string
         TYPE_STRING
     );
 
+    /***********************************************/
+    /*              English Locale                 */
+    /***********************************************/
+
+    var SD = [], SM = [], FM = [
+        'January',      'February', 'March',    'April',
+        'May',          'June',     'July',     'August',
+        'September',    'October',  'November', 'December'
+    ], FD = [
+        'Sun', 'Mon', 'Tues', 'Wednes', 'Thurs', 'Fri', 'Satur'
+    ];
+
+    i = 12;
+    while (i--) {
+        SM[i] = FM[i].substr(0, 3);
+        if (i < 7) {
+            SD[i] = FD[i].substr(0, 3);
+            FD[i] += 'day';
+        }
+    }
+
+    Tempus.addLocale('en', FM, SM, FD, SD, ['AM', 'PM', 'am', 'pm']);
+
+    // Set the default locale
+    Tempus.LOCALE = 'en';
+
     // <% MODULE_INJECTION %> //
 
+    // Expose Tempus to the global object, or module.exports, or define() - whatever is there.
+
+    // -- Node Js --
     if (typeof module != 'undefined' && module.exports) {
         module.exports = Tempus;
+    // -- AMD --
     } else if (typeof define == "function" && define.amd) {
         define('Tempus', [], function () { return Tempus; });
+    // -- Browser --
     } else {
         global.Tempus = Tempus;
     }
