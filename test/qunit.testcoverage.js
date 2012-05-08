@@ -1,3 +1,4 @@
+/*jslint laxcomma: true */
 var objectCoverage = {}
 ,	reallyDone = false;
 
@@ -5,7 +6,7 @@ function indexOf(a, v) {
     var i;
     for (i = 0; i != a.length; ++i) if (a[i] === v) return i;
     return -1;
-};
+}
 
 // Some useful functions for finding out what coverage we have:
 var covers = function (object, ObjectName) {
@@ -28,14 +29,16 @@ var done = function (args) {
             var fnNames
             ,   ob
             ,   success;
+
             
             for (var obName in objectCoverage) {
                 fnNames = [];
                 ob = objectCoverage[obName];
                 
+
                 for (var fnName in ob.object) {
                     if (typeof ob.object[fnName] === 'function') {
-                        success = ob.coverage.indexOf(fnName) !== -1;
+                        success = indexOf(ob.coverage, fnName) !== -1;
                         ok(success, 'Coverage for ' + fnName + (success ? ' added' : ' not present!'));
                     }
                 }
@@ -50,7 +53,7 @@ if (typeof module != 'undefined' && module.exports) {
 	module.exports = {
 		covers: covers,
 		done: done
-	}
+	};
 } else {
 	this.done = done;
 	this.covers = covers;
