@@ -260,5 +260,9 @@ module.exports = function (grunt) {
         grunt.log.writeln();
     });
 
+    grunt.registerTask('wait', 'Wait for sighup', function (a) {
+        var done = this.async();
+    });
+
     grunt.registerTask('default', 'concat lint min qunit qunit-node');
 };
