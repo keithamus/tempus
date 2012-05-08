@@ -122,6 +122,7 @@
      *
      */
     function arrIndexOf(a, v) {
+        if (typeof a == 'string') { a = a.split(''); }
         for (var i = 0; i < a.length; ++i) if (a[i] === v) return i;
         return -1;
     }
