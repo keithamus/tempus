@@ -30,6 +30,14 @@
     // become the list of format processors used for strftime and strptime
     ,   FORMAT_PROCESSORS
     ,   REVERSE_FORMAT_PROCESSORS
+    
+    // Declaring TIME_FORMATS, DEFAULT_REVERSE_FORMATTER and DEFAULT_REVERSE_FORMATTER_REGEX and
+    // DEFAULT_REVERSE_FORMATTER_REGEXS as "private" vars. These become the formats for toString and
+    // reverse formatter implementations
+    ,   TIME_FORMATS = {}
+    ,   DEFAULT_REVERSE_FORMATTER = []
+    ,   DEFAULT_REVERSE_FORMATTER_REGEXS = []
+    ,   DEFAULT_REVERSE_FORMATTER_REGEX
 
     // Declaring LOCALES as a "private" var, which will be populates with locale info
     // (see addLocale)
@@ -44,6 +52,7 @@
     ,   TYPE_NUMBER = 'number'
     ,   TYPE_ARRAY = 'array'
     ,   TYPE_REGEXP = 'regexp'
+    ,   TYPE_OBJECT = 'object'
 
     // i is very commonly used, might as well put it up here to save multiple `var` declarations
     ,   i;
@@ -209,29 +218,28 @@
         };
     };
 
-    /**************************************/
-    /*          TIME FORMATS              */
-    /**************************************/
-    
-    // Register the default set of time formats. These can be extended at will by the user, and are
-    // used globally by all instances, so don't put them on the prototype.
-    var std_time_format = '%a, %d %b %Y %T %z'
-    ,   TIME_FORMATS = Tempus.TIME_FORMATS = {
-            ISO8601Date: '%Y-%m-%d',
-            ISO8601: '%Y-%m-%dT%T.%L%z',
-            COOKIE: '%A, %d-%b-%y %T %Z',
-            RFC822: '%a, %d %b %y %T %z',
-            RFC850: '%A, %d-%b-%y %T %Z',
-            RFC1036: '%a, %d %b %y %T %z',
-            RFC1123: std_time_format,
-            RFC2822: std_time_format,
-            RFC3339: '%Y-%m-%dT%T%Z',
-            RSS: std_time_format,
-            W3C: '%Y-%m-%dT%T%Z',
-            Locale: '%a %b %d %Y %T GMT%z (%Oz)',
-            GMT: '%a, %d %b %Y %T GMT',
-            NCC1701: '%Y.%j'
-        };
+    /**
+     * Add a time format to tempus
+     *
+     * @param {String} formatName The name of your time format, e.g 'ISO'
+     * @param {String} format strptime representation of your format
+     *
+     */
+    Tempus.addTimeFormat = function (a, b) {
+        if (realTypeOf(a) == TYPE_OBJECT) {
+            for (var fmt in a) Tempus.addTimeFormat(fmt, a[fmt]);
+        } else {
+            TIME_FORMATS[a] = b;
+            DEFAULT_REVERSE_FORMATTER.push(a);
+            DEFAULT_REVERSE_FORMATTER_REGEXS.push(makeReverseRegex(b, []));
+            if (!TProto['to' + a + 'String']) {
+                TProto['to' + a + 'String'] = function () {
+                    return this.toString(TIME_FORMATS[a]);
+                };
+            }
+            DEFAULT_REVERSE_FORMATTER_REGEX = new RegExp('^'+ DEFAULT_REVERSE_FORMATTER_REGEXS.join('|') + '$');
+        }
+    };
 
     /***********************************************/
     /*               Prototype Methods             */
@@ -681,16 +689,8 @@
     
 
     /***********************************************/
-    /*             Set to*String methods           */
+    /*                Set date methods             */
     /***********************************************/
-    function PTimeFormat(i) {
-        TProto['to' + i + 'String'] = function () {
-            return this.toString(TIME_FORMATS[i]);
-        };
-    }
-
-    for (i in TIME_FORMATS) PTimeFormat(i);
-
     var dateMethods = [
         'toDateString',
         'toLocaleDateString',
@@ -922,14 +922,6 @@
             });
     }
 
-    // Collect all of the default formats and put them in an array of reverse formatters.
-    var DEFAULT_REVERSE_FORMATTER = [], DEFAULT_REVERSE_FORMATTER_REGEX = [];
-    for (var fmt in TIME_FORMATS) {
-        DEFAULT_REVERSE_FORMATTER.push(fmt);
-        DEFAULT_REVERSE_FORMATTER_REGEX.push(makeReverseRegex(TIME_FORMATS[fmt], []));
-    }
-    DEFAULT_REVERSE_FORMATTER_REGEX = new RegExp('^'+ DEFAULT_REVERSE_FORMATTER_REGEX.join('|') + '$');
-
     // Add the Reverse Formatter to parser modules...
     Tempus.addParser(
         // The test function
@@ -1026,6 +1018,29 @@
 
     // Set the default locale
     Tempus.LOCALE = 'en';
+
+    // Register the default set of time formats. These can be extended at will by the user, and are
+    // used globally by all instances, so don't put them on the prototype.
+    var std_time_format = '%a, %d %b %Y %T %z';
+    Tempus.addTimeFormat({
+        ISO8601Date: '%Y-%m-%d',
+        ISO8601: '%Y-%m-%dT%T.%L%z',
+        COOKIE: '%A, %d-%b-%y %T %Z',
+        RFC822: '%a, %d %b %y %T %z',
+        RFC850: '%A, %d-%b-%y %T %Z',
+        RFC1036: '%a, %d %b %y %T %z',
+        RFC1123: std_time_format,
+        RFC2822: std_time_format,
+        RFC3339: '%Y-%m-%dT%T%Z',
+        RSS: std_time_format,
+        W3C: '%Y-%m-%dT%T%Z',
+        Locale: '%a %b %d %Y %T GMT%z (%Oz)',
+        GMT: '%a, %d %b %Y %T GMT',
+        NCC1701: '%Y.%j'
+    });
+
+    // toJSON is the same as toISO8601String
+    TProto.toJSON = TProto.toISO8601String;
 
     // <% MODULE_INJECTION %> //
 
