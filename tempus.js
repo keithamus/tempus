@@ -791,7 +791,6 @@
     // addYear() and subYear() should just call addFullYear()/subFullYear()
     TProto.addYear = TProto.addFullYear;
     TProto.subYear = TProto.subFullYear;
-    TProto.toJSON = TProto.toISO8601String;
     Tempus.now = Date.now;
 
 
