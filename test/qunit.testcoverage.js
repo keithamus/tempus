@@ -22,19 +22,16 @@ var covers = function (object, ObjectName) {
 };
 
 var done = function (args) {
-    if ( args.passed && args.total && !reallyDone) {
+    if (args.hasOwnProperty('passed') && args.hasOwnProperty('total') && !reallyDone) {
         reallyDone = true;
-        QUnit.module('Test Coverage');
-        QUnit.test('Analysis', function () {
-            var fnNames
-            ,   ob
-            ,   success;
-
+        QUnit.module('Test Coverage Analysis for');
+        for (var obName in objectCoverage) {
+            fnNames = [];
+            ob = objectCoverage[obName];
             
-            for (var obName in objectCoverage) {
-                fnNames = [];
-                ob = objectCoverage[obName];
-                
+            QUnit.test(obName, function () {
+                var fnNames
+                ,   success;
 
                 for (var fnName in ob.object) {
                     if (typeof ob.object[fnName] === 'function') {
@@ -42,10 +39,8 @@ var done = function (args) {
                         ok(success, 'Coverage for ' + fnName + (success ? ' added' : ' not present!'));
                     }
                 }
-
-            }
-
-        });
+            });
+        }
     }
 };
 

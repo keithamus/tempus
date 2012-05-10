@@ -1,6 +1,6 @@
 QUnit.module('Test Core Methods');
 
-covers(Tempus, 'Tempus', 'addLocale');
+covers(Tempus, 'Tempus.*', 'addLocale');
 QUnit.test('addLocale()', function () {
     expect(42);
     
@@ -46,7 +46,7 @@ QUnit.test('addLocale()', function () {
 
 });
 
-covers(Tempus, 'Tempus', 'now');
+covers(Tempus, 'Tempus.*', 'now');
 QUnit.test('now()', function () {
 
     equal(Tempus.now(), 1315774123519, 'Tempus.now() is Number(date)');
