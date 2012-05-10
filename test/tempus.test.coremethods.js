@@ -34,7 +34,7 @@ QUnit.test('addLocale()', function () {
         equal(newdate.getFullMonthName(), FULLMONTHS[i], 'getFullMonthName() == ' + FULLMONTHS[i]);
     }
 
-    newdate = new Tempus(2011, 0, 1, 11, 30, 00);
+    newdate = new Tempus(2011, 0, 1, 11, 30, 0);
     newdate.LOCALE = 'test';
 
     equal(newdate.AMPM(), 'T');
@@ -43,5 +43,20 @@ QUnit.test('addLocale()', function () {
     newdate.hours(15);
     equal(newdate.AMPM(), 'U');
     equal(newdate.ampm(), 'u');
+
+});
+
+covers(Tempus, 'Tempus', 'now');
+QUnit.test('now()', function () {
+
+    equal(Tempus.now(), 1315774123519, 'Tempus.now() is Number(date)');
+
+    FakeDate.time = 1315774123543;
+    equal(Tempus.now(), 1315774123543, 'Tempus.now() is Number(date)');
+
+    FakeDate.time = 10233;
+    equal(Tempus.now(), 10233, 'Tempus.now() is Number(date)');
+
+    FakeDate.time = 1315774123519;
 
 });

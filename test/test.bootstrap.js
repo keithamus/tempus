@@ -8,7 +8,7 @@
 
     glob.FakeDate = glob.Date = function (a, b, c, d, e, f, g) {
         switch (arguments.length) {
-            case 0: return new oldDate(1315774123519);
+            case 0: return new oldDate(glob.FakeDate.time);
             case 1: return new oldDate(a);
             case 2: return new oldDate(a, b);
             case 3: return new oldDate(a, b, c);
@@ -18,6 +18,7 @@
             default: return new oldDate(a, b, c, d, e, f, g);
         }
     };
+    glob.FakeDate.time = 1315774123519;
     glob.fakeSetTimeout = glob.setTimeout = function (fn, time) {
         var run;
         return {

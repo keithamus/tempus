@@ -791,7 +791,9 @@
     // addYear() and subYear() should just call addFullYear()/subFullYear()
     TProto.addYear = TProto.addFullYear;
     TProto.subYear = TProto.subFullYear;
-    Tempus.now = Date.now;
+
+    // Add Tempus.now like Date.now
+    Tempus.now = function () { return +new Date(); };
 
 
     /*********************************************/
