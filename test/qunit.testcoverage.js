@@ -24,6 +24,7 @@ var covers = function (object, ObjectName) {
 var done = function (args) {
     if (args.hasOwnProperty('passed') && args.hasOwnProperty('total') && !reallyDone) {
         reallyDone = true;
+        QUnit.config.filter = '';
         QUnit.module('Test Coverage Analysis for');
         for (var obName in objectCoverage) {
             fnNames = [];
