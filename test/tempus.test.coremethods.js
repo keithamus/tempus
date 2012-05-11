@@ -61,6 +61,52 @@ QUnit.test('now()', function () {
 
 });
 
+covers(Tempus, 'Tempus.*', 'addTimeFormat');
+QUnit.test('addTimeFormat(name, format)', function () {
+
+    Tempus.addTimeFormat('MyTest', '%Y::%d::%m');
+
+    equal(Tempus().toMyTestString(), '2011::11::09', 'toMyTestString()');
+
+    equal(Tempus().toString('MyTest'), '2011::11::09', 'toString("MyTest")');
+
+    equal(Tempus('2012::01::03', 'MyTest').toISOString(), '2012-03-01T00:00:00.000+0000', 'Tempus("2012::01::03", "MyTest")');
+    
+    equal(Tempus('2012::06::03').toISOString(), '2012-03-06T00:00:00.000+0000', 'Tempus("2012::01::03")');
+
+    // Clean up for Code Coverage
+    delete Tempus.prototype.toMyTestString;
+});
+
+covers(Tempus, 'Tempus.*', 'addTimeFormat');
+QUnit.test('addTimeFormat(formatObject)', function () {
+
+    Tempus.addTimeFormat({
+        'MyDifferentTest': '%Y::%d::%m',
+        'MyOtherTest': '%m--!--%d--!--%Y'
+    });
+
+    equal(Tempus().toMyDifferentTestString(), '2011::11::09', 'toMyDifferentTestString()');
+
+    equal(Tempus().toString('MyDifferentTest'), '2011::11::09', 'toString("MyDifferentTest")');
+
+    equal(Tempus('2012::01::03', 'MyDifferentTest').toISOString(), '2012-03-01T00:00:00.000+0000', 'Tempus("2012::01::03", "MyDifferentTest")');
+    
+    equal(Tempus('2012::06::03').toISOString(), '2012-03-06T00:00:00.000+0000', 'Tempus("2012::01::03")');
+
+    equal(Tempus().toMyOtherTestString(), '09--!--11--!--2011', 'toMyOtherTestString()');
+
+    equal(Tempus().toString('MyOtherTest'), '09--!--11--!--2011', 'toString("MyOtherTest")');
+
+    equal(Tempus('03--!--01--!--2012', 'MyOtherTest').toISOString(), '2012-03-01T00:00:00.000+0000', 'Tempus("03--!--01--!--2012", "MyOtherTest")');
+    
+    equal(Tempus('03--!--06--!--2012').toISOString(), '2012-03-06T00:00:00.000+0000', 'Tempus("03--!--06--!--2012")');
+
+    // Clean up for Code Coverage
+    delete Tempus.prototype.toMyDifferentTestString;
+    delete Tempus.prototype.toMyOtherTestString;
+});
+
 covers(Tempus, 'Tempus.*', 'addParser');
 QUnit.test('addParser', function () {
 
