@@ -1027,15 +1027,15 @@
     // used globally by all instances, so don't put them on the prototype.
     var std_time_format = '%a, %d %b %Y %T %z';
     Tempus.addTimeFormat({
-        ISO8601Date: '%Y-%m-%d',
-        ISO8601: '%Y-%m-%dT%T.%L%z',
+        ISODate: '%Y-%m-%d',
+        ISO: '%Y-%m-%dT%T.%L%z',
+        RFC3339: '%Y-%m-%dT%T%Z',
         COOKIE: '%A, %d-%b-%y %T %Z',
         RFC822: '%a, %d %b %y %T %z',
         RFC850: '%A, %d-%b-%y %T %Z',
         RFC1036: '%a, %d %b %y %T %z',
         RFC1123: std_time_format,
         RFC2822: std_time_format,
-        RFC3339: '%Y-%m-%dT%T%Z',
         RSS: std_time_format,
         W3C: '%Y-%m-%dT%T%Z',
         Locale: '%a %b %d %Y %T GMT%z (%Oz)',
@@ -1043,8 +1043,8 @@
         NCC1701: '%Y.%j'
     });
 
-    // toJSON is the same as toISO8601String
-    TProto.toJSON = TProto.toISO8601String;
+    // toJSON is the same as toISOString
+    TProto.toJSON = TProto.toISOString;
 
     // <% MODULE_INJECTION %> //
 

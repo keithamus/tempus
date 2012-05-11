@@ -63,15 +63,15 @@ QUnit.test('toString([format fragments])', function () {
     
 });
 
-covers(Tempus.prototype, 'Tempus', 'toString', 'toCOOKIEString', 'toISO8601String', 'toRFC822String',
+covers(Tempus.prototype, 'Tempus', 'toString', 'toCOOKIEString', 'toISOString', 'toRFC822String',
         'toRFC850String', 'toRFC1036String', 'toRFC1123String', 'toRFC2822String', 'toRFC3339String',
-        'toRSSString', 'toW3CString', 'toGMTString', 'toNCC1701String', 'toISO8601DateString');
+        'toRSSString', 'toW3CString', 'toGMTString', 'toNCC1701String', 'toISODateString');
 QUnit.test('toString([fomat constants])', function () {
     var methods = {
         '': 'Sun Sep 11 2011 13:00:00 +0100',
         COOKIE: 'Sunday, 11-Sep-11 13:00:00 +01:00',
-        ISO8601Date: '2011-09-11',
-        ISO8601: '2011-09-11T13:00:00.000+0100',
+        ISODate: '2011-09-11',
+        ISO: '2011-09-11T13:00:00.000+0100',
         RFC822: 'Sun, 11 Sep 11 13:00:00 +0100',
         RFC850: 'Sunday, 11-Sep-11 13:00:00 +01:00',
         RFC1036: 'Sun, 11 Sep 11 13:00:00 +0100',
@@ -98,5 +98,5 @@ QUnit.test('toString([fomat constants])', function () {
 covers(Tempus.prototype, 'Tempus', 'toJSON');
 QUnit.test('toJSON()', function () {
     // This'll do
-    equal(Tempus.prototype.toJSON === Tempus.prototype.toISO8601String, true, 'toJSON is the same as toISO8601String');
+    equal(Tempus.prototype.toJSON === Tempus.prototype.toISOString, true, 'toJSON is the same as toISOString');
 });

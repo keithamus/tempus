@@ -118,164 +118,164 @@ covers(Tempus.prototype, 'Tempus', 'setWeek', 'addWeek', 'subWeek');
 test('setWeek()/week(N)', function () {
     var newdate = new Tempus(2010, 0, 1);
     newdate.setWeek(52);
-    equal(newdate.toISO8601DateString(), '2010-12-30', String(newdate));
+    equal(newdate.toISODateString(), '2010-12-30', String(newdate));
     equal(newdate.week(), 52, String(newdate));
     newdate.week(52);
-    equal(newdate.toISO8601DateString(), '2010-12-30', String(newdate));
+    equal(newdate.toISODateString(), '2010-12-30', String(newdate));
     equal(newdate.week(), 52, String(newdate));
     
     newdate = new Tempus(2011, 0, 1);
     newdate.setWeek(1);
-    equal(newdate.toISO8601DateString(), '2011-01-06', String(newdate));
+    equal(newdate.toISODateString(), '2011-01-06', String(newdate));
     equal(newdate.week(), 1, String(newdate));
     newdate.week(1);
-    equal(newdate.toISO8601DateString(), '2011-01-06', String(newdate));
+    equal(newdate.toISODateString(), '2011-01-06', String(newdate));
     equal(newdate.week(), 1, String(newdate));
 
     newdate = new Tempus(2011, 0, 3);
     newdate.addWeek();
-    equal(newdate.toISO8601DateString(), '2011-01-13', String(newdate));
+    equal(newdate.toISODateString(), '2011-01-13', String(newdate));
     equal(newdate.week(), 2, String(newdate));
     newdate.subWeek();
-    equal(newdate.toISO8601DateString(), '2011-01-06', String(newdate));
+    equal(newdate.toISODateString(), '2011-01-06', String(newdate));
     equal(newdate.week(), 1, String(newdate));
 
     newdate.setWeek(2);
-    equal(newdate.toISO8601DateString(), '2011-01-13', String(newdate));
+    equal(newdate.toISODateString(), '2011-01-13', String(newdate));
     equal(newdate.week(), 2, String(newdate));
     newdate.week(2);
-    equal(newdate.toISO8601DateString(), '2011-01-13', String(newdate));
+    equal(newdate.toISODateString(), '2011-01-13', String(newdate));
     equal(newdate.week(), 2, String(newdate));
 
     newdate.setWeek(3);
-    equal(newdate.toISO8601DateString(), '2011-01-20', String(newdate));
+    equal(newdate.toISODateString(), '2011-01-20', String(newdate));
     equal(newdate.week(), 3, String(newdate));
     newdate.week(3);
-    equal(newdate.toISO8601DateString(), '2011-01-20', String(newdate));
+    equal(newdate.toISODateString(), '2011-01-20', String(newdate));
     equal(newdate.week(), 3, String(newdate));
 
     newdate.setWeek(4);
-    equal(newdate.toISO8601DateString(), '2011-01-27', String(newdate));
+    equal(newdate.toISODateString(), '2011-01-27', String(newdate));
     equal(newdate.week(), 4, String(newdate));
     newdate.week(4);
-    equal(newdate.toISO8601DateString(), '2011-01-27', String(newdate));
+    equal(newdate.toISODateString(), '2011-01-27', String(newdate));
     equal(newdate.week(), 4, String(newdate));
 
     newdate.setWeek(5);
-    equal(newdate.toISO8601DateString(), '2011-02-03', String(newdate));
+    equal(newdate.toISODateString(), '2011-02-03', String(newdate));
     equal(newdate.week(), 5, String(newdate));
     newdate.week(5);
-    equal(newdate.toISO8601DateString(), '2011-02-03', String(newdate));
+    equal(newdate.toISODateString(), '2011-02-03', String(newdate));
     equal(newdate.week(), 5, String(newdate));
 
     newdate.setWeek(6);
-    equal(newdate.toISO8601DateString(), '2011-02-10', String(newdate));
+    equal(newdate.toISODateString(), '2011-02-10', String(newdate));
     equal(newdate.week(), 6, String(newdate));
     newdate.week(6);
-    equal(newdate.toISO8601DateString(), '2011-02-10', String(newdate));
+    equal(newdate.toISODateString(), '2011-02-10', String(newdate));
     equal(newdate.week(), 6, String(newdate));
     
     newdate.setWeek(15);
-    equal(newdate.toISO8601DateString(), '2011-04-14', String(newdate));
+    equal(newdate.toISODateString(), '2011-04-14', String(newdate));
     equal(newdate.week(), 15, String(newdate));
     newdate.week(15);
-    equal(newdate.toISO8601DateString(), '2011-04-14', String(newdate));
+    equal(newdate.toISODateString(), '2011-04-14', String(newdate));
     equal(newdate.week(), 15, String(newdate));
 
     newdate.setWeek(20);
-    equal(newdate.toISO8601DateString(), '2011-05-19', String(newdate));
+    equal(newdate.toISODateString(), '2011-05-19', String(newdate));
     equal(newdate.week(), 20, String(newdate));
     newdate.week(20);
-    equal(newdate.toISO8601DateString(), '2011-05-19', String(newdate));
+    equal(newdate.toISODateString(), '2011-05-19', String(newdate));
     equal(newdate.week(), 20, String(newdate));
     
     newdate.setWeek(30);
-    equal(newdate.toISO8601DateString(), '2011-07-28', String(newdate));
+    equal(newdate.toISODateString(), '2011-07-28', String(newdate));
     equal(newdate.week(), 30, String(newdate));
     newdate.week(30);
-    equal(newdate.toISO8601DateString(), '2011-07-28', String(newdate));
+    equal(newdate.toISODateString(), '2011-07-28', String(newdate));
     equal(newdate.week(), 30, String(newdate));
     
     newdate.setWeek(36);
-    equal(newdate.toISO8601DateString(), '2011-09-08', String(newdate));
+    equal(newdate.toISODateString(), '2011-09-08', String(newdate));
     equal(newdate.week(), 36, String(newdate));
     newdate.week(36);
-    equal(newdate.toISO8601DateString(), '2011-09-08', String(newdate));
+    equal(newdate.toISODateString(), '2011-09-08', String(newdate));
     equal(newdate.week(), 36, String(newdate));
     
     newdate = new Tempus(2008, 0, 5);
     newdate.setWeek(1);
-    equal(newdate.toISO8601DateString(), '2008-01-03', String(newdate));
+    equal(newdate.toISODateString(), '2008-01-03', String(newdate));
     equal(newdate.week(), 1, String(newdate));
     newdate.week(1);
-    equal(newdate.toISO8601DateString(), '2008-01-03', String(newdate));
+    equal(newdate.toISODateString(), '2008-01-03', String(newdate));
     equal(newdate.week(), 1, String(newdate));
     
     newdate.setWeek(5);
-    equal(newdate.toISO8601DateString(), '2008-01-31', String(newdate));
+    equal(newdate.toISODateString(), '2008-01-31', String(newdate));
     equal(newdate.week(), 5, String(newdate));
     newdate.week(5);
-    equal(newdate.toISO8601DateString(), '2008-01-31', String(newdate));
+    equal(newdate.toISODateString(), '2008-01-31', String(newdate));
     equal(newdate.week(), 5, String(newdate));
     
     newdate.setWeek(7);
-    equal(newdate.toISO8601DateString(), '2008-02-14', String(newdate));
+    equal(newdate.toISODateString(), '2008-02-14', String(newdate));
     equal(newdate.week(), 7, String(newdate));
     newdate.week(7);
-    equal(newdate.toISO8601DateString(), '2008-02-14', String(newdate));
+    equal(newdate.toISODateString(), '2008-02-14', String(newdate));
     equal(newdate.week(), 7, String(newdate));
     
     newdate.setWeek(8);
-    equal(newdate.toISO8601DateString(), '2008-02-21', String(newdate));
+    equal(newdate.toISODateString(), '2008-02-21', String(newdate));
     equal(newdate.week(), 8, String(newdate));
     newdate.week(8);
-    equal(newdate.toISO8601DateString(), '2008-02-21', String(newdate));
+    equal(newdate.toISODateString(), '2008-02-21', String(newdate));
     equal(newdate.week(), 8, String(newdate));
     
     newdate.setWeek(9);
-    equal(newdate.toISO8601DateString(), '2008-02-28', String(newdate));
+    equal(newdate.toISODateString(), '2008-02-28', String(newdate));
     equal(newdate.week(), 9, String(newdate));
     newdate.week(9);
-    equal(newdate.toISO8601DateString(), '2008-02-28', String(newdate));
+    equal(newdate.toISODateString(), '2008-02-28', String(newdate));
     equal(newdate.week(), 9, String(newdate));
     
     newdate.setWeek(10);
-    equal(newdate.toISO8601DateString(), '2008-03-06', String(newdate));
+    equal(newdate.toISODateString(), '2008-03-06', String(newdate));
     equal(newdate.week(), 10, String(newdate));
     newdate.week(10);
-    equal(newdate.toISO8601DateString(), '2008-03-06', String(newdate));
+    equal(newdate.toISODateString(), '2008-03-06', String(newdate));
     equal(newdate.week(), 10, String(newdate));
     
     newdate = new Tempus(2011, 6, 14);
     newdate.setWeek(28);
-    equal(newdate.toISO8601DateString(), '2011-07-14', String(newdate));
+    equal(newdate.toISODateString(), '2011-07-14', String(newdate));
     equal(newdate.week(), 28, String(newdate));
     newdate.week(28);
-    equal(newdate.toISO8601DateString(), '2011-07-14', String(newdate));
+    equal(newdate.toISODateString(), '2011-07-14', String(newdate));
     equal(newdate.week(), 28, String(newdate));
     
     newdate = new Tempus(2005, 11, 25);
     newdate.setWeek(51);
-    equal(newdate.toISO8601DateString(), '2005-12-22', String(newdate));
+    equal(newdate.toISODateString(), '2005-12-22', String(newdate));
     equal(newdate.week(), 51, String(newdate));
     newdate.week(51);
-    equal(newdate.toISO8601DateString(), '2005-12-22', String(newdate));
+    equal(newdate.toISODateString(), '2005-12-22', String(newdate));
     equal(newdate.week(), 51, String(newdate));
     
     newdate = new Tempus(2004, 1, 29);
     newdate.setWeek(8);
-    equal(newdate.toISO8601DateString(), '2004-02-19', String(newdate));
+    equal(newdate.toISODateString(), '2004-02-19', String(newdate));
     equal(newdate.week(), 8, String(newdate));
     newdate.week(8);
-    equal(newdate.toISO8601DateString(), '2004-02-19', String(newdate));
+    equal(newdate.toISODateString(), '2004-02-19', String(newdate));
     equal(newdate.week(), 8, String(newdate));
     
     newdate = new Tempus(1999, 11, 1);
     newdate.setWeek(50);
-    equal(newdate.toISO8601DateString(), '1999-12-16', String(newdate));
+    equal(newdate.toISODateString(), '1999-12-16', String(newdate));
     equal(newdate.week(), 50, String(newdate));
     newdate.week(50);
-    equal(newdate.toISO8601DateString(), '1999-12-16', String(newdate));
+    equal(newdate.toISODateString(), '1999-12-16', String(newdate));
     equal(newdate.week(), 50, String(newdate));
 });
 

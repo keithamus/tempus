@@ -136,31 +136,31 @@ QUnit.test('Ensure hours does not go over 23 from timezoneOffset', function () {
     newdate.timezone('+01:00');
 
     equal(newdate.hours(), 23, '22 hours +01:00 is 23 hours');
-    equal(newdate.toISO8601String(), '2012-12-31T23:30:00.000+0100', '2012-12-31T23:30:00.000+0100');
+    equal(newdate.toISOString(), '2012-12-31T23:30:00.000+0100', '2012-12-31T23:30:00.000+0100');
 
     newdate.timezone('+01:30');
 
     equal(newdate.hours(), 0, '22 hours 30 mins +01:30 is 0 hours the next day');
-    equal(newdate.toISO8601String(), '2013-01-01T00:00:00.000+0130', '2013-01-01T00:00:00.000+0130');
+    equal(newdate.toISOString(), '2013-01-01T00:00:00.000+0130', '2013-01-01T00:00:00.000+0130');
 
     newdate.timezone('+03:00');
 
     equal(newdate.hours(), 1, '22 hours +03:00 is 1AM the next day');
-    equal(newdate.toISO8601String(), '2013-01-01T01:30:00.000+0300', '2013-01-01T01:30:00.000+0300');
+    equal(newdate.toISOString(), '2013-01-01T01:30:00.000+0300', '2013-01-01T01:30:00.000+0300');
 
     newdate.timezone('+04:00');
 
     equal(newdate.hours(), 2, '22 hours +04:00 is 2AM the next day');
-    equal(newdate.toISO8601String(), '2013-01-01T02:30:00.000+0400', '2013-01-01T02:30:00.000+0400');
+    equal(newdate.toISOString(), '2013-01-01T02:30:00.000+0400', '2013-01-01T02:30:00.000+0400');
 
     newdate.timezone('+24:00');
 
     equal(newdate.hours(), 22, '22 hours +24:00 is 22PM the next day');
-    equal(newdate.toISO8601String(), '2013-01-01T22:30:00.000+2400', '2013-01-01T22:30:00.000+2400');
+    equal(newdate.toISOString(), '2013-01-01T22:30:00.000+2400', '2013-01-01T22:30:00.000+2400');
 
     newdate.timezone('+25:30');
 
     equal(newdate.hours(), 2, '22 hours +25:30 is 0 hours two days after');
-    equal(newdate.toISO8601String(), '2013-01-02T00:00:00.000+2530', '2013-01-02T00:00:00.000+2530');
+    equal(newdate.toISOString(), '2013-01-02T00:00:00.000+2530', '2013-01-02T00:00:00.000+2530');
 
 });
