@@ -284,19 +284,21 @@
             // our date parser modules. Start with a subset that can accept the first argument.
             } else if ((modules = TempusParsers[aType])) {
                 
+                mods:
                 for (var i = 0, module; (module = modules[i]); ++i) {
 
                     // If this module expects more arguments than we the amount given to us, then
                     // just move to the next module.
                     var exC = module.length;
-                    if (ar.length < exC) continue;
+                    if (ar.length < exC) continue mods;
 
                     // Go through each argument and match up the type to the type that the module
                     // expects, and if any don't match, we can move to the next module.
+                    if (exC < ar.length) exC = ar.length;
                     if (exC > 1) {
                         while (exC--) {
-                            if (ar[exC] !== undef && realTypeOf(ar[exC]) != module.exp[exC]) {
-                                continue;
+                            if (ar[exC] !== undef && module.exp[exC] && realTypeOf(ar[exC]) != module.exp[exC]) {
+                                continue mods;
                             }
                         }
                     }

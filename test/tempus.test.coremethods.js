@@ -60,3 +60,39 @@ QUnit.test('now()', function () {
     FakeDate.time = 1315774123519;
 
 });
+
+covers(Tempus, 'Tempus.*', 'addParser');
+QUnit.test('addParser', function () {
+
+    var testFnRet = false;
+
+    Tempus.addParser(function () { return testFnRet; }, function (ob) {
+        return this.set.apply(this, ob.args || [2011, 0, 1, 12, 30, 0]);
+    }, 1, 'object', 'number');
+
+    raises(function () {
+        Tempus({});
+    },
+    /Invalid Date/, 'Test returning false doesnt parse module');
+
+    testFnRet = true;
+
+    equal(Tempus({}).toISOString(), '2011-01-01T12:30:00.000+0000', 'Test returning true, passing [{}] parses date');
+
+    raises(function () {
+        Tempus({}, false);
+    },
+    /Invalid Date/, 'Test returning true, passing [{}, false] doesnt parse module because 2nd arg should be number');
+    
+    raises(function () {
+        Tempus({}, new RegExp());
+    },
+    /Invalid Date/, 'Test returning true, passing [{}, false] doesnt parse module because 2nd arg should be number');
+    
+    raises(function () {
+        Tempus({}, '');
+    },
+    /Invalid Date/, 'Test returning true, passing [{}, false] doesnt parse module because 2nd arg should be number');
+
+    equal(Tempus({}).toISOString(), '2011-01-01T12:30:00.000+0000', 'Test returning true, passing [{}] parses date');
+});
