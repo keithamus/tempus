@@ -18,7 +18,7 @@ QUnit.test('toString([format fragments])', function () {
         d: '11',
         D: '09/11/11',
         e: '11',
-        f: '000000',
+        f: '000',
         F: '2011-09-11',
         g: '11',
         G: '2011',

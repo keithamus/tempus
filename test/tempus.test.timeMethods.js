@@ -213,3 +213,59 @@ QUnit.test("timeString() and timeSring(n)", function () {
     equal(newdate.seconds(), 29, String(newdate));
     
 });
+
+covers(Tempus.prototype, 'Tempus', 'secondFraction', 'getSecondFraction', 'setSecondFraction',
+    'UTCSecondFraction', 'getUTCSecondFraction', 'setUTCSecondFraction', 'addSecondFraction',
+    'subSecondFraction', 'addUTCSecondFraction', 'subUTCSecondFraction');
+QUnit.test("secondFraction() and secondFraction(n)", function () {
+    
+    var newdate = new Tempus(2011, 8, 11, 9, 30, 0);
+
+    newdate.secondFraction(6123450000000);
+
+    equal(newdate.secondFraction(), 612, 'secondFraction always returns MS');
+
+    newdate.secondFraction(61);
+
+    equal(newdate.secondFraction(), 610, 'secondFraction always returns MS');
+
+    newdate.setSecondFraction(3);
+
+    equal(newdate.getSecondFraction(), 300, 'secondFraction always returns MS');
+
+    newdate.setSecondFraction('00003');
+
+    equal(newdate.getSecondFraction(), 0, 'secondFraction always returns MS');
+
+    newdate.addSecondFraction(300);
+
+    equal(newdate.getSecondFraction(), 300, 'addSecondFraction(300)');
+
+    newdate.subSecondFraction('050');
+
+    equal(newdate.getSecondFraction(), 250, 'addSecondFraction(300)');
+
+    newdate.UTCSecondFraction(6123450000000);
+
+    equal(newdate.UTCSecondFraction(), 612, 'UTCSecondFraction always returns MS');
+
+    newdate.UTCSecondFraction(61);
+
+    equal(newdate.UTCSecondFraction(), 610, 'UTCSecondFraction always returns MS');
+
+    newdate.setUTCSecondFraction(3);
+
+    equal(newdate.getUTCSecondFraction(), 300, 'UTCSecondFraction always returns MS');
+
+    newdate.setUTCSecondFraction('00003');
+
+    equal(newdate.getUTCSecondFraction(), 0, 'UTCSecondFraction always returns MS');
+
+    newdate.addUTCSecondFraction(300);
+
+    equal(newdate.getUTCSecondFraction(), 300, 'addUTCSecondFraction(300)');
+
+    newdate.subUTCSecondFraction('050');
+
+    equal(newdate.getUTCSecondFraction(), 250, 'addUTCSecondFraction(300)');
+});

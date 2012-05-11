@@ -101,6 +101,12 @@ QUnit.test('stringPad()', function () {
     strictEqual(Tempus.util.stringPad('a', 2, '-'), '-a', 'stringPad("a", 2, "-") is "-a"');
     strictEqual(Tempus.util.stringPad('a', 2, '--'), '--a', 'stringPad("a", 2, "--") is "--a"');
     strictEqual(Tempus.util.stringPad('a', 3, '--'), '----a', 'stringPad("a", 3, "--") is "----a"');
+
+    strictEqual(Tempus.util.stringPad('a', 2, 0, true), 'a0', 'stringPad("a", 2, 0, true) is "a0"');
+    strictEqual(Tempus.util.stringPad('a', 2, 1, true), 'a1', 'stringPad("a", 2, 1, true) is "a1"');
+    strictEqual(Tempus.util.stringPad('a', 2, '-', true), 'a-', 'stringPad("a", 2, "-", true) is "a-"');
+    strictEqual(Tempus.util.stringPad('a', 2, '--', true), 'a--', 'stringPad("a", 2, "--", true) is "a--"');
+    strictEqual(Tempus.util.stringPad('a', 3, '--', true), 'a----', 'stringPad("a", 3, "--", true) is "a----"');
     
     var ob = { toString: function () { return 'h'; } };
     strictEqual(Tempus.util.stringPad(ob, 2, '-'), '-h', 'stringPad will coerce');

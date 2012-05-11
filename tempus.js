@@ -150,9 +150,10 @@
      * @returns {String} Such as '0001' (if args are ['1', 4]), or '-->' (if args are ['>', 3, '-'])
      *
      */
-    function stringPad(string, width, padString) {
+    function stringPad(string, width, padString, trailing) {
         width -= (''+string).length;
-        return (width > 0 ? ( new Array(width+1) ).join( padString || 0 ) : '') + string;
+        width = (width > 0 ? ( new Array(width+1) ).join( padString || 0 ) : '');
+        return trailing ? string + width : width + string;
     }
 
     // Expose the above utilility functions under the Tempus namespace. We could all of the
@@ -579,7 +580,17 @@
         UTCMicroSeconds: function (setter) {
             if (0 in arguments) return this.UTCMilliseconds(~~(setter/1000));
             
-            return this.getUTCMilliseconds()*1000;
+            return this.UTCMilliseconds()*1000;
+        },
+
+        secondFraction: function (setter) {
+            if (0 in arguments) return this.milliseconds(stringPad((''+setter).substr(0, 3), 3, 0, 1));
+            return this.milliseconds();
+        },
+
+        UTCSecondFraction: function (setter) {
+            if (0 in arguments) return this.UTCMilliseconds(stringPad((''+setter).substr(0, 3), 3, 0, 1));
+            return this.UTCMilliseconds();
         },
         
         AMPM: function (setter) {
@@ -724,7 +735,7 @@
         'day', 'ISODay', 'date', 'dayOfYear',
         'hours', 'ordinalHours',
         'minutes',
-        'seconds', 'milliseconds', 'microSeconds',
+        'seconds', 'milliseconds', 'microSeconds', 'secondFraction',
         'time', 'timezone', 'timezoneOffset', 'ISOTimezone', 'timeStamp', 'AMPM', 'ampm', 'century'];
     
     function PDateSetMethod(methodname) {
@@ -811,7 +822,7 @@
         d: [TProto.date, 2],                  // (Py, Rb, PHP) Day of month 01-31
         D: '%m/%d/%y',                        // (Py, Rb, PHP) Date, e.g 10/09/11
         e: [TProto.date, 2, ' '],             // (Py, Rb, PHP) Day of month (space padded) " 1"-"31"
-        f: [TProto.microSeconds, 6],          // (Py) Microseconds, zero-padded (000000-999999)
+        f: [TProto.secondFraction, 3],        // (Py) secondFraction, zero-padded (0*-9*)
         F: '%Y-%m-%d',                        // (Py, Rb, PHP) Date, e.g  2011-09-10
         g: TProto.year,                       // (Py, Rb, PHP) 2 digit year e.g 11
         G: TProto.fullYear,                   // (Py, Rb, PHP) 4 digit year e.g 2011
@@ -877,7 +888,7 @@
         d: [rg_digit2, TProto.date],
         D: [rg_date, ''],
         e: ['\\s?[\\d{1,2}]'],
-        f: ['\\d{6}', TProto.microseconds],
+        f: ['\\d{1,}', TProto.secondFraction],
         F: [rg_date, ''],
         g: [rg_digit2, ''],
         G: [rg_digit4, ''],
@@ -1028,7 +1039,7 @@
     var std_time_format = '%a, %d %b %Y %T %z';
     Tempus.addTimeFormat({
         ISODate: '%Y-%m-%d',
-        ISO: '%Y-%m-%dT%T.%L%z',
+        ISO: '%Y-%m-%dT%T.%f%z',
         RFC3339: '%Y-%m-%dT%T%Z',
         COOKIE: '%A, %d-%b-%y %T %Z',
         RFC822: '%a, %d %b %y %T %z',
