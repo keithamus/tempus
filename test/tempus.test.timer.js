@@ -1,4 +1,6 @@
 QUnit.module('Timers');
+// Clean up coverage for Tempus.*
+covers(Tempus, 'Tempus.*', 'Timer');
 
 covers(Tempus.Timer.prototype, 'Timer', 'constructor');
 QUnit.test("new Timer()", function () {
