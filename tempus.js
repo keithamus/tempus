@@ -69,7 +69,7 @@
         if (!(this instanceof Tempus)) return new Tempus(arguments);
         
         // Set the LOCALE from the base LOCALE. This way we can have per-instance LOCALEs
-        this.LOCALE = Tempus.LOCALE;
+        this._l = Tempus.LOCALE;
 
         // Run set, but if we were only given 1 argument - an array - then use that as the arguments
         // to run set with, otherwise just use arguments.
@@ -265,7 +265,7 @@
 
             // No arguments means set to "now"
             if (!(0 in ar)) {
-                this._date = new Date();
+                this._d = new Date();
             
             // If only argument is a Tempus object, then copy(Tempus);
             } else if (ar[0] instanceof Tempus) {
@@ -274,12 +274,12 @@
             // If we only have one arg, and its a Date obj, or its a number, then we can reasonably
             // just new up a Date() object with it and use that.
             } else if (!(1 in ar) && /numb|date/.test(aType)) {
-                this._date = new Date(ar[0]);
+                this._d = new Date(ar[0]);
                 
             // If the first arg is a number, and the second arg is a number, assume that Tempus has
             // been given a set of numbers as arguments and can defer to Date() for parsing
             } else if (aType == TYPE_NUMBER && realTypeOf(ar[1]) == TYPE_NUMBER) {
-                this._date = new Date(ar[0], ar[1], ar[2] || 1, ar[3] || 0, ar[4] || 0, ar[5] || 0, ar[6] || 0);
+                this._d = new Date(ar[0], ar[1], ar[2] || 1, ar[3] || 0, ar[4] || 0, ar[5] || 0, ar[6] || 0);
             
             // None of the standard attempts for date-parsing worked, lets try looping through
             // our date parser modules. Start with a subset that can accept the first argument.
@@ -310,7 +310,7 @@
 
                         // The module test has passed, so this parser module is the one we need.
                         // Give it a blank date to work with, and let it do it's stuff.
-                        this._date = new Date(0);
+                        this._d = new Date(0);
                         this.setTimezoneToLocale();
                         return module.parse.apply(this, arguments);
                     }
@@ -319,7 +319,7 @@
             
             // We got all the way down to here without a date object, lets just
             // give up and throw a friendly error message
-            if (isNaN(+this._date)) {
+            if (isNaN(+this._d)) {
                 throw new Error('Invalid Date');
             }
             
@@ -346,7 +346,7 @@
         
         timeStamp: function (time) {
             if (0 in arguments) {
-                this._date = new Date(time * 1000);
+                this._d = new Date(time * 1000);
                 return this;
             }
             return ~~(+(this) / 1000);
@@ -388,15 +388,15 @@
             if (0 in arguments) {
                 var newsetter;
                 if (realTypeOf(setter) == TYPE_STRING) {
-                    newsetter = arrIndexOf(LOCALES[this.LOCALE].FM, setter);
-                    newsetter = newsetter !== -1 ? newsetter : arrIndexOf(LOCALES[this.LOCALE].SM, setter);
+                    newsetter = arrIndexOf(LOCALES[this._l].FM, setter);
+                    newsetter = newsetter !== -1 ? newsetter : arrIndexOf(LOCALES[this._l].SM, setter);
                 } else {
                     newsetter = +setter;
                 }
-                this._date.setMonth(newsetter);
+                this._d.setMonth(newsetter);
                 return this;
             }
-            return this._date.getMonth();
+            return this._d.getMonth();
         },
         
         oneIndexedMonth: function (month) {
@@ -408,15 +408,15 @@
         },
         
         getMonthName: function (full) {
-            return LOCALES[this.LOCALE].SM[this.month()];
+            return LOCALES[this._l].SM[this.month()];
         },
         
         getFullMonthName: function () {
-            return LOCALES[this.LOCALE].FM[this.month()];
+            return LOCALES[this._l].FM[this.month()];
         },
         
         getLastDayOfMonth: function () {
-            var d = new Date(this._date);
+            var d = new Date(this._d);
             d.setMonth(d.getMonth() + 1);
             d.setDate(-1);
             return d.getDate() + 1;
@@ -467,7 +467,7 @@
                 // |  Sunday  |    Thursday    |      7     |   Thursday  |
                 this.day() !== setter ? this.addDate(setter - this.ISODay()) : this
             :
-                this._date.getDay();
+                this._d.getDay();
         },
         
         UTCDay: function (setter) {
@@ -485,7 +485,7 @@
                 // |  Sunday  |    Thursday    |      7     |   Thursday  |
                 this.UTCDay() !== setter ? this.addUTCDate(setter - this.UTCISODay()) : this
             :
-                this._date.getUTCDay();
+                this._d.getUTCDay();
         },
         
         ISODay: function (setter) {
@@ -497,11 +497,11 @@
         },
         
         getDayName: function () {
-            return LOCALES[this.LOCALE].SD[this.day()];
+            return LOCALES[this._l].SD[this.day()];
         },
         
         getFullDayName: function () {
-            return LOCALES[this.LOCALE].FD[this.day()];
+            return LOCALES[this._l].FD[this.day()];
         },
         
         dayOfYear: function (day) {
@@ -544,9 +544,9 @@
         
         // Fix hours to use a settable time-zone
         hours: function (hours) {
-            if (0 in arguments) return this.UTCHours((+hours) + ~~((-this.TIMEZONE) / 60));
+            if (0 in arguments) return this.UTCHours((+hours) + ~~((-this._tz) / 60));
             
-            hours = this.getUTCHours() + (this.TIMEZONE / 60);
+            hours = this.getUTCHours() + (this._tz / 60);
             return hours == 24 ? 0 : hours;
         },
         
@@ -566,9 +566,9 @@
         
         // Fix minutes to use a settable time-zone
         minutes: function (setter) {
-            if (0 in arguments) return this.UTCMinutes((+setter) + (-(this.TIMEZONE) % 60));
+            if (0 in arguments) return this.UTCMinutes((+setter) + (-(this._tz) % 60));
 
-            return this.getUTCMinutes() + (this.TIMEZONE % 60);
+            return this.getUTCMinutes() + (this._tz % 60);
         },
         
         microSeconds: function (setter) {
@@ -595,12 +595,12 @@
         
         AMPM: function (setter) {
             if (0 in arguments) return this.hours(this.hours() + (this.AMPM() === setter.toUpperCase() ? 0 : /am/i.test(setter) ? -12 : 12));
-            return this.hours() > 11 ? LOCALES[this.LOCALE].AM[1] : LOCALES[this.LOCALE].AM[0];
+            return this.hours() > 11 ? LOCALES[this._l].AM[1] : LOCALES[this._l].AM[0];
         },
         
         ampm: function (setter) {
             if (0 in arguments) return this.AMPM(setter);
-            return this.hours() > 11 ? LOCALES[this.LOCALE].AM[3] : LOCALES[this.LOCALE].AM[2];
+            return this.hours() > 11 ? LOCALES[this._l].AM[3] : LOCALES[this._l].AM[2];
         },
 
         timeString: function (setter) {
@@ -623,14 +623,14 @@
         
         timezoneOffset: function (tzoff) {
             if (0 in arguments) {
-                this.TIMEZONE = -tzoff;
+                this._tz = -tzoff;
                 return this;
             }
-            return -this.TIMEZONE;
+            return -this._tz;
         },
         
         setTimezoneToLocale: function () {
-            return this.timezone(this._date.getTimezoneOffset());
+            return this.timezone(this._d.getTimezoneOffset());
         },
         
         timezone: function (tz) {
@@ -641,9 +641,9 @@
                 var tzi = ~~(+(tz[2]) * 60) + ~~(+tz[3]);
                 return this.timezoneOffset(tz[1] === '-' ? tzi : -tzi);
             }
-            tz = this.TIMEZONE;
+            tz = this._tz;
             if(tz < 0) tz = -tz;
-            return (this.TIMEZONE < 0 ? '-' : '+') + (stringPad(~~(tz/60),2)) + (stringPad(~~(tz%60),2));
+            return (this._tz < 0 ? '-' : '+') + (stringPad(~~(tz/60),2)) + (stringPad(~~(tz%60),2));
         },
         
         ISOTimezone: function (setter) {
@@ -653,7 +653,7 @@
         },
         
         isDST: function () {
-            return Tempus(this.fullYear(), 0).TIMEZONE < this.TIMEZONE || Tempus(this.fullYear(), 5).TIMEZONE < this.TIMEZONE;
+            return Tempus(this.fullYear(), 0)._tz < this._tz || Tempus(this.fullYear(), 5)._tz < this._tz;
         },
                 
         /*************************************/
@@ -698,6 +698,14 @@
         
         isAfter: function () {
             return +(this) > +Tempus(arguments);
+        },
+
+        locale: function (setter) {
+            if (0 in arguments) {
+                this._l = LOCALES[setter] ? setter : this._l;
+                return this;
+            }
+            return this._l;
         }
     };
     
@@ -718,7 +726,7 @@
     
     function PDateMethod(methodname) {
         TProto[methodname] = function () {
-            return this._date[methodname].apply(this._date, arguments);
+            return this._d[methodname].apply(this._d, arguments);
         };
     }
     
@@ -736,7 +744,8 @@
         'hours', 'ordinalHours',
         'minutes',
         'seconds', 'milliseconds', 'microSeconds', 'secondFraction',
-        'time', 'timezone', 'timezoneOffset', 'ISOTimezone', 'timeStamp', 'AMPM', 'ampm', 'century'];
+        'time', 'timezone', 'timezoneOffset', 'ISOTimezone', 'timeStamp', 'AMPM', 'ampm', 'century',
+        'locale'];
     
     function PDateSetMethod(methodname) {
         var lmethodname = methodname;
@@ -750,7 +759,7 @@
                 }
             :
                 function () {
-                    return this._date['get' + methodname].call(this._date);
+                    return this._d['get' + methodname].call(this._d);
                 }
             ;
         }
@@ -763,13 +772,13 @@
                 }
             :
                 function () {
-                    this._date['set' + methodname].apply(this._date, arguments);
+                    this._d['set' + methodname].apply(this._d, arguments);
                     return this;
                 }
             ;
         }
         
-        if (!/^am|isot|timez/i.test(dateSetMethods[i])) {
+        if (!/^am|isot|timez|^locale/i.test(dateSetMethods[i])) {
             TProto['add' + methodname] = function (setter) {
                 this[lmethodname](this[lmethodname]() + (setter || 1));
                 return this;
@@ -792,7 +801,7 @@
             };
         }
 
-        if (!/^UTC|[cw]e|AMPM|i?s?o?time[sz]|time$|dayo/i.test(methodname))
+        if (!/^UTC|[cw]e|AMPM|i?s?o?time[sz]|time$|dayo|^locale/i.test(methodname))
             PDateSetMethod('UTC' + methodname);
     }
     

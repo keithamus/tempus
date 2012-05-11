@@ -100,3 +100,21 @@ QUnit.test('toJSON()', function () {
     // This'll do
     equal(Tempus.prototype.toJSON === Tempus.prototype.toISOString, true, 'toJSON is the same as toISOString');
 });
+
+covers(Tempus.prototype, 'Tempus', 'locale', 'setLocale', 'getLocale');
+QUnit.test('locale()/getLocale() and locale(n)/setLocale()', function () {
+    var newdate = Tempus();
+
+    equal(newdate.locale(), 'en', 'locale() default is "en"');
+
+    newdate.locale('ja');
+    equal(newdate.locale(), 'en', 'locale() wont set what isn\'t in LOCALES');
+
+    Tempus.addLocale('ja');
+    newdate.locale('ja');
+    equal(newdate.locale(), 'ja', 'locale() sets when locale is in LOCALES');
+    equal(newdate.getLocale(), 'ja', 'locale() sets when locale is in LOCALES');
+
+    equal(newdate.locale('en').getLocale(), 'en', 'locale() with chaining');
+    equal(newdate.setLocale('ja').getLocale(), 'ja', 'setLocale() with chaining');
+});

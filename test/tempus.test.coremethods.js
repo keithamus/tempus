@@ -21,7 +21,7 @@ QUnit.test('addLocale()', function () {
     i = 7;
     while(i--) {
         newdate = new Tempus(2011, 0, n--);
-        newdate.LOCALE = 'test';
+        newdate.locale('test');
         equal(newdate.getDayName(), SHORTDAYS[i], 'getDayName() == ' + SHORTDAYS[i]);
         equal(newdate.getFullDayName(), FULLDAYS[i], 'getFullDayName() == ' + FULLDAYS[i]);
     }
@@ -29,13 +29,13 @@ QUnit.test('addLocale()', function () {
     i = 12;
     while(i--) {
         newdate = new Tempus(2011, i);
-        newdate.LOCALE = 'test';
+        newdate.locale('test');
         equal(newdate.getMonthName(), SHORTMONTHS[i], 'getMonthName() == ' + SHORTMONTHS[i]);
         equal(newdate.getFullMonthName(), FULLMONTHS[i], 'getFullMonthName() == ' + FULLMONTHS[i]);
     }
 
     newdate = new Tempus(2011, 0, 1, 11, 30, 0);
-    newdate.LOCALE = 'test';
+    newdate.locale('test');
 
     equal(newdate.AMPM(), 'T');
     equal(newdate.ampm(), 't');
