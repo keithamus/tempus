@@ -13,7 +13,7 @@
  * @copyright Copyright © 2011, Keith Cirkel
  *
  */
-(function (global, Tempus, undef) {
+(function (global, Tempus, ArSlice, undef) {
     // ^ Get some methods from the global object, close scope on them for protection
 
     var tsetTimeout = setTimeout
@@ -54,8 +54,8 @@
             return this;
         },
 
-        on: function (on) {
-            this.runOn = on;
+        on: function () {
+            this.runOn = ArSlice.call(arguments, 0);
             delete this.ms;
             this.interval = false;
             return this;
@@ -75,7 +75,7 @@
         start: function () {
             var timerFn = this.interval ? tsetInterval : tsetTimeout,
                 self = this;
-            if (this.ms == undef) this.ms = (+new Tempus(this.runOn)) - (+new Tempus());
+            if (this.ms == undef) this.ms = (+Tempus(this.runOn)) - (+Tempus());
 
             this.stop().timer = timerFn(function () {
                 self.exec();
@@ -101,4 +101,4 @@
 
     Tempus.Timer = Timer;
 
-}(this, Tempus));
+}(this, Tempus, [].slice));

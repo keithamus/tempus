@@ -189,13 +189,14 @@ QUnit.test("every()", function () {
 covers(Tempus.Timer.prototype, 'Timer', 'on');
 QUnit.test("on()", function () {
     
-    var timer = Tempus.Timer();
+    var timer = Tempus.Timer()
+    ,   newdate = Tempus();
 
     timer.after(20);
-    timer.on('PT2S');
+    timer.on(newdate.addSeconds(2));
 
     equal(timer.ms, undefined, 'on() removes ms');
-    equal(timer.runOn, 'PT2S');
+    deepEqual(timer.runOn, [newdate], 'runOn keeps arguments');
 
     timer.run(function () {}).start();
 
@@ -203,9 +204,9 @@ QUnit.test("on()", function () {
     equal(timer.timer.timerCalled, 'setTimeout', "setTimeout called");
     equal(timer.timer.time, 2000, "setTimeout called with 2000");
 
-    timer.on('PT1M');
+    timer.on('PT1M', (newdate = Tempus()));
     equal(timer.ms, undefined, 'on() removes ms');
-    equal(timer.runOn, 'PT1M');
+    deepEqual(timer.runOn, ['PT1M', newdate], 'runOn keeps arguments');
 
     timer.run(function () {}).start();
 

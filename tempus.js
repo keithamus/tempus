@@ -314,7 +314,7 @@
                             this._d = new Date(0);
                             this.setTimezoneToLocale();
                         }
-                        return module.parse.apply(this, arguments);
+                        return module.parse.apply(this, ar);
                     }
                 }
             }
