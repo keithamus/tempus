@@ -310,8 +310,10 @@
 
                         // The module test has passed, so this parser module is the one we need.
                         // Give it a blank date to work with, and let it do it's stuff.
-                        this._d = new Date(0);
-                        this.setTimezoneToLocale();
+                        if (!this._d) {
+                            this._d = new Date(0);
+                            this.setTimezoneToLocale();
+                        }
                         return module.parse.apply(this, arguments);
                     }
                 }
@@ -1081,4 +1083,4 @@
         global.Tempus = Tempus;
     }
     
-}(this, Date, ([]).slice));
+}(this, Date, [].slice));

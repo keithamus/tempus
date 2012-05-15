@@ -151,16 +151,31 @@ QUnit.test('Initialise with ISO8601 datetimes', function () {
 });
     
 QUnit.test('Initialise with new ISO8601 intervals', function () {
-    equal(''+new Date(+(new Tempus('P3D'))), ''+new Date(1316033323519), "P3D: Wed Sep 14 2011 21:48:43 GMT+0100 (BST)");
-    equal(''+new Date(+(new Tempus('P1D2M'))), ''+new Date(1321134523519), "P1D2M: Mon Nov 12 2011 21:48:43 GMT+0000 (GMT)");
-    equal(''+new Date(+(new Tempus('P1D2M1Y'))), ''+new Date(1352756923519), "P1D2M1Y: Mon Nov 12 2012 21:48:43 GMT+0000 (GMT)");
-    equal(''+new Date(+(new Tempus('P6D4M3Y'))), ''+new Date(1421531323519), "P6D4M3Y: Sat Jan 17 2015 21:48:43 GMT+0000 (GMT)");
-    equal(''+new Date(+(new Tempus('PT2H30M'))), ''+new Date(1315783123519), "PT2H30M: Mon Sep 12 2011 00:18:43 GMT+0100 (BST)");
-    equal(''+new Date(+(new Tempus('PT30M'))), ''+new Date(1315775923519), "P30M: Sun Sep 11 2011 22:18:43 GMT+0100 (BST)");
-    equal(''+new Date(+(new Tempus('PT2S'))), ''+new Date(1315774125519), "P2S: Sun Sep 11 2011 21:48:45 GMT+0100 (BST)");
-    equal(''+new Date(+(new Tempus('P3Y6M4DT12H30M5S'))), ''+new Date(1426501128519), "P3Y6M4DT12H30M5S: Wed Sep 14 2011 21:48:43 GMT+0100 (BST)");
-    equal(''+new Date(+(new Tempus('-P3D'))), ''+new Date(1315514923519), "-P3D: Thu Sep 08 2011 21:48:43 GMT+0100 (BST)");
-    equal(''+new Date(+(new Tempus('-P1D2M'))), ''+new Date(1310330923519), "-P1D2M: Sun Jul 10 2011 21:48:43 GMT+0100 (BST)");
+    equal(''+new Date(+(new Tempus('P3D'))), ''+new Date(259200000), "P3D: " + new Date(259200000));
+    equal(''+new Date(+(new Tempus('P1D2M'))), ''+new Date(5184000000), "P1D2M: " + new Date(5184000000));
+    equal(''+new Date(+(new Tempus('P1D2M1Y'))), ''+new Date(36720000000), "P1D2M1Y: " + new Date(36720000000));
+    equal(''+new Date(+(new Tempus('P6D4M3Y'))), ''+new Date(105577200000), "P6D4M3Y: " + new Date(105577200000));
+    equal(''+new Date(+(new Tempus('PT2H30M'))), ''+new Date(9000000), "PT2H30M: " + new Date(9000000));
+    equal(''+new Date(+(new Tempus('PT30M'))), ''+new Date(1800000), "P30M: " + new Date(1800000));
+    equal(''+new Date(+(new Tempus('PT2S'))), ''+new Date(2000), "P2S: " + new Date(2000));
+    equal(''+new Date(+(new Tempus('P3Y6M4DT12H30M5S'))), ''+new Date(110719805000), "P3Y6M4DT12H30M5S: " + new Date(110719805000));
+    equal(''+new Date(+(new Tempus('-P3D'))), ''+new Date(-259200000), "-P3D: " + new Date(-259200000));
+    equal(''+new Date(+(new Tempus('-P1D2M'))), ''+new Date(-5356800000), "-P1D2M: " + new Date(-5356800000));
+
+    // ISO intervals with arguments
+    equal(''+new Date(+(new Tempus('P3D', 2011, 0, 1))), ''+new Date(1294099200000), "P3D [2011, 0, 1]: " + new Date(1294099200000));
+    equal(''+new Date(+(new Tempus('P3D', 'P1D'))), ''+new Date(345600000), "P3D [P1D]: " + new Date(345600000));
+    equal(''+new Date(+(new Tempus('P3D', 345600000))), ''+new Date(604800000), "P3D [345600000]: " + new Date(604800000));
+});
+
+QUnit.test('Ensure setting date after initial set can extend existing date', function () {
+    var newdate = new Tempus(2011, 1, 5);
+
+    equal(newdate.set('P3D').getDate(), 8, 'Set adds to date');
+    equal(newdate.set('P3D').getDate(), 11, 'Set adds to date');
+    equal(newdate.set('P1Y').getFullYear(), 2012, 'Set adds to date');
+    equal(newdate.set('P2Y').getFullYear(), 2014, 'Set adds to date');
+
 });
 
 QUnit.test('many incorrect parsers invalidates further ones [#11][Safari]', function () {
