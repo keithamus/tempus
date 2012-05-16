@@ -48,7 +48,7 @@ module.exports = function (grunt) {
             tempus: {
                 src: ['tempus.js'],
                 dest: 'tempus.min.js',
-                size_target: 4505
+                size_target: 4608
             },
             // Minify Tempus.Timer
             tempus_timer: {
