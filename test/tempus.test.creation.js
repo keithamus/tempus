@@ -92,7 +92,7 @@ QUnit.module('Date parsing');
 
 QUnit.test('Initialise with ISO8601 dates', function () {
     var newdate = new Tempus('2011-09-11');
-    equal(''+new FakeDate(Number(newdate)), ''+new FakeDate(1315695600000), "2011-09-11 (" + String(newdate) + ")");
+    equal(''+new FakeDate(Number(newdate)), ''+new FakeDate(1315699200000), "2011-09-11 (" + String(newdate) + ")");
 
     newdate = new Tempus('2008-01-01');
     equal(''+new FakeDate(Number(newdate)), ''+new FakeDate(1199145600000), "2008-01-01 (" + String(newdate) + ")");
@@ -101,7 +101,7 @@ QUnit.test('Initialise with ISO8601 dates', function () {
     equal(''+new FakeDate(Number(newdate)), ''+new FakeDate(1735603200000), "2024-12-31 (" + String(newdate) + ")");
 
     newdate = new Tempus('1986-04-24');
-    equal(''+new FakeDate(Number(newdate)), ''+new FakeDate(514681200000), "1986-04-24 (" + String(newdate) + ")");
+    equal(''+new FakeDate(Number(newdate)), ''+new FakeDate(514684800000), "1986-04-24 (" + String(newdate) + ")");
 
     newdate = new Tempus('2008-02-28');
     equal(''+new FakeDate(Number(newdate)), ''+new FakeDate(1204156800000), "2008-02-29 (" + String(newdate) + ")");
