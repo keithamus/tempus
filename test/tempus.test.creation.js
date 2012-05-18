@@ -1,6 +1,13 @@
 QUnit.module('Date intializing');
 
 covers(Tempus.prototype, 'Tempus', 'constructor', 'set');
+QUnit.test('Timestamp initialization should be idemptotent', function () {
+
+    equal(+new Tempus(0), 0, '0');
+    equal(+new Tempus(1315774123519), 1315774123519, '1315774123519');
+    equal(+new Tempus(1337326430631), 1337326430631, '1337326430631');
+
+});
 QUnit.test('Date initialise with timestamp', function () {
 
     equal(''+new FakeDate(+new Tempus(0)), ''+new FakeDate(0), '0');
