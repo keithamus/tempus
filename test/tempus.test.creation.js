@@ -91,70 +91,70 @@ QUnit.test('Date initialise with additional tz param', function () {
 QUnit.module('Date parsing');
 
 QUnit.test('Initialise with ISO8601 dates', function () {
-    var x = new Tempus('2011-09-11');
-    equal(''+new FakeDate(Number(x)), ''+new FakeDate(1315695600000), "2011-09-11 (" + String(x) + ")");
+    var newdate = new Tempus('2011-09-11');
+    equal(''+new FakeDate(Number(newdate)), ''+new FakeDate(1315695600000), "2011-09-11 (" + String(newdate) + ")");
 
-    x = new Tempus('2008-01-01');
-    equal(''+new FakeDate(Number(x)), ''+new FakeDate(1199145600000), "2008-01-01 (" + String(x) + ")");
+    newdate = new Tempus('2008-01-01');
+    equal(''+new FakeDate(Number(newdate)), ''+new FakeDate(1199145600000), "2008-01-01 (" + String(newdate) + ")");
 
-    x = new Tempus('2024-12-31');
-    equal(''+new FakeDate(Number(x)), ''+new FakeDate(1735603200000), "2024-12-31 (" + String(x) + ")");
+    newdate = new Tempus('2024-12-31');
+    equal(''+new FakeDate(Number(newdate)), ''+new FakeDate(1735603200000), "2024-12-31 (" + String(newdate) + ")");
 
-    x = new Tempus('1986-04-24');
-    equal(''+new FakeDate(Number(x)), ''+new FakeDate(514681200000), "1986-04-24 (" + String(x) + ")");
+    newdate = new Tempus('1986-04-24');
+    equal(''+new FakeDate(Number(newdate)), ''+new FakeDate(514681200000), "1986-04-24 (" + String(newdate) + ")");
 
-    x = new Tempus('2008-02-28');
-    equal(''+new FakeDate(Number(x)), ''+new FakeDate(1204156800000), "2008-02-29 (" + String(x) + ")");
+    newdate = new Tempus('2008-02-28');
+    equal(''+new FakeDate(Number(newdate)), ''+new FakeDate(1204156800000), "2008-02-29 (" + String(newdate) + ")");
 
-    x = new Tempus('1970-01-01');
-    equal(''+new FakeDate(Number(x)), ''+new FakeDate(0), "1970-01-01 (" + String(x) + ")");
+    newdate = new Tempus('1970-01-01');
+    equal(''+new FakeDate(Number(newdate)), ''+new FakeDate(0), "1970-01-01 (" + String(newdate) + ")");
 
-    x = new Tempus('2012-12-21');
-    equal(''+new FakeDate(Number(x)), ''+new FakeDate(1356048000000), "2012-12-21 (" + String(x) + ")");
+    newdate = new Tempus('2012-12-21');
+    equal(''+new FakeDate(Number(newdate)), ''+new FakeDate(1356048000000), "2012-12-21 (" + String(newdate) + ")");
 });
 
 QUnit.test('Initialise with ISO8601 datetimes', function () {
-    var x = new Tempus('2011-09-11T20:48:43.519Z');
-    equal(''+new FakeDate(Number(x)), ''+new FakeDate(1315774123519), "2011-09-11T20:48:43.519Z (" + String(x) + ")");
+    var newdate = new Tempus('2011-09-11T20:48:43.519Z');
+    equal(''+new FakeDate(Number(newdate)), ''+new FakeDate(1315774123519), "2011-09-11T20:48:43.519Z (" + String(newdate) + ")");
 
-    x = new Tempus('2008-01-01T12:12:12.111Z');
-    equal(''+new FakeDate(Number(x)), ''+new FakeDate(1199189532111), "2008-01-01T12:12:12.111Z (" + String(x) + ")");
+    newdate = new Tempus('2008-01-01T12:12:12.111Z');
+    equal(''+new FakeDate(Number(newdate)), ''+new FakeDate(1199189532111), "2008-01-01T12:12:12.111Z (" + String(newdate) + ")");
 
-    x = new Tempus('2024-12-31T11:59:59.999Z');
-    equal(''+new FakeDate(Number(x)), ''+new FakeDate(1735646399999), "2024-12-31T11:59:59.999Z (" + String(x) + ")");
+    newdate = new Tempus('2024-12-31T11:59:59.999Z');
+    equal(''+new FakeDate(Number(newdate)), ''+new FakeDate(1735646399999), "2024-12-31T11:59:59.999Z (" + String(newdate) + ")");
 
-    x = new Tempus('1986-04-24T08:55:32.216+0100');
-    equal(''+new FakeDate(Number(x)), ''+new FakeDate(514713332216), "1986-04-24T08:55:32.216+0100 (" + String(x) + ")");
+    newdate = new Tempus('1986-04-24T08:55:32.216+0100');
+    equal(''+new FakeDate(Number(newdate)), ''+new FakeDate(514713332216), "1986-04-24T08:55:32.216+0100 (" + String(newdate) + ")");
 
-    x = new Tempus('2008-02-28T20:33:01.519+0100');
-    equal(''+new FakeDate(Number(x)), ''+new FakeDate(1204227181519), "2008-02-29T20:33:01.519+0100 (" + String(x) + ")");
+    newdate = new Tempus('2008-02-28T20:33:01.519+0100');
+    equal(''+new FakeDate(Number(newdate)), ''+new FakeDate(1204227181519), "2008-02-29T20:33:01.519+0100 (" + String(newdate) + ")");
 
-    x = new Tempus('1970-01-01T00:00:00.000Z');
-    equal(''+new FakeDate(Number(x)), ''+new FakeDate(0), "1970-01-01T00:00:00.000Z (" + String(x) + ")");
+    newdate = new Tempus('1970-01-01T00:00:00.000Z');
+    equal(''+new FakeDate(Number(newdate)), ''+new FakeDate(0), "1970-01-01T00:00:00.000Z (" + String(newdate) + ")");
 
-    x = new Tempus('2012-12-21T06:06:06.666+0800');
-    equal(''+new FakeDate(Number(x)), ''+new FakeDate(1356041166666), "2012-12-21T06:06:06.666+0800 (" + String(x) + ")");
+    newdate = new Tempus('2012-12-21T06:06:06.666+0800');
+    equal(''+new FakeDate(Number(newdate)), ''+new FakeDate(1356041166666), "2012-12-21T06:06:06.666+0800 (" + String(newdate) + ")");
 
-    x = new Tempus('2012-12-21T06:06:06.6666+0800');
-    equal(''+new FakeDate(Number(x)), ''+new FakeDate(1356041166666), "2012-12-21T06:06:06.6666+0800 (" + String(x) + ")");
+    newdate = new Tempus('2012-12-21T06:06:06.6666+0800');
+    equal(''+new FakeDate(Number(newdate)), ''+new FakeDate(1356041166666), "2012-12-21T06:06:06.6666+0800 (" + String(newdate) + ")");
     
-    x = new Tempus('2012-12-21T06:06:06.66666+0800');
-    equal(''+new FakeDate(Number(x)), ''+new FakeDate(1356041166666), "2012-12-21T06:06:06.66666+0800 (" + String(x) + ")");
+    newdate = new Tempus('2012-12-21T06:06:06.66666+0800');
+    equal(''+new FakeDate(Number(newdate)), ''+new FakeDate(1356041166666), "2012-12-21T06:06:06.66666+0800 (" + String(newdate) + ")");
     
-    x = new Tempus('2012-12-21T06:06:06.666666+0800');
-    equal(''+new FakeDate(Number(x)), ''+new FakeDate(1356041166666), "2012-12-21T06:06:06.666666+0800 (" + String(x) + ")");
+    newdate = new Tempus('2012-12-21T06:06:06.666666+0800');
+    equal(''+new FakeDate(Number(newdate)), ''+new FakeDate(1356041166666), "2012-12-21T06:06:06.666666+0800 (" + String(newdate) + ")");
     
-    x = new Tempus('2012-12-21T06:06:06.6666666+0800');
-    equal(''+new FakeDate(Number(x)), ''+new FakeDate(1356041166666), "2012-12-21T06:06:06.6666666+0800 (" + String(x) + ")");
+    newdate = new Tempus('2012-12-21T06:06:06.6666666+0800');
+    equal(''+new FakeDate(Number(newdate)), ''+new FakeDate(1356041166666), "2012-12-21T06:06:06.6666666+0800 (" + String(newdate) + ")");
     
-    x = new Tempus('2012-12-21T06:06:06.66666666+0800');
-    equal(''+new FakeDate(Number(x)), ''+new FakeDate(1356041166666), "2012-12-21T06:06:06.66666666+0800 (" + String(x) + ")");
+    newdate = new Tempus('2012-12-21T06:06:06.66666666+0800');
+    equal(''+new FakeDate(Number(newdate)), ''+new FakeDate(1356041166666), "2012-12-21T06:06:06.66666666+0800 (" + String(newdate) + ")");
     
-    x = new Tempus('2012-12-21T06:06:06.666666666+0800');
-    equal(''+new FakeDate(Number(x)), ''+new FakeDate(1356041166666), "2012-12-21T06:06:06.666666666+0800 (" + String(x) + ")");
+    newdate = new Tempus('2012-12-21T06:06:06.666666666+0800');
+    equal(''+new FakeDate(Number(newdate)), ''+new FakeDate(1356041166666), "2012-12-21T06:06:06.666666666+0800 (" + String(newdate) + ")");
     
-    x = new Tempus('2012-12-21T06:06:06.6666666666+0800');
-    equal(''+new FakeDate(Number(x)), ''+new FakeDate(1356041166666), "2012-12-21T06:06:06.6666666666+0800 (" + String(x) + ")");
+    newdate = new Tempus('2012-12-21T06:06:06.6666666666+0800');
+    equal(''+new FakeDate(Number(newdate)), ''+new FakeDate(1356041166666), "2012-12-21T06:06:06.6666666666+0800 (" + String(newdate) + ")");
 });
     
 QUnit.test('Initialise with new ISO8601 intervals', function () {
