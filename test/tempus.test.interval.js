@@ -249,15 +249,15 @@ QUnit.test('toString()', function () {
     equal(interval.toString(), 'in 5 months', 'crossing DST should not effect toString');
 });
 
-covers(Tempus.Interval.prototype, 'Interval', 'swapDates');
-QUnit.test('swapDates()', function () {
+covers(Tempus.Interval.prototype, 'Interval', 'swap');
+QUnit.test('swap()', function () {
     var newdate = new Tempus(),
         newdateclone = newdate.clone().addYear(1),
         interval = new Tempus.Interval(newdate, newdateclone);
 
-    equal(interval.valueOf(), 31622400000, 'Positive number beore swapDates');
+    equal(interval.valueOf(), 31622400000, 'Positive number beore swap');
 
-    equal(interval.swapDates().valueOf(), -31622400000, 'Negative number after swapDates');
+    equal(interval.swap().valueOf(), -31622400000, 'Negative number after swap');
 });
 
 covers(Tempus.Interval.prototype, 'Interval', 'toJSON');

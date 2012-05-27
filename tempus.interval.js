@@ -44,7 +44,7 @@
             ,   i = intvlCount;
             fragSep = fragSep || '';
 
-            if (neg) this.swapDates();
+            if (neg) this.swap();
 
             while(i--) {
                 value = this['diff' + intvlMethods[intvlShorthand[i]]]() - overlap;
@@ -60,7 +60,7 @@
                 if (i == 3 && timeSep) fragments.unshift(timeSep);
             }
 
-            if (neg) this.swapDates();
+            if (neg) this.swap();
 
             if (fragments[fragments.length-1] == timeSep) fragments.pop();
 
@@ -119,7 +119,7 @@
             ));
         },
 
-        swapDates: function () {
+        swap: function () {
             var value = this._dT;
             this._dT = this._dF;
             this._dF = value;
