@@ -92,24 +92,31 @@ QUnit.module('Date parsing');
 
 QUnit.test('Initialise with ISO8601 dates', function () {
     var newdate = new Tempus('2011-09-11');
+    equal(newdate.toISODateString(), '2011-09-11', 'ISO8601 date setting is idemptotent (2011-09-11)');
     equal(''+new FakeDate(Number(newdate)), ''+new FakeDate(1315699200000), "2011-09-11 (" + String(newdate) + ")");
 
     newdate = new Tempus('2008-01-01');
+    equal(newdate.toISODateString(), '2008-01-01', 'ISO8601 date setting is idemptotent (2008-01-01)');
     equal(''+new FakeDate(Number(newdate)), ''+new FakeDate(1199145600000), "2008-01-01 (" + String(newdate) + ")");
 
     newdate = new Tempus('2024-12-31');
+    equal(newdate.toISODateString(), '2024-12-31', 'ISO8601 date setting is idemptotent (2024-12-31)');
     equal(''+new FakeDate(Number(newdate)), ''+new FakeDate(1735603200000), "2024-12-31 (" + String(newdate) + ")");
 
     newdate = new Tempus('1986-04-24');
+    equal(newdate.toISODateString(), '1986-04-24', 'ISO8601 date setting is idemptotent (1986-04-24)');
     equal(''+new FakeDate(Number(newdate)), ''+new FakeDate(514684800000), "1986-04-24 (" + String(newdate) + ")");
 
     newdate = new Tempus('2008-02-28');
+    equal(newdate.toISODateString(), '2008-02-28', 'ISO8601 date setting is idemptotent (2008-02-28)');
     equal(''+new FakeDate(Number(newdate)), ''+new FakeDate(1204156800000), "2008-02-29 (" + String(newdate) + ")");
 
     newdate = new Tempus('1970-01-01');
+    equal(newdate.toISODateString(), '1970-01-01', 'ISO8601 date setting is idemptotent (1970-01-01)');
     equal(''+new FakeDate(Number(newdate)), ''+new FakeDate(0), "1970-01-01 (" + String(newdate) + ")");
 
     newdate = new Tempus('2012-12-21');
+    equal(newdate.toISODateString(), '2012-12-21', 'ISO8601 date setting is idemptotent (2012-12-21)');
     equal(''+new FakeDate(Number(newdate)), ''+new FakeDate(1356048000000), "2012-12-21 (" + String(newdate) + ")");
 });
 
@@ -124,15 +131,18 @@ QUnit.test('Initialise with ISO8601 datetimes', function () {
     equal(''+new FakeDate(Number(newdate)), ''+new FakeDate(1735646399999), "2024-12-31T11:59:59.999Z (" + String(newdate) + ")");
 
     newdate = new Tempus('1986-04-24T08:55:32.216+0100');
+    equal(newdate.toISOString(), '1986-04-24T08:55:32.216+0100', 'ISO8601 date setting is idemptotent (1986-04-24T08:55:32.216+0100)');
     equal(''+new FakeDate(Number(newdate)), ''+new FakeDate(514713332216), "1986-04-24T08:55:32.216+0100 (" + String(newdate) + ")");
 
     newdate = new Tempus('2008-02-28T20:33:01.519+0100');
+    equal(newdate.toISOString(), '2008-02-28T20:33:01.519+0100', 'ISO8601 date setting is idemptotent (2008-02-28T20:33:01.519+0100)');
     equal(''+new FakeDate(Number(newdate)), ''+new FakeDate(1204227181519), "2008-02-29T20:33:01.519+0100 (" + String(newdate) + ")");
 
     newdate = new Tempus('1970-01-01T00:00:00.000Z');
     equal(''+new FakeDate(Number(newdate)), ''+new FakeDate(0), "1970-01-01T00:00:00.000Z (" + String(newdate) + ")");
 
     newdate = new Tempus('2012-12-21T06:06:06.666+0800');
+    equal(newdate.toISOString(), '2012-12-21T06:06:06.666+0800', 'ISO8601 date setting is idemptotent (2012-12-21T06:06:06.666+0800)');
     equal(''+new FakeDate(Number(newdate)), ''+new FakeDate(1356041166666), "2012-12-21T06:06:06.666+0800 (" + String(newdate) + ")");
 
     newdate = new Tempus('2012-12-21T06:06:06.6666+0800');
