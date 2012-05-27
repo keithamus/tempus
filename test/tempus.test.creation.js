@@ -17,8 +17,8 @@ QUnit.test('Date initialise with timestamp', function () {
 
 QUnit.test('Date initialise with GMT string', function () {
 
-    equal(''+new FakeDate(+new Tempus('Sun, 11 Sep 2011 21:48:43 GMT')), ''+new FakeDate(1315774123519), 'Sun, 11 Sep 2011 21:48:43 GMT');
-    equal(''+new FakeDate(+new Tempus('Sat Jan 14 2012 18:10:32 GMT+0000 (GMT)')), String(new FakeDate('Sat Jan 14 2012 18:10:32 GMT+0000 (GMT)')));
+    equal(new Tempus('Sun, 11 Sep 2011 21:48:43 GMT').toISOString(), '2011-09-11T21:48:43.000+0000', 'Sun, 11 Sep 2011 21:48:43 GMT');
+    equal(new Tempus('Sat Jan 14 2012 18:10:32 GMT+0000 (GMT)').toISOString(), '2012-01-14T18:10:32.000+0000', 'Sat Jan 14 2012 18:10:32 GMT+0000 (GMT)');
 
 });
 
