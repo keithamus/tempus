@@ -2,34 +2,50 @@ QUnit.module('Duplicating Date Instances');
 
 covers(Tempus.prototype, 'Tempus', 'clone');
 QUnit.test('clone()', function () {
-    var newdate = new Tempus(1315774123519)
+    var newdate = new Tempus(1315774123600)
     ,   cloneddate = newdate.clone();
     
-    equal(Number(cloneddate), 1315774123519, String(cloneddate));
+    equal(Number(cloneddate), 1315774123600, String(cloneddate));
     equal(cloneddate.timezone(), newdate.timezone(), String(cloneddate));
     
     newdate.timeStamp(1);
-    equal(Number(cloneddate), 1315774123519, String(cloneddate));
+    equal(Number(cloneddate), 1315774123600, String(cloneddate));
     equal(Number(newdate), 1000, String(newdate));
 });
 
 covers(Tempus.prototype, 'Tempus', 'copy');
 QUnit.test('copy()', function () {
-    var newdate = new Tempus(1315774123519)
+    var newdate = new Tempus(1315774123600)
     ,   copieddate = new Tempus();
     
     copieddate.copy(newdate);
     
-    equal(Number(copieddate), 1315774123519, String(copieddate));
-    equal(copieddate.timezone(), copieddate.timezone(), String(copieddate));
+    equal(Number(copieddate), 1315774123600, 'Copied date has same timestamp');
+    equal(copieddate.timezone(), newdate.timezone(), 'Copied date has same timezone');
     
     newdate.timeStamp(1);
-    equal(Number(copieddate), 1315774123519, String(copieddate));
-    equal(Number(newdate), 1000, String(newdate));
+    equal(Number(newdate), 1000, 'Old date has changed');
+    equal(Number(copieddate), 1315774123600, 'Copied date isnt effected by old date changes');
     
     copieddate.timeStamp(1315774000);
-    equal(Number(copieddate), 1315774000000, String(copieddate));
-    equal(Number(newdate), 1000, String(newdate));
+    equal(Number(copieddate), 1315774000000, 'Copied date has changed');
+    equal(Number(newdate), 1000, 'Old date isnt effected by copied date changes');
+
+    var date = new Date(1338143052240);
+    copieddate = new Tempus();
+    
+    copieddate.copy(date);
+    
+    equal(Number(copieddate), 1338143052240, 'Copied date has same timestamp (Date())');
+    equal(copieddate.timezone(), newdate.timezone(), 'Copied date has same timezone (Date())');
+    
+    newdate.timeStamp(1);
+    equal(Number(newdate), 1000, 'Old date has changed (Date())');
+    equal(Number(copieddate), 1338143052240, 'Copied date isnt effected by old date changes (Date())');
+    
+    copieddate.timeStamp(1315774000);
+    equal(Number(copieddate), 1315774000000, 'Copied date has changed (Date())');
+    equal(Number(newdate), 1000, 'Old date isnt effected by copied date changes (Date())');
 });
 
 QUnit.module('Equality Functions');
