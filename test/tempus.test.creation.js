@@ -168,21 +168,21 @@ QUnit.test('Initialise with ISO8601 datetimes', function () {
 });
     
 QUnit.test('Initialise with new ISO8601 intervals', function () {
-    equal(''+new Date(+(new Tempus('P3D'))), ''+new Date(259200000), "P3D: " + new Date(259200000));
-    equal(''+new Date(+(new Tempus('P1D2M'))), ''+new Date(5184000000), "P1D2M: " + new Date(5184000000));
-    equal(''+new Date(+(new Tempus('P1D2M1Y'))), ''+new Date(36720000000), "P1D2M1Y: " + new Date(36720000000));
-    equal(''+new Date(+(new Tempus('P6D4M3Y'))), ''+new Date(105577200000), "P6D4M3Y: " + new Date(105577200000));
-    equal(''+new Date(+(new Tempus('PT2H30M'))), ''+new Date(9000000), "PT2H30M: " + new Date(9000000));
-    equal(''+new Date(+(new Tempus('PT30M'))), ''+new Date(1800000), "P30M: " + new Date(1800000));
-    equal(''+new Date(+(new Tempus('PT2S'))), ''+new Date(2000), "P2S: " + new Date(2000));
-    equal(''+new Date(+(new Tempus('P3Y6M4DT12H30M5S'))), ''+new Date(110719805000), "P3Y6M4DT12H30M5S: " + new Date(110719805000));
-    equal(''+new Date(+(new Tempus('-P3D'))), ''+new Date(-259200000), "-P3D: " + new Date(-259200000));
-    equal(''+new Date(+(new Tempus('-P1D2M'))), ''+new Date(-5356800000), "-P1D2M: " + new Date(-5356800000));
+    equal((new Tempus('P3D')).toISOString(), '1970-01-04T00:00:00.000+0000', "P3D: 1970-01-04T00:00:00.000+0000");
+    equal((new Tempus('P2M1D')).toISOString(), '1970-03-02T00:00:00.000+0000', "P2M1D: 1970-03-02T00:00:00.000+0000");
+    equal((new Tempus('P1Y2M1D')).toISOString(), '1971-03-02T00:00:00.000+0000', "P1Y2M1D: 1971-03-02T00:00:00.000+0000");
+    equal((new Tempus('P3Y4M6D')).toISOString(), '1973-05-07T00:00:00.000+0000', "P3Y4M6D: 1973-05-07T00:00:00.000+0000");
+    equal((new Tempus('PT2H30M')).toISOString(), '1970-01-01T02:30:00.000+0000', "PT2H30M: 1970-01-01T02:30:00.000+0000");
+    equal((new Tempus('PT30M')).toISOString(), '1970-01-01T00:30:00.000+0000', "P30M: 1970-01-01T00:30:00.000+0000");
+    equal((new Tempus('PT2S')).toISOString(), '1970-01-01T00:00:02.000+0000', "P2S: 1970-01-01T00:00:02.000+0000");
+    equal((new Tempus('P3Y6M4DT12H30M5S')).toISOString(), '1973-07-05T12:30:05.000+0000', "P3Y6M4DT12H30M5S: 1973-07-05T12:30:05.000+0000");
+    equal((new Tempus('-P3D')).toISOString(), '1969-12-29T00:00:00.000+0000', "-P3D: 1969-12-29T00:00:00.000+0000");
+    equal((new Tempus('-P1D2M')).toISOString(), '1969-10-31T00:00:00.000+0000', "-P1D2M: 1969-10-31T00:00:00.000+0000");
 
     // ISO intervals with arguments
-    equal(''+new Date(+(new Tempus('P3D', 2011, 0, 1))), ''+new Date(1294099200000), "P3D [2011, 0, 1]: " + new Date(1294099200000));
-    equal(''+new Date(+(new Tempus('P3D', 'P1D'))), ''+new Date(345600000), "P3D [P1D]: " + new Date(345600000));
-    equal(''+new Date(+(new Tempus('P3D', 345600000))), ''+new Date(604800000), "P3D [345600000]: " + new Date(604800000));
+    equal((new Tempus('P3D', 2011, 0, 1)).toISOString(), '2011-01-04T00:00:00.000+0000', "P3D [2011, 0, 1]: 2011-01-04T00:00:00.000+0000");
+    equal((new Tempus('P3D', 'P1D')).toISOString(), '1970-01-05T00:00:00.000+0000', "P3D [P1D]: 1970-01-05T00:00:00.000+0000");
+    equal((new Tempus('P3D', 345600000)).toISOString(), '1970-01-08T00:00:00.000+0000', "P3D [345600000]: 1970-01-08T00:00:00.000+0000");
 });
 
 QUnit.test('Ensure setting date after initial set can extend existing date', function () {
