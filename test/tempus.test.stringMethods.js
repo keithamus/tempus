@@ -1,7 +1,7 @@
 QUnit.module('New String Methods', {
     setup: function () {
-        this.newdate = new Tempus(2011, 8, 11, 13, 0, 0, 0, 0);
-        this.date = new FakeDate(2011, 8, 11, 13, 0, 0, 0, 0);
+        this.newdate = new Tempus(2011, 8, 11, 13, 0, 0, 0);
+        this.date = new FakeDate(2011, 8, 11, 13, 0, 0, 0);
     }
 });
 
