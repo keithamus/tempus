@@ -160,7 +160,7 @@ QUnit.test('Ensure hours does not go over 23 from timezoneOffset', function () {
 
     newdate.timezone('+25:30');
 
-    equal(newdate.hours(), 2, '22 hours +25:30 is 0 hours two days after');
+    equal(newdate.hours(), 0, '22 hours +25:30 is 0 hours two days after');
     equal(newdate.toISOString(), '2013-01-02T00:00:00.000+2530', '2013-01-02T00:00:00.000+2530');
 
 });
