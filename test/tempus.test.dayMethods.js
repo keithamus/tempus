@@ -83,18 +83,18 @@ QUnit.test('getDayName(), and getFullDayName()', function () {
 
 covers(Tempus.prototype, 'Tempus', 'setDayOfYear', 'dayOfYear', 'subDayOfYear', 'addDayOfYear');
 QUnit.test("setDayOfYear()", function () {
-    var newdate = new Tempus(2011, 8);
+    var newdate = new Tempus(2011, 8).timezone(0).hours(0);
     
-    equal(Number(newdate.setDayOfYear(1)), 1293840000000, 'setDayOfYear(1) ' + String(newdate));
-    equal(Number(newdate.dayOfYear(1)), 1293840000000, 'dayOfYear(1) ' + String(newdate));
-    equal(Number(newdate.setDayOfYear(31)), 1296432000000, 'setDayOfYear(31) ' + String(newdate));
-    equal(Number(newdate.dayOfYear(31)), 1296432000000, 'dayOfYear(31) ' + String(newdate));
-    equal(Number(newdate.setDayOfYear(56)), 1298592000000, 'setDayOfYear(56) ' + String(newdate));
-    equal(Number(newdate.dayOfYear(56)), 1298592000000, 'dayOfYear(56) ' + String(newdate));
-    equal(Number(newdate.setDayOfYear(120)), 1304118000000, 'setDayOfYear(120) ' + String(newdate));
-    equal(Number(newdate.dayOfYear(120)), 1304118000000, 'dayOfYear(120) ' + String(newdate));
-    equal(Number(newdate.setDayOfYear(364)), 1325203200000, 'setDayOfYear(364) ' + String(newdate));
-    equal(Number(newdate.dayOfYear(364)), 1325203200000, 'dayOfYear(364) ' + String(newdate));
+    equal(newdate.setDayOfYear(1).toISOString(), "2011-01-01T00:00:00.000+0000", 'setDayOfYear(1) ' + String(newdate));
+    equal(newdate.dayOfYear(1).toISOString(), '2011-01-01T00:00:00.000+0000', 'dayOfYear(1) ' + String(newdate));
+    equal(newdate.setDayOfYear(31).toISOString(), '2011-01-31T00:00:00.000+0000', 'setDayOfYear(31) ' + String(newdate));
+    equal(newdate.dayOfYear(31).toISOString(), '2011-01-31T00:00:00.000+0000', 'dayOfYear(31) ' + String(newdate));
+    equal(newdate.setDayOfYear(56).toISOString(), '2011-02-25T00:00:00.000+0000', 'setDayOfYear(56) ' + String(newdate));
+    equal(newdate.dayOfYear(56).toISOString(), '2011-02-25T00:00:00.000+0000', 'dayOfYear(56) ' + String(newdate));
+    equal(newdate.setDayOfYear(120).toISOString(), '2011-04-30T00:00:00.000+0000', 'setDayOfYear(120) ' + String(newdate));
+    equal(newdate.dayOfYear(120).toISOString(), '2011-04-30T00:00:00.000+0000', 'dayOfYear(120) ' + String(newdate));
+    equal(newdate.setDayOfYear(364).toISOString(), '2011-12-30T00:00:00.000+0000', 'setDayOfYear(364) ' + String(newdate));
+    equal(newdate.dayOfYear(364).toISOString(), '2011-12-30T00:00:00.000+0000', 'dayOfYear(364) ' + String(newdate));
 
     equal(newdate.dayOfYear(), 364, 'day of year is as set (364)');
     newdate.subDayOfYear(360);
@@ -109,19 +109,19 @@ QUnit.test("getDayOfYear()", function () {
     var newdate = new Tempus(2011, 0, 1);
     equal(newdate.getDayOfYear(), 1, String(newdate));
     
-    var newdate = new Tempus(2011, 0, 31);
+    newdate = new Tempus(2011, 0, 31);
     equal(newdate.getDayOfYear(), 31, String(newdate));
     equal(newdate.dayOfYear(), 31, String(newdate));
     
-    var newdate = new Tempus(2011, 1, 25);
+    newdate = new Tempus(2011, 1, 25);
     equal(newdate.getDayOfYear(), 56, String(newdate));
     equal(newdate.dayOfYear(), 56, String(newdate));
     
-    var newdate = new Tempus(2011, 3, 30);
+    newdate = new Tempus(2011, 3, 30);
     equal(newdate.getDayOfYear(), 120, String(newdate));
     equal(newdate.dayOfYear(), 120, String(newdate));
     
-    var newdate = new Tempus(2011, 11, 30);
+    newdate = new Tempus(2011, 11, 30);
     equal(newdate.getDayOfYear(), 364, String(newdate));
     equal(newdate.dayOfYear(), 364, String(newdate));
 });
