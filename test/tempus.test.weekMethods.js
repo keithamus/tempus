@@ -115,7 +115,7 @@ QUnit.test('getWeek()/week()', function () {
 });
 
 covers(Tempus.prototype, 'Tempus', 'setWeek', 'addWeek', 'subWeek');
-test('setWeek()/week(N)', function () {
+QUnit.test('setWeek()/week(N)', function () {
     var newdate = new Tempus(2010, 0, 1);
     newdate.setWeek(52);
     equal(newdate.toISODateString(), '2010-12-30', String(newdate));
@@ -316,7 +316,7 @@ QUnit.test('getWeekOrdinal()', function () {
 });
 
 covers(Tempus.prototype, 'Tempus', 'eachWeekOfMonth');
-test('Test eachWeekOfMonth', function () {
+QUnit.test('Test eachWeekOfMonth', function () {
     var newdate
     ,   c
     ,   n
@@ -356,7 +356,7 @@ test('Test eachWeekOfMonth', function () {
 });
 
 covers(Tempus.prototype, 'Tempus', 'eachWeekOfYear');
-test('Test eachWeekOfYear', function () {
+QUnit.test('Test eachWeekOfYear', function () {
     var newdate
     ,   i = 0
     ,   thursdays = [6, 13, 20, 27, 3, 10, 17, 24, 3, 10, 17, 24, 31, 7, 14, 21, 28, 5, 12, 19, 
@@ -367,11 +367,11 @@ test('Test eachWeekOfYear', function () {
     expect(212);
 
     newdate = new Tempus(2011, 0);
-    var dateObj = new Date(+newdate);
+    dateObj = new Date(+newdate);
 
     newdate.eachWeekOfYear(function (weekI, date) {
        equal(weekI, i+1 > 52 ? 53 - i : i+1, 'First argument is week in year ' + newdate.getMonthName());
-       ok(date instanceof Tempus, 'Second argument is Tempus object');
+       equal(date instanceof Tempus, true, 'Second argument is Tempus object');
        equal(date.date(), thursdays[i++], 'Second argument has date set to the current iterations thursday ('+thursdays[i]+'): ' + String(date));
        equal(this === newdate, true, '`this` is fixed to the original date: ' + String(date));
     });
