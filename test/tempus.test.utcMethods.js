@@ -71,10 +71,10 @@ QUnit.test("UTC Ordinal Hours methods", function () {
 covers(Tempus.prototype, 'Tempus', 'UTCDay', 'getUTCDay', 'setUTCDay', 'addUTCDay', 'subUTCDay', 'UTCISODay', 'getUTCISODay', 'setUTCISODay', 'addUTCISODay', 'subUTCISODay');
 QUnit.test("UTC Day and UTC ISO day methods", function () {
 
-    var newdate = new Tempus(2011, 8, 11, 23, 30, 0); // Sunday
-    newdate.timezone('+0000');
+    var newdate = new Tempus(2011, 8, 11, 23, 30, 0, 0, 0); // Sunday
 
     equal(newdate.timezone(), '+0000', String(newdate));
+    equal(newdate.timeString(), '23:30:00', 'time is 23:30:00');
     equal(newdate.day(), 0, 'day() is 0');
     equal(newdate.UTCDay(), 0, 'UTCDay() is 0');
     equal(newdate.getUTCDay(), 0, 'getUTCDay() is 0');
@@ -84,6 +84,7 @@ QUnit.test("UTC Day and UTC ISO day methods", function () {
     newdate.timezone('+0100');
 
     equal(newdate.timezone(), '+0100', String(newdate));
+    equal(newdate.timeString(), '00:30:00', 'time is 00:30:00');
     equal(newdate.day(), 1, 'day() is 1');
     equal(newdate.UTCDay(), 0, 'UTCDay() is 0');
     equal(newdate.getUTCDay(), 0, 'getUTCDay() is 0');
@@ -149,11 +150,12 @@ QUnit.test("UTC Day and UTC ISO day methods", function () {
 covers(Tempus.prototype, 'Tempus', 'UTCMonth', 'getUTCMonth', 'setUTCMonth', 'addUTCMonth', 'subUTCMonth', 'UTCOneIndexedMonth', 'getUTCOneIndexedMonth', 'setUTCOneIndexedMonth', 'addUTCOneIndexedMonth', 'subUTCOneIndexedMonth');
 QUnit.test("UTC Month and UTC one indexed month methods", function () {
 
-    var newdate = new Tempus(2011, 0, 31, 23, 30, 0); // SunMonth
-    newdate.timezone('+0000');
+    var newdate = new Tempus(2011, 0, 31, 23, 30, 0, 0, 0); // Sun
 
     equal(newdate.timezone(), '+0000', String(newdate));
-    equal(newdate.month(), 0, 'month() is 0');
+    equal(newdate.timeString(), '23:30:00', 'time is 23:30:00');
+    equal(newdate.date(), 31, 'date is 31st');
+    equal(newdate.month(), 0, 'month() is 0 (' + String(newdate) + ')');
     equal(newdate.UTCMonth(), 0, 'UTCMonth() is 0');
     equal(newdate.getUTCMonth(), 0, 'getUTCMonth() is 0');
     equal(newdate.UTCOneIndexedMonth(), 1, 'UTCOneIndexedMonth() is 1');
@@ -162,25 +164,30 @@ QUnit.test("UTC Month and UTC one indexed month methods", function () {
     newdate.timezone('+0100');
 
     equal(newdate.timezone(), '+0100', String(newdate));
-    equal(newdate.month(), 1, 'month() is 1');
+    equal(newdate.timeString(), '00:30:00', 'time is 00:30:00');
+    equal(newdate.date(), 1, 'date is 1st');
+    equal(newdate.month(), 1, 'month() is 1 (' + String(newdate) + ')');
     equal(newdate.UTCMonth(), 0, 'UTCMonth() is 0');
     equal(newdate.getUTCMonth(), 0, 'getUTCMonth() is 0');
     equal(newdate.UTCOneIndexedMonth(), 1, 'UTCOneIndexedMonth() is 1');
     equal(newdate.getUTCOneIndexedMonth(), 1, 'getUTCOneIndexedMonth() is 1');
 
-    newdate.setUTCMonth(2); // March
+    newdate.setUTCDate(31).setUTCMonth(2); // March (spills over to April)
 
     equal(newdate.timezone(), '+0100', String(newdate));
-    equal(newdate.month(), 3, 'month() is 3');
+    equal(newdate.timeString(), '00:30:00', 'time is 00:30:00');
+    equal(newdate.date(), 1, 'date is 1st');
+    equal(newdate.month(), 3, 'month() is 3 (' + String(newdate) + ')');
     equal(newdate.UTCMonth(), 2, 'UTCMonth() is 2');
     equal(newdate.getUTCMonth(), 2, 'getUTCMonth() is 2');
     equal(newdate.UTCOneIndexedMonth(), 3, 'UTCOneIndexedMonth() is 3');
     equal(newdate.getUTCOneIndexedMonth(), 3, 'getUTCOneIndexedMonth() is 3');
 
-    newdate.setUTCOneIndexedMonth(4); // May
+    newdate.setUTCOneIndexedMonth(4).setUTCDate(31); // May (spills over to Jun)
 
     equal(newdate.timezone(), '+0100', String(newdate));
-    equal(newdate.month(), 5, 'month() is 5');
+    equal(newdate.date(), 1, 'date is 1st');
+    equal(newdate.month(), 5, 'month() is 5 (' + String(newdate) + ')');
     equal(newdate.UTCMonth(), 4, 'UTCMonth() is 4');
     equal(newdate.getUTCMonth(), 4, 'getUTCMonth() is 4');
     equal(newdate.UTCOneIndexedMonth(), 5, 'UTCOneIndexedMonth() is 5');
@@ -189,7 +196,8 @@ QUnit.test("UTC Month and UTC one indexed month methods", function () {
     newdate.addUTCMonth(7); // December
 
     equal(newdate.timezone(), '+0100', String(newdate));
-    equal(newdate.month(), 0, 'month() is 0');
+    equal(newdate.date(), 1, 'date is 1st');
+    equal(newdate.month(), 0, 'month() is 0 (' + String(newdate) + ')');
     equal(newdate.UTCMonth(), 11, 'UTCMonth() is 11');
     equal(newdate.getUTCMonth(), 11, 'getUTCMonth() is 11');
     equal(newdate.UTCOneIndexedMonth(), 12, 'UTCOneIndexedMonth() is 12');
@@ -198,7 +206,8 @@ QUnit.test("UTC Month and UTC one indexed month methods", function () {
     newdate.addUTCOneIndexedMonth(1); // January
 
     equal(newdate.timezone(), '+0100', String(newdate));
-    equal(newdate.month(), 1, 'month() is 1');
+    equal(newdate.date(), 1, 'date is 1st');
+    equal(newdate.month(), 1, 'month() is 1 (' + String(newdate) + ')');
     equal(newdate.UTCMonth(), 0, 'UTCMonth() is 0');
     equal(newdate.getUTCMonth(), 0, 'getUTCMonth() is 0');
     equal(newdate.UTCOneIndexedMonth(), 1, 'UTCOneIndexedMonth() is 1');
@@ -207,7 +216,8 @@ QUnit.test("UTC Month and UTC one indexed month methods", function () {
     newdate.subUTCOneIndexedMonth(3); // October
 
     equal(newdate.timezone(), '+0100', String(newdate));
-    equal(newdate.month(), 10, 'month() is 10');
+    equal(newdate.date(), 1, 'date is 1st');
+    equal(newdate.month(), 10, 'month() is 10 (' + String(newdate) + ')');
     equal(newdate.UTCMonth(), 9, 'UTCMonth() is 9');
     equal(newdate.getUTCMonth(), 9, 'getUTCMonth() is 9');
     equal(newdate.UTCOneIndexedMonth(), 10, 'UTCOneIndexedMonth() is 10');
