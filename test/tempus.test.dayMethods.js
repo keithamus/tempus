@@ -85,23 +85,23 @@ covers(Tempus.prototype, 'Tempus', 'setDayOfYear', 'dayOfYear', 'subDayOfYear', 
 QUnit.test("setDayOfYear()", function () {
     var newdate = new Tempus(2011, 8);
     
-    equal(Number(newdate.setDayOfYear(1)), 1293840000000, String(newdate));
-    equal(Number(newdate.dayOfYear(1)), 1293840000000, String(newdate));
-    equal(Number(newdate.setDayOfYear(31)), 1296432000000, String(newdate));
-    equal(Number(newdate.dayOfYear(31)), 1296432000000, String(newdate));
-    equal(Number(newdate.setDayOfYear(56)), 1298592000000, String(newdate));
-    equal(Number(newdate.dayOfYear(56)), 1298592000000, String(newdate));
-    equal(Number(newdate.setDayOfYear(120)), 1304118000000, String(newdate));
-    equal(Number(newdate.dayOfYear(120)), 1304118000000, String(newdate));
-    equal(Number(newdate.setDayOfYear(364)), 1325203200000, String(newdate));
-    equal(Number(newdate.dayOfYear(364)), 1325203200000, String(newdate));
+    equal(Number(newdate.setDayOfYear(1)), 1293840000000, 'setDayOfYear(1) ' + String(newdate));
+    equal(Number(newdate.dayOfYear(1)), 1293840000000, 'dayOfYear(1) ' + String(newdate));
+    equal(Number(newdate.setDayOfYear(31)), 1296432000000, 'setDayOfYear(31) ' + String(newdate));
+    equal(Number(newdate.dayOfYear(31)), 1296432000000, 'dayOfYear(31) ' + String(newdate));
+    equal(Number(newdate.setDayOfYear(56)), 1298592000000, 'setDayOfYear(56) ' + String(newdate));
+    equal(Number(newdate.dayOfYear(56)), 1298592000000, 'dayOfYear(56) ' + String(newdate));
+    equal(Number(newdate.setDayOfYear(120)), 1304118000000, 'setDayOfYear(120) ' + String(newdate));
+    equal(Number(newdate.dayOfYear(120)), 1304118000000, 'dayOfYear(120) ' + String(newdate));
+    equal(Number(newdate.setDayOfYear(364)), 1325203200000, 'setDayOfYear(364) ' + String(newdate));
+    equal(Number(newdate.dayOfYear(364)), 1325203200000, 'dayOfYear(364) ' + String(newdate));
 
-    equal(newdate.dayOfYear(), 364);
+    equal(newdate.dayOfYear(), 364, 'day of year is as set (364)');
     newdate.subDayOfYear(360);
-    equal(newdate.dayOfYear(), 4, 'subDayOfYear');
+    equal(newdate.dayOfYear(), 4, 'subDayOfYear(360) == 4');
 
     newdate.addDayOfYear(55);
-    equal(newdate.dayOfYear(), 59, 'subDayOfYear');
+    equal(newdate.dayOfYear(), 59, 'addDayOfyear(55) == 59');
 });
 
 covers(Tempus.prototype, 'Tempus', 'getDayOfYear', 'dayOfYear');
