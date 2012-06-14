@@ -175,7 +175,7 @@ QUnit.test('Initialise with new ISO8601 intervals', function () {
     equal((new Tempus('PT2H30M')).toISOString(), '1970-01-01T02:30:00.000+0000', "PT2H30M: 1970-01-01T02:30:00.000+0000");
     equal((new Tempus('PT30M')).toISOString(), '1970-01-01T00:30:00.000+0000', "P30M: 1970-01-01T00:30:00.000+0000");
     equal((new Tempus('PT2S')).toISOString(), '1970-01-01T00:00:02.000+0000', "P2S: 1970-01-01T00:00:02.000+0000");
-    equal((new Tempus('P3Y6M4DT12H30M5S')).toISOString(), '1973-07-05T12:30:05.000+0000', "P3Y6M4DT12H30M5S: 1973-07-05T12:30:05.000+0000");
+    equal((new Tempus('P3Y6M4DT12H30M5S')).toISOString(), '1973-07-05T12:30:05.000+0100', "P3Y6M4DT12H30M5S: 1973-07-05T12:30:05.000+0100");
     equal((new Tempus('-P3D')).toISOString(), '1969-12-29T00:00:00.000+0000', "-P3D: 1969-12-29T00:00:00.000+0000");
     equal((new Tempus('-P1D2M')).toISOString(), '1969-10-31T00:00:00.000+0000', "-P1D2M: 1969-10-31T00:00:00.000+0000");
 
