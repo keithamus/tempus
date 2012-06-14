@@ -1,6 +1,10 @@
 /*jslint laxcomma: true, loopfunc: true */
 module.exports = function (grunt) {
 
+    // Grunt cannot read a .jshintrc file yet (bug #141)
+    // have to load it in fire JSON.parse - for some reason require() doesnt work
+    var jshintOptions = JSON.parse(require('fs').readFileSync('./.jshintrc'));
+
     grunt.initConfig({
         // We want to generate 3 new files, which are part of the release build...
         concat: {
@@ -42,6 +46,10 @@ module.exports = function (grunt) {
             ,   'tempus.with.interval.js'
             ,   'tempus.with.interval.and.timer.js'
             ]
+        },
+        jshint: {
+            options: jshintOptions,
+            globals: jshintOptions.predef
         },
         min: {
             // Minify Tempus JS, and also specify a target size when gzipped

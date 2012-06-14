@@ -1,4 +1,3 @@
-/*jslint laxcomma: true */
 /**
  * Tempus - Time for a new Date()
  *
@@ -15,7 +14,7 @@
  * @copyright (C) 2012, Keith Cirkel
  *
  */
- (function (global, Tempus, ArSlice, TYPE_STRING, TYPE_FUNCTION, TYPE_NUMBER, TYPE_ARRAY, TYPE_REGEXP, realTypeOf, undef) {
+(function (global, Tempus, ArSlice, TYPE_STRING, TYPE_FUNCTION, TYPE_NUMBER, TYPE_ARRAY, TYPE_REGEXP, realTypeOf, arrIndexOf, undef, i) {
     // ^ Get some methods from the global object, close scope on them for protection
 
     var TIProto
@@ -167,7 +166,7 @@
             
             // Treat Weeks specially
             if (matches[i][3] === 'W') {
-                this[neg + intvlMethods.D](+maches[i][0] * 7);
+                this[neg + intvlMethods.D](+matches[i][0] * 7);
             } else {
                 
                 // Set the property using "subValue() or addValue()"
@@ -176,7 +175,7 @@
                 // If we have a decimal, look for the next property in the line
                 if ((+matches[i][2] || 0) > 0) {
                     // Parse the split decimal also:
-                    n = AindexOf(intvlShorthand, +matches[i][3]) + 1 || intvlShorthand.length;
+                    n = arrIndexOf(intvlShorthand, +matches[i][3]) + 1 || intvlShorthand.length;
                     
                     this[ neg + intvlMethods[ intvlShorthand[n] ] ](+matches[i][1] * intvlUpperVals[n]);
                 }
@@ -228,4 +227,4 @@
     TempusInterval.addLocale('en', [pqualifiers, qualifiers], ['%d ago', 'in %d', 'about %s'], ', ');
     Tempus.Interval = TempusInterval;
 
-}(this, Tempus, ([]).slice, 'string', 'function', 'number', 'array', 'regexp', Tempus.util.realTypeOf));
+}(this, Tempus, ([]).slice, 'string', 'function', 'number', 'array', 'regexp', Tempus.util.realTypeOf, Tempus.util.arrIndexOf));

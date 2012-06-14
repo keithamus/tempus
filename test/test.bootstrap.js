@@ -19,6 +19,7 @@
         }
     };
     glob.FakeDate.time = 1315774123519;
+
     glob.fakeSetTimeout = glob.setTimeout = function (fn, time) {
         var run;
         return {

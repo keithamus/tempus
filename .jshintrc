@@ -2,7 +2,12 @@
 
     "predef": [
         "module",
-        "define"
+        "define",
+        "Tempus",
+        "setTimeout",
+        "clearTimeout",
+        "setInterval",
+        "clearInterval"
     ],
 
     "latedef": true,
