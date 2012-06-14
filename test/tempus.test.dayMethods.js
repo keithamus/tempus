@@ -216,7 +216,7 @@ QUnit.test('eachDayOfMonth()', function () {
     ,   days = [31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31]
     ,   dateObj;
     
-    expect(1460);
+    expect(1825);
     
     while(i--) {
         newdate = new Tempus(2011, i);
@@ -234,10 +234,9 @@ QUnit.test('eachDayOfMonth()', function () {
     
 });
 
-
 covers(Tempus.prototype, 'Tempus', 'eachDayOfYear');
 QUnit.test("eachDayOfYear()", function () {
-    expect(2196);
+    expect(2927);
 
     var lastDate = 0
     ,   newdate = new Tempus(2011, 0, 1)
