@@ -1,0 +1,22 @@
+{
+
+    "predef": [
+        "module",
+        "define"
+    ],
+
+    "latedef": true,
+    "noarg": true,
+    "nonew": true,
+    "undef": true,
+    "funcscope": true,
+    "laxbreak": true,
+    "laxcomma": true,
+    "smarttabs": true,
+    "validthis": true,
+    "loopfunc": true,
+
+    "maxlen": 150,
+    "indent": 4
+    
+}

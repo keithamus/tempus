@@ -1,4 +1,3 @@
-/*jslint laxcomma: true */
 /**
  * Tempus - Time for a new Date()
  *

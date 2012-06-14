@@ -1,0 +1,26 @@
+{
+
+    "predef": [
+        "QUnit",
+        "expect",
+        "equal",
+        "deepEqual",
+        "strictEqual",
+        "covers",
+        "Tempus"
+    ],
+
+    "latedef": true,
+    "noarg": true,
+    "nonew": true,
+    "undef": true,
+    "funcscope": true,
+    "laxbreak": true,
+    "laxcomma": true,
+    "smarttabs": true,
+    "validthis": true,
+    "loopfunc": true,
+
+    "indent": 4
+    
+}
