@@ -140,7 +140,7 @@
 
     function PSetIntvMethod(meth) {
         TIProto['diff' + meth] = function () {
-            return this._dT['UTC' + meth]() - this._dF['UTC' + meth]();
+            return this._dT['get' + meth]() - this._dF['get' + meth]();
         };
     }
 
@@ -193,6 +193,8 @@
         function (intveral_string) {
             var matches;
 
+            this.setTimezoneToLocale();
+
             // Apply additional arguments from 1st, allowing functions like:
             // Tempus('P3D', 2012, 01, 01); -> returns 4th Jan
             // If there arent any more args, then we get todays date, which we need
@@ -205,10 +207,12 @@
             if (intveral_string[2] && (matches = intveral_string[2].match(/\d+(?:[,\.]\d+)?[YMWD]/g))) {
                 parseISOInterveralFragment.call(this, matches, intveral_string[1] == '-');
             }
+
             // Match the time portion:
             if (intveral_string[3] && (matches = intveral_string[3].match(/\d+(?:[,\.]\d+)?[HMS]/g))) {
                 parseISOInterveralFragment.call(this, matches, intveral_string[1] == '-', true);
             }
+
             return this;
         },
         // We expect 1st arg to be string

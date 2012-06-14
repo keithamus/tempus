@@ -75,3 +75,37 @@ QUnit.test("isAfter()", function () {
     equal(newdate.isAfter(2012, 01, 01), false);
     equal(newdate.isAfter(new Tempus(1296476754200)), true);
 });
+
+covers(Tempus.prototype, 'Tempus', 'toggleUTC');
+QUnit.test("toggleUTC()/toggleUTC(bool)", function () {
+    var newdate = new Tempus('2011-01-01T12:25:52.200+0100');
+
+    equal(newdate.timezone(), '+0100', 'Timezone is +0100');
+
+    newdate.toggleUTC();
+    equal(newdate.timezone(), '+0000', 'toggleUTC removed timezone');
+
+    newdate.toggleUTC();
+    equal(newdate.timezone(), '+0100', 'toggleUTC added back timezone');
+
+    newdate.timezone('+0800');
+    equal(newdate.timezone(), '+0800', 'Timezone is +0800');
+
+    newdate.toggleUTC();
+    equal(newdate.timezone(), '+0000', 'toggleUTC removed timezone');
+
+    newdate.toggleUTC();
+    equal(newdate.timezone(), '+0800', 'toggleUTC added back timezone');
+
+    newdate.toggleUTC(true);
+    equal(newdate.timezone(), '+0000', 'toggleUTC(true) always switches date to UTC');
+
+    newdate.toggleUTC(true);
+    equal(newdate.timezone(), '+0000', 'toggleUTC(true) always switches date to UTC');
+
+    newdate.toggleUTC(false);
+    equal(newdate.timezone(), '+0800', 'toggleUTC(false) always restores UTC');
+
+    newdate.toggleUTC(false);
+    equal(newdate.timezone(), '+0800', 'toggleUTC(false) always restores UTC');
+});

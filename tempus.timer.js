@@ -13,7 +13,7 @@
  * @copyright Copyright © 2011, Keith Cirkel
  *
  */
-(function (global, Tempus, ArSlice, undef) {
+(function (global, Tempus, ArSlice, realTypeOf, undef) {
     // ^ Get some methods from the global object, close scope on them for protection
 
     var tsetTimeout = setTimeout
@@ -26,18 +26,22 @@
     /*               Timer Functions               */
     /***********************************************/
 
-    function Timer(fn, after, ctx) {
+    function Timer() {
         // If this was called without "new " then be friendly and do it for the user.
-        if (!(this instanceof Timer)) return new Timer(fn, after);
+        if (!(this instanceof Timer)) return new Timer(arguments);
+
+        // If we were only given 1 argument - an array - then use
+        // that as the arguments otherwise just use arguments.
+        var ar = !(1 in arguments) && /ar/.test(realTypeOf(arguments[0])) ? arguments[0] : arguments;
 
         // Set some defaults
         this.isInterval = false;
-        this.ctx = ctx || this;
+        this.ctx = ar[2] || this;
         this.runCount = 0;
 
         // Set the optional arguments.
-        if (typeof fn == 'function') this.run(fn);
-        if (after) this.after(after);
+        if (typeof ar[0] == 'function') this.run(ar[0]);
+        if (ar[1]) this.after(ar[1]);
     }
 
     Timer.prototype = {
@@ -101,4 +105,4 @@
 
     Tempus.Timer = Timer;
 
-}(this, Tempus, [].slice));
+}(this, Tempus, [].slice, Tempus.util.realTypeOf));
