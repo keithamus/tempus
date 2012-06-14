@@ -80,6 +80,25 @@ QUnit.test("getTimezone()/timezone() and getISOTimezone()/ISOTimezone() and time
 
 });
 
+
+covers(Tempus.prototype, 'Tempus', 'timezone');
+QUnit.test("setting timezone manually does not track DST changes", function () {
+    
+    var dateJan = new Date(2011, 0, 1)
+    ,   dateJul = new Date(2011, 5, 1)
+    ,   newdateJan = new Tempus(2011, 0)
+    ,   newdateJul = new Tempus(2011, 5);
+
+    newdateJan.timezone(0).addMonth(6);
+    equal(newdateJan.getTimezoneOffset(), 0, 'timezones do not match for DST');
+    equal(newdateJan.getTimezoneOffset() !== dateJul.getTimezoneOffset(), true, 'timezones do not match for DST');
+
+    newdateJan.addMonth(6);
+    equal(newdateJan.getTimezoneOffset(), 0, 'timezones do not match for non DST');
+    equal(newdateJan.getTimezoneOffset() !== dateJul.getTimezoneOffset(), true, 'timezones do not match for non DST');
+
+});
+
 covers(Tempus.prototype, 'Tempus', 'setTimezoneToLocale');
 QUnit.test("setTimezoneToLocale()", function () {
     newdate = new Tempus('2011-01-30T17:30:00.000+0800');
@@ -104,6 +123,22 @@ QUnit.test("setTimezoneToLocale()", function () {
     equal(newdate.getISOTimezone(), offset, String(newdate));
     equal(newdate.ISOTimezone(), offset, String(newdate));
     equal(newdate.timezoneOffset(),  new Date(2011, 5, 30, 17, 30, 0).getTimezoneOffset(), String(newdate));
+
+});
+
+covers(Tempus.prototype, 'Tempus', 'setTimezoneToLocale');
+QUnit.test("setTimezoneToLocale tracks DST changes", function () {
+    
+    var dateJan = new Date(2011, 0, 1)
+    ,   dateJul = new Date(2011, 5, 1)
+    ,   newdateJan = new Tempus(2011, 0)
+    ,   newdateJul = new Tempus(2011, 5);
+
+    newdateJan.setTimezoneToLocale().addMonth(6);
+    equal(newdateJan.getTimezoneOffset(), dateJul.getTimezoneOffset(), 'timezones match for DST');
+
+    newdateJan.addMonth(6);
+    equal(newdateJan.getTimezoneOffset(), dateJan.getTimezoneOffset(), 'timezones match non DST');
 
 });
 
