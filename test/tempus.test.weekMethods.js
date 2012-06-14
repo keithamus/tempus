@@ -316,14 +316,14 @@ QUnit.test('getWeekOrdinal()', function () {
 });
 
 covers(Tempus.prototype, 'Tempus', 'eachWeekOfMonth');
-QUnit.test('Test eachWeekOfMonth', function () {
+QUnit.test('eachWeekOfMonth', function () {
     var newdate
     ,   weekCount
     ,   dayNums
     ,   thursdaysI
     ,   i = -1
-    ,   months = [0, 4, 8, 12, 16, 21, 25, 30, 34, 38, 43, 47]
-    ,   thursdays = [[2, 9, 16, 23, 30],
+    ,   months = [51, 4, 8, 12, 16, 21, 25, 30, 34, 38, 43, 47]
+    ,   thursdays = [[1, 6, 13, 20, 27, 3],
                     [3, 10, 17, 24, 3],
                     [3, 10, 17, 24, 31],
                     [31, 7, 14, 21, 28],
@@ -337,19 +337,20 @@ QUnit.test('Test eachWeekOfMonth', function () {
                     [1, 8, 15, 22, 29]]
     ,   dateObj;
 
-    expect(228);
+    expect(252);
 
-    while(i++ < 12) {
+    while(i++ < 11) {
         newdate = new Tempus(2011, i);
         weekCount = months[newdate.month()];
         dayNums = thursdays[newdate.month()];
         thursdaysI = 0;
         newdate.eachWeekOfMonth(function (weekI, date) {
-           equal(weekI, ++weekCount, 'First argument is week ' + weekI + ' in ' + newdate.getMonthName());
-           equal(date instanceof Tempus, true, 'Second argument is Tempus object: ' + date.toString());
-           equal(date.date(), dayNums[thursdaysI], 'Second argument has date set to the current iterations thursday (' + dayNums[thursdaysI] + '): ' + String(date));
-           equal(this === newdate, true, '`this` is fixed to the original date: ' + String(date));
-           thursdaysI++;
+            equal(++weekCount, weekI, 'First argument is week ' + weekI + ' in ' + newdate.getMonthName());
+            if (weekCount === 52) weekCount = 0;
+            equal(date instanceof Tempus, true, 'Second argument is Tempus object: ' + date.toString());
+            equal(date.date(), dayNums[thursdaysI], 'Second argument has date set to the current iterations thursday (' + dayNums[thursdaysI] + '): ' + String(date));
+            equal(this === newdate, true, '`this` is fixed to the original date: ' + String(date));
+            thursdaysI++;
         });
     }
    

@@ -77,12 +77,13 @@
     }
     
     // A standard iterator we'll use quite a bit for each*of* methods
-    function eachDate(i, count, plus, setMethod, getMethod, callback, dateObj) {
-        for (var d; i <= count; i += plus) {
-            d =  Tempus(dateObj || this)[setMethod](i);
-            callback.call(this, d[getMethod](), d);
+    function eachDate(tempus, i, count, setMethod, getMethod, callback, dateObj) {
+        for (var d; i <= count; i += 1) {
+            d =  Tempus(dateObj || (dateObj = tempus))[setMethod](i);
+
+            callback.call(tempus, d[getMethod](), d);
         }
-        return this;
+        return tempus;
     }
     
     
@@ -442,12 +443,21 @@
         },
         
         eachWeekOfMonth: function (callback) {
-            var d = Tempus(this);
-            return eachDate.call(this, d.date(1).week(), d.date(d.getLastDayOfMonth()).week(), 1, 'week', 'week', callback, d);
+            var d = Tempus(this).date(1)
+            ,   firstWeek = d.week()
+            ,   lastWeek = d.date(d.getLastDayOfMonth()).week();
+            // Sometimes the week can rest inside last year, for January - so we need to ensure
+            // when this happens it is will output each week
+            if (firstWeek === 52) {
+                callback.call(this, 52, d.date(1));
+                firstWeek = 1;
+            }
+
+            return eachDate(this, firstWeek, lastWeek, 'week', 'week', callback, d);
         },
         
         eachWeekOfYear: function (callback) {
-            return eachDate.call(this, 1, 53, 1, 'week', 'week', callback);
+            return eachDate(this, 1, 53, 'week', 'week', callback);
         },
         
         /*************************************/
@@ -524,20 +534,20 @@
 
         eachDayOfWeek: function (callback) {
             var d = Tempus(this).day(0);
-            return eachDate.call(this, d.date(), d.date() + 6, 1, 'date', 'date', callback, d);
+            return eachDate(this, d.date(), d.date() + 6, 'date', 'date', callback, d);
         },
 
         eachISODayOfWeek: function (callback) {
             var d = Tempus(this).ISODay(1);
-            return eachDate.call(this, d.date(), d.date() + 6, 1, 'date', 'date', callback, d);
+            return eachDate(this, d.date(), d.date() + 6, 'date', 'date', callback, d);
         },
         
         eachDayOfMonth: function (callback) {
-            return eachDate.call(this, 1, this.getLastDayOfMonth(), 1, 'date', 'date', callback);
+            return eachDate(this, 1, this.getLastDayOfMonth(), 'date', 'date', callback);
         },
         
         eachDayOfYear: function (callback) {
-            return eachDate.call(this, 1, 365+this.isLeapYear(), 1, 'dayOfYear', 'dayOfYear', callback);
+            return eachDate(this, 1, 365+this.isLeapYear(), 'dayOfYear', 'dayOfYear', callback);
         },
         
         /*************************************/
