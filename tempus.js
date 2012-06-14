@@ -99,14 +99,24 @@
      *
      */
     var realTypeOf = function(v) {
-        if (v === undef || v === null) return ''+v; // undefined
+        // If the var is an undefined or null var the easiest
+        // way to get its type is just to coerce it to a string
+        if (v === undef || v === null) return ''+v;
+        // Otherwise, the easiest way to get its type is to use
+        // Object's toString() method, which returns [object <TYPE>] where
+        // <TYPE> is the internal name for the object. This is pretty darn reliable!
         return ({}).toString.call(v).match(/\w+/g)[1].toLowerCase();
     };
 
     // """Firefox < 3, IE < 9""" `arguments` is an [object Object], not [object Arguments].
-    // So re-make the realTypeOf method, this time using a looser check for `arguments`
+    // So if realTypeOf(arguments) comes back as 'object' we can device a new realTypeOf function
+    // live at runtime.
     if (realTypeOf(arguments) != 'arguments') {
         var _realTypeOf = realTypeOf;
+        // Remake the realTypeOf method, this time using a looser check for `arguments`
+        // This check ensures that the object has a "callee" property on itself, which is
+        // about the only reliable way to test for argument objects that don't declare their
+        // internal class
         realTypeOf = function (v) {
            if (v && v.hasOwnProperty && v.hasOwnProperty('callee')) return 'arguments';
            return _realTypeOf(v);
@@ -711,6 +721,10 @@
         isAfter: function () {
             return +(this) > +Tempus(arguments);
         },
+
+        /*************************************/
+        /*           Misc Methods            */
+        /*************************************/
 
         locale: function (setter) {
             if (0 in arguments) {
