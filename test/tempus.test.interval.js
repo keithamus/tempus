@@ -50,6 +50,8 @@ QUnit.test('valueOf()', function () {
 
 QUnit.test("Interval() takes Tempus dates as args", function () {
 
+    FakeDate.stubTimezone = true;
+
     equal(+(new Tempus.Interval(942520000, 942523519)), 3519, 'Interval can set on numbers like Tempus');
     equal(+(new Tempus.Interval('Sun, 11 Sep 2011 21:48:43 GMT', 'Sun, 11 Sep 2011 21:48:44 GMT')), 1000, 'Interval can set on strings like Tempus');
     equal(+(new Tempus.Interval('2012-12-21T06:06:06.123+0000', '2012-12-21T06:06:06.124+0000')), 1, 'Interval can set on strings like Tempus');
@@ -66,6 +68,8 @@ QUnit.test("Interval() takes Tempus dates as args", function () {
     }, 'object');
 
     equal(Tempus.Interval({ args: [0] }, { args: [1]}), 1, 'Interval uses parsers from Tempus');
+
+    FakeDate.stubTimezone = true;
 });
 
 covers(Tempus.Interval.prototype, 'Interval', 'diffFullYear', 'diffMonth', 'diffDate', 'diffHours',

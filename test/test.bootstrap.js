@@ -8,17 +8,26 @@
 
     glob.FakeDate = glob.Date = function (a, b, c, d, e, f, g) {
         switch (arguments.length) {
-            case 0: return new oldDate(glob.FakeDate.time);
-            case 1: return new oldDate(a);
-            case 2: return new oldDate(a, b);
-            case 3: return new oldDate(a, b, c);
-            case 4: return new oldDate(a, b, c, d);
-            case 5: return new oldDate(a, b, c, d, e);
-            case 6: return new oldDate(a, b, c, d, e, f);
-            default: return new oldDate(a, b, c, d, e, f, g);
+            case 0: return new glob.oldDate(glob.FakeDate.time);
+            case 1: return new glob.oldDate(a);
+            case 2: return new glob.oldDate(a, b);
+            case 3: return new glob.oldDate(a, b, c);
+            case 4: return new glob.oldDate(a, b, c, d);
+            case 5: return new glob.oldDate(a, b, c, d, e);
+            case 6: return new glob.oldDate(a, b, c, d, e, f);
+            default: return new glob.oldDate(a, b, c, d, e, f, g);
         }
     };
     glob.FakeDate.time = 1315774123519;
+
+    glob.FakeDate.stubTimezone = false;
+    var oldGTZ = glob.oldDate.prototype.getTimezoneOffset;
+    glob.oldDate.prototype.getTimezoneOffset = function () {
+        if (glob.FakeDate.stubTimezone) {
+            return 0;
+        }
+        return oldGTZ.apply(this, arguments);
+    };
 
     glob.fakeSetTimeout = glob.setTimeout = function (fn, time) {
         var run;
@@ -55,7 +64,7 @@
         };
     };
 
-    fakeClearInterval = glob.clearInterval = fakeClearTimeout = glob.clearTimeout = function (timer) {
+    glob.fakeClearInterval = glob.clearInterval = glob.fakeClearTimeout = glob.clearTimeout = function (timer) {
         timer.cleared = true;
     };
 

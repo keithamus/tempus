@@ -168,6 +168,8 @@ QUnit.test('Initialise with ISO8601 datetimes', function () {
 });
     
 QUnit.test('Initialise with new ISO8601 intervals', function () {
+    FakeDate.stubTimezone = true;
+
     equal((new Tempus('P3D')).toISOString(), '1970-01-04T00:00:00.000+0000', "P3D: 1970-01-04T00:00:00.000+0000");
     equal((new Tempus('P2M1D')).toISOString(), '1970-03-02T00:00:00.000+0000', "P2M1D: 1970-03-02T00:00:00.000+0000");
     equal((new Tempus('P1Y2M1D')).toISOString(), '1971-03-02T00:00:00.000+0000', "P1Y2M1D: 1971-03-02T00:00:00.000+0000");
@@ -183,6 +185,8 @@ QUnit.test('Initialise with new ISO8601 intervals', function () {
     equal((new Tempus('P3D', 2011, 0, 1)).toISOString(), '2011-01-04T00:00:00.000+0000', "P3D [2011, 0, 1]: 2011-01-04T00:00:00.000+0000");
     equal((new Tempus('P3D', 'P1D')).toISOString(), '1970-01-05T00:00:00.000+0000', "P3D [P1D]: 1970-01-05T00:00:00.000+0000");
     equal((new Tempus('P3D', 345600000)).toISOString(), '1970-01-08T00:00:00.000+0000', "P3D [345600000]: 1970-01-08T00:00:00.000+0000");
+
+    FakeDate.stubTimezone = false;
 });
 
 QUnit.test('Ensure setting date after initial set can extend existing date', function () {
@@ -196,6 +200,8 @@ QUnit.test('Ensure setting date after initial set can extend existing date', fun
 });
 
 QUnit.test('many incorrect parsers invalidates further ones [#11][Safari]', function () {
+    FakeDate.stubTimezone = true;
+
     var newdate = Tempus('05-02-2011', ['%d-%m-%Y', '%Y-%m-%d']);
     equal(''+new Date(+newdate), ''+new Date(2011, 1, 5), String(newdate));
     
@@ -207,6 +213,8 @@ QUnit.test('many incorrect parsers invalidates further ones [#11][Safari]', func
     
     newdate = Tempus('05-02-2011', ['%d-%m-%Y', '%Y-%m-%d']);
     equal(''+new Date(+newdate), ''+new Date(2011, 1, 5), String(newdate));
+
+    FakeDate.stubTimezone = false;
 });
     
 QUnit.test('Initialize date with array of reverse formatters', function () {

@@ -63,6 +63,7 @@ QUnit.test('now()', function () {
 
 covers(Tempus, 'Tempus.*', 'addTimeFormat');
 QUnit.test('addTimeFormat(name, format)', function () {
+    FakeDate.stubTimezone = true;
 
     Tempus.addTimeFormat('MyTest', '%Y::%d::%m');
 
@@ -76,10 +77,12 @@ QUnit.test('addTimeFormat(name, format)', function () {
 
     // Clean up for Code Coverage
     delete Tempus.prototype.toMyTestString;
+    FakeDate.stubTimezone = false;
 });
 
 covers(Tempus, 'Tempus.*', 'addTimeFormat');
 QUnit.test('addTimeFormat(formatObject)', function () {
+    FakeDate.stubTimezone = true;
 
     Tempus.addTimeFormat({
         'MyDifferentTest': '%Y::%d::%m',
@@ -105,6 +108,7 @@ QUnit.test('addTimeFormat(formatObject)', function () {
     // Clean up for Code Coverage
     delete Tempus.prototype.toMyDifferentTestString;
     delete Tempus.prototype.toMyOtherTestString;
+    FakeDate.stubTimezone = false;
 });
 
 covers(Tempus, 'Tempus.*', 'addParser');
