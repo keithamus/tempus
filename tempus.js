@@ -1082,8 +1082,6 @@
             if (!match)
                 throw new Error("Cannot parse '" + string + "' with '" + format + "'");
             
-            this.setTimezoneToLocale();
-
             i = match.length;
             while(i--) {
                 // Date should be set after month, that way it doesn't end up jumping to the next month
