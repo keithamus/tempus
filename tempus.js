@@ -90,6 +90,7 @@
     // and if so make adjustments to it.
     function trackDST(tempus) {
         if (tempus._tzisl) tempus._tz = -tempus._d.getTimezoneOffset();
+        return tempus;
     }
     
     
@@ -378,9 +379,8 @@
 
         century: function (setter) {
             if (0 in arguments) {
-                return this.fullYear(''+(setter-1)+stringPad(this.year(), 2));
+                return trackDST(this.fullYear(''+(setter-1)+stringPad(this.year(), 2)));
             }
-            trackDST(this);
             return -~(''+this.fullYear()).substr(0,2);
         },
         
@@ -390,7 +390,7 @@
 
         // fix getYear because it's broken
         year: function (year) {
-            if (0 in arguments) return this.fullYear(+(''+year).substr(0, 2)+2000);
+            if (0 in arguments) return trackDST(this.fullYear(+(''+year).substr(0, 2)+2000));
 
             return +(''+this.fullYear()).substr(2);
         },
@@ -409,8 +409,7 @@
                     newsetter = +setter;
                 }
                 this._d.setUTCMonth(newsetter);
-                trackDST(this);
-                return this;
+                return trackDST(this);
             }
             return this._d.getUTCMonth();
         },
@@ -441,9 +440,7 @@
         week: function (setter) {
             if (0 in arguments) {
 				// subtract the number of days since the last Friday on Jan 1st.
-				this.dayOfYear(setter * 7 - (this.dayOfYear(1).day() + 2) % 7);
-                trackDST(this);
-                return this;
+                return trackDST(this.dayOfYear(setter * 7 - (this.dayOfYear(1).day() + 2) % 7));
             }
             
             return Math.ceil(Tempus(this).day(4).dayOfYear() / 7);
@@ -489,8 +486,7 @@
                 // | Saturday |    Wednesday   |      6     |   Thursday  |
                 // |  Sunday  |    Thursday    |      7     |   Thursday  |
                 if (this.day() !== setter) this.addDate(setter - this.ISODay());
-                trackDST(this);
-                return this;
+                return trackDST(this);
             }
             return this._d.getUTCDay();
         },
@@ -509,9 +505,7 @@
         
         dayOfYear: function (day) {
             if (0 in arguments) {
-                this.month(0).date(day);
-                trackDST(this);
-                return this;
+                return trackDST(this.month(0).date(day));
             }
             
             day = this.date();
@@ -552,8 +546,7 @@
         hours: function (hours) {
             if (0 in arguments) {
                 this._d.setUTCHours(+hours);
-                trackDST(this);
-                return this;
+                return trackDST(this);
             }
             
             return this._d.getUTCHours();
@@ -570,8 +563,7 @@
         minutes: function (setter) {
             if (0 in arguments) {
                 this._d.setUTCMinutes(+setter);
-                trackDST(this);
-                return this;
+                return trackDST(this);
             }
 
             return this._d.getUTCMinutes();
