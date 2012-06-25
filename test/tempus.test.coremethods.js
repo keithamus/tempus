@@ -123,7 +123,11 @@ QUnit.test('addParser', function () {
     raises(function () {
         Tempus({});
     },
-    /Invalid Date/, 'Test returning false doesnt parse module');
+    function (e) {
+        equal(e.message, "Invalid Date", 'Error');
+        return true;
+    },
+    'Test returning false doesnt parse module');
 
     testFnRet = true;
 
@@ -132,17 +136,29 @@ QUnit.test('addParser', function () {
     raises(function () {
         Tempus({}, false);
     },
-    /Invalid Date/, 'Test returning true, passing [{}, false] doesnt parse module because 2nd arg should be number');
+    function (e) {
+        equal(e.message, "Invalid Date", 'Error');
+        return true;
+    },
+    'Test returning true, passing [{}, false] doesnt parse module because 2nd arg should be number');
     
     raises(function () {
         Tempus({}, new RegExp());
     },
-    /Invalid Date/, 'Test returning true, passing [{}, false] doesnt parse module because 2nd arg should be number');
+    function (e) {
+        equal(e.message, "Invalid Date", 'Error');
+        return true;
+    },
+    'Test returning true, passing [{}, false] doesnt parse module because 2nd arg should be number');
     
     raises(function () {
         Tempus({}, '');
     },
-    /Invalid Date/, 'Test returning true, passing [{}, false] doesnt parse module because 2nd arg should be number');
+    function (e) {
+        equal(e.message, "Invalid Date", 'Error');
+        return true;
+    },
+    'Test returning true, passing [{}, false] doesnt parse module because 2nd arg should be number');
 
     equal(Tempus({}).toISOString(), '2011-01-01T12:30:00.000+0000', 'Test returning true, passing [{}] parses date');
 });

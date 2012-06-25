@@ -7,12 +7,16 @@ QUnit.test("new Interval()", function () {
     
     var interval = new Tempus.Interval(new Tempus(), new Tempus());
 
-    ok(interval instanceof Tempus.Interval, 'Interval returns interval');
+    equal(interval instanceof Tempus.Interval, true, 'Interval returns interval');
 
     raises(function () {
-        new Tempus.Interval();
+        var t = new Tempus.Interval();
     },
-    /^Error: Invalid Date$/, 'Tempus.Interval() raises "Invalid Date" with no arguments');
+    function (e) {
+        equal(e.message, "Invalid Date", 'Error');
+        return true;
+    },
+    'Tempus.Interval() raises "Invalid Date" with no arguments');
 
 });
 
@@ -20,12 +24,16 @@ QUnit.test("Interval() as a factory method", function () {
     
     var interval = Tempus.Interval(new Tempus(), new Tempus());
 
-    ok(interval instanceof Tempus.Interval, 'Interval returns interval');
+    equal(interval instanceof Tempus.Interval, true, 'Interval returns interval');
 
     raises(function () {
         Tempus.Interval();
     },
-    /^Error: Invalid Date$/, 'Tempus.Interval() raises "Invalid Date" with no arguments');
+    function (e) {
+        equal(e.message, "Invalid Date", 'Error');
+        return true;
+    },
+    'Tempus.Interval() raises "Invalid Date" with no arguments');
 
 });
 
