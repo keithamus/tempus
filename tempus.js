@@ -592,7 +592,7 @@
 
         timeString: function (setter) {
             if (0 in arguments) {
-                setter = setter.split(':');
+                setter = setter.split(':').concat([ 0, 0, 0]);
                 this.hours(setter[0]).minutes(setter[1]).seconds(setter[2]);
                 return this;
             }

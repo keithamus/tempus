@@ -211,7 +211,12 @@ QUnit.test("timeString() and timeSring(n)", function () {
     equal(newdate.hours(), 7, String(newdate));
     equal(newdate.minutes(), 18, String(newdate));
     equal(newdate.seconds(), 29, String(newdate));
-    
+
+    newdate.timeString('07:18');
+    equal(newdate.timeString(), '07:18:00', String(newdate));
+    newdate.timeString('07');
+    equal(newdate.timeString(), '07:00:00', String(newdate));
+
 });
 
 covers(Tempus.prototype, 'Tempus', 'secondFraction', 'getSecondFraction', 'setSecondFraction',
