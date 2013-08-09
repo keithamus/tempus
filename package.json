@@ -1,6 +1,6 @@
 {
-    "name": "Tempus",
-    "version": "0.1.0",
+    "name": "tempus",
+    "version": "0.1.9",
     "description": "Time for a new Date()",
     "homepage": "http://tempus-js.com",
     "keywords": [ "date", "browser", "node" ],
