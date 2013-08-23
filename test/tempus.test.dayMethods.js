@@ -5,14 +5,14 @@ QUnit.test('getDay()/day() and getISODay()/ISODay()', function () {
     var newdate = new Tempus(2011, 8, 11)
     ,   i = 11
     ,   n = 6;
-    
+
     expect(28);
-    
+
     equal(newdate.getDay(), 0, String(newdate) + 'getDay');
     equal(newdate.day(), 0, String(newdate) + 'day');
     equal(newdate.getISODay(), 7, String(newdate) + 'getISODay');
     equal(newdate.ISODay(), 7, String(newdate) + ' ISODay');
-    
+
     while(i-- > 5) {
         newdate.setDate(i);
         equal(newdate.getDay(), n, String(newdate) + ' getDay');
@@ -27,9 +27,9 @@ covers(Tempus.prototype, 'Tempus', 'setDay', 'setISODay', 'getISODay', 'addDay',
 QUnit.test('setDay() and setDay(true)/setISODay()', function () {
     var newdate = new Tempus(2011, 8, 9)
     ,   n = 0;
-    
+
     expect(44);
-    
+
     newdate.setDay(0);
     equal(newdate.getDay(), 0, String(newdate) + ' setDay(0) with getDay');
     equal(newdate.getISODay(), 7, String(newdate) + ' setDay(0) with getISODay');
@@ -54,13 +54,13 @@ QUnit.test('setDay() and setDay(true)/setISODay()', function () {
     }
 });
 
-covers(Tempus.prototype, 'Tempus', 'getDayName', 'getFullDayName');
+covers(Tempus.prototype, 'Tempus', 'getDayName', 'getFullDayName', 'dayName', 'fullDayName');
 QUnit.test('getDayName(), and getFullDayName()', function () {
     var newdate = new Tempus(2011, 8, 11)
     ,   i = 11
     ,   n = 6;
-    
-    expect(13);
+
+    expect(28);
 
     var SHORTDAYS = [
         'Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'
@@ -70,13 +70,53 @@ QUnit.test('getDayName(), and getFullDayName()', function () {
     ];
 
 
-    
+
     equal(newdate.getDayName(), SHORTDAYS[0], String(newdate));
-    
+    equal(newdate.dayName(), SHORTDAYS[0], String(newdate));
+    equal(newdate.setFullDayName(), FULLDAYS[0], String(newdate));
+    equal(newdate.fullDayName(), FULLDAYS[0], String(newdate));
+
     while(i-- > 5) {
         newdate.setDate(i);
         equal(newdate.getDayName(), SHORTDAYS[n], String(newdate));
+        equal(newdate.dayName(), SHORTDAYS[n], String(newdate));
         equal(newdate.getFullDayName(), FULLDAYS[n], String(newdate));
+        equal(newdate.fullDayName(), FULLDAYS[n], String(newdate));
+        --n;
+    }
+});
+
+covers(Tempus.prototype, 'Tempus', 'setDayName', 'setFullDayName', 'dayName', 'fullDayName');
+QUnit.test('getDayName(), and getFullDayName()', function () {
+    var newdate = new Tempus(2011, 8, 11)
+    ,   i = 11
+    ,   n = 6;
+
+    expect(52);
+
+    var SHORTDAYS = [
+        'Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'
+    ]
+    ,   FULLDAYS = [
+        'Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'
+    ];
+
+
+
+    equal(newdate.setDayName(SHORTDAYS[0]).getDay(), 0, String(newdate));
+    equal(newdate.dayName(SHORTDAYS[0]).getDay(), 0, String(newdate));
+    equal(newdate.setFullDayName(FULLDAYS[0]).getDay(), 0, String(newdate));
+    equal(newdate.fullDayName(FULLDAYS[0]).getDay(), 0, String(newdate));
+
+    while(i-- > 5) {
+        equal(newdate.setDayName(SHORTDAYS[n]).getDay(), n, String(newdate));
+        equal(newdate.dayName(SHORTDAYS[n]).getDay(), n, String(newdate));
+        equal(newdate.dayName(SHORTDAYS[n].toUpperCase()).getDay(), n, String(newdate));
+        equal(newdate.dayName(SHORTDAYS[n].toLowerCase()).getDay(), n, String(newdate));
+        equal(newdate.setFullDayName(FULLDAYS[n]).getDay(), n, String(newdate));
+        equal(newdate.fullDayName(FULLDAYS[n]).getDay(), n, String(newdate));
+        equal(newdate.fullDayName(FULLDAYS[n].toLowerCase()).getDay(), n, String(newdate));
+        equal(newdate.fullDayName(FULLDAYS[n].toUpperCase()).getDay(), n, String(newdate));
         --n;
     }
 });
@@ -84,7 +124,7 @@ QUnit.test('getDayName(), and getFullDayName()', function () {
 covers(Tempus.prototype, 'Tempus', 'setDayOfYear', 'dayOfYear', 'subDayOfYear', 'addDayOfYear');
 QUnit.test("setDayOfYear()", function () {
     var newdate = new Tempus(2011, 8).timezone(0).hours(0);
-    
+
     equal(newdate.setDayOfYear(1).toISOString(), "2011-01-01T00:00:00.000+0000", 'setDayOfYear(1) ' + String(newdate));
     equal(newdate.dayOfYear(1).toISOString(), '2011-01-01T00:00:00.000+0000', 'dayOfYear(1) ' + String(newdate));
     equal(newdate.setDayOfYear(31).toISOString(), '2011-01-31T00:00:00.000+0000', 'setDayOfYear(31) ' + String(newdate));
@@ -108,19 +148,19 @@ covers(Tempus.prototype, 'Tempus', 'getDayOfYear', 'dayOfYear');
 QUnit.test("getDayOfYear()", function () {
     var newdate = new Tempus(2011, 0, 1);
     equal(newdate.getDayOfYear(), 1, String(newdate));
-    
+
     newdate = new Tempus(2011, 0, 31);
     equal(newdate.getDayOfYear(), 31, String(newdate));
     equal(newdate.dayOfYear(), 31, String(newdate));
-    
+
     newdate = new Tempus(2011, 1, 25);
     equal(newdate.getDayOfYear(), 56, String(newdate));
     equal(newdate.dayOfYear(), 56, String(newdate));
-    
+
     newdate = new Tempus(2011, 3, 30);
     equal(newdate.getDayOfYear(), 120, String(newdate));
     equal(newdate.dayOfYear(), 120, String(newdate));
-    
+
     newdate = new Tempus(2011, 11, 30);
     equal(newdate.getDayOfYear(), 364, String(newdate));
     equal(newdate.dayOfYear(), 364, String(newdate));
@@ -129,7 +169,7 @@ QUnit.test("getDayOfYear()", function () {
 covers(Tempus.prototype, 'Tempus', 'getDateOrdinal');
 QUnit.test('getDateOrdinal()', function () {
     var newdate = new Tempus(2011, 8, 1);
-    
+
     equal(newdate.getDateOrdinal(), 'st', '1st');
     newdate.setDate(2);
     equal(newdate.getDateOrdinal(), 'nd', '2nd');
@@ -165,7 +205,7 @@ QUnit.test('getDateOrdinal()', function () {
 
 covers(Tempus.prototype, 'Tempus', 'eachDayOfWeek');
 QUnit.test('eachDayOfWeek()', function () {
-    
+
     var newdate = new Tempus(2012, 2, 13)
     ,   i = 0
     ,   dateDay = 11
@@ -182,12 +222,12 @@ QUnit.test('eachDayOfWeek()', function () {
         ++i;
         ++dateDay;
     });
-    
+
 });
 
 covers(Tempus.prototype, 'Tempus', 'eachISODayOfWeek');
 QUnit.test('eachISODayOfWeek()', function () {
-    
+
     var newdate = new Tempus(2012, 2, 13)
     ,   i = 0
     ,   dateDay = 12
@@ -204,7 +244,7 @@ QUnit.test('eachISODayOfWeek()', function () {
         ++i;
         ++dateDay;
     });
-    
+
 });
 
 covers(Tempus.prototype, 'Tempus', 'eachDayOfMonth');
@@ -215,9 +255,9 @@ QUnit.test('eachDayOfMonth()', function () {
     ,   n = 0
     ,   days = [31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31]
     ,   dateObj;
-    
+
     expect(1825);
-    
+
     while(i--) {
         newdate = new Tempus(2011, i);
         dateObj = new Date(+newdate);
@@ -231,7 +271,7 @@ QUnit.test('eachDayOfMonth()', function () {
             equal(this === newdate, true, '`this` is fixed to the original date: ' + String(date));
         });
     }
-    
+
 });
 
 covers(Tempus.prototype, 'Tempus', 'eachDayOfYear');
@@ -255,7 +295,7 @@ QUnit.test("eachDayOfYear()", function () {
     lastDate = 0;
     newdate = new Tempus(2012, 0, 1);
     dateObj = new FakeDate(2012, 0, 0);
-    
+
     newdate.eachDayOfYear(function (dayI, date) {
         equal(dayI, ++lastDate, 'First argument is day in ' + date.getMonthName());
         ok(date instanceof Tempus, 'Second argument is Tempus object');
@@ -266,5 +306,5 @@ QUnit.test("eachDayOfYear()", function () {
     });
 
     equal(lastDate, 366);
-    
+
 });

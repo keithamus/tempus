@@ -14,7 +14,7 @@
  */
 (function (global, Date, ArSlice, undef) {
     // ^ Get some methods from the global object, close scope on them for protection
-    
+
     // strftimeRegExp is a RegExp used to capture fragments of an strftime or strptime string. The
     // str(f/p)time standard stipulates that a %, optionally followed by a O or E, followed by a
     // letter of the alphabet (or a % symbol) is an strptime fragment. (See the strftime parser
@@ -29,7 +29,7 @@
     // become the list of format processors used for strftime and strptime
     ,   FORMAT_PROCESSORS
     ,   REVERSE_FORMAT_PROCESSORS
-    
+
     // Declaring TIME_FORMATS, DEFAULT_REVERSE_FORMATTER and DEFAULT_REVERSE_FORMATTER_REGEX and
     // DEFAULT_REVERSE_FORMATTER_REGEXS as "private" vars. These become the formats for toString and
     // reverse formatter implementations
@@ -41,7 +41,7 @@
     // Declaring LOCALES as a "private" var, which will be populates with locale info
     // (see addLocale)
     ,   LOCALES = {}
-    
+
     // TProto is shorthand for Tempus.prototype, and will minify down nicely.
     ,   TProto
 
@@ -66,7 +66,7 @@
     function Tempus() {
         // If this was called without "new " then be friendly and do it for the user.
         if (!(this instanceof Tempus)) return new Tempus(arguments);
-        
+
         // Set the LOCALE from the base LOCALE. This way we can have per-instance LOCALEs
         this._l = Tempus.LOCALE;
 
@@ -74,7 +74,7 @@
         // to run set with, otherwise just use arguments.
         this.set.apply(this, !(1 in arguments) && /ar/.test(realTypeOf(arguments[0])) ? arguments[0] : arguments);
     }
-    
+
     // A standard iterator we'll use quite a bit for each*of* methods
     function eachDate(tempus, i, count, setMethod, getMethod, callback, dateObj) {
         for (var d; i <= count; i += 1) {
@@ -92,8 +92,8 @@
         if (tempus._tzisl) tempus._tz = -tempus._d.getTimezoneOffset();
         return tempus;
     }
-    
-    
+
+
     /*********************************/
     /*   Vatious Utility Functions   */
     /*********************************/
@@ -129,7 +129,7 @@
            return _realTypeOf(v);
         };
     }
-        
+
     /**
      * Get the index of an item in an array
      *
@@ -144,7 +144,7 @@
         for (var i = 0; i < a.length; ++i) if (a[i] === v) return i;
         return -1;
     }
-        
+
     /**
      * Get the number's ordinal suffix appended to the number, as a string
      *
@@ -157,7 +157,7 @@
         return [0, 'st', 'nd', 'rd'][num / 10 % 10 ^ 1 && num % 10] || 'th';
     }
 
-        
+
     /**
      * Pad a string with [width] aditional characters of [padString]
      *
@@ -184,14 +184,14 @@
         getOrdinal: getOrdinal,
         stringPad: stringPad
     };
-    
-    
+
+
     /*********************************************/
     /*           Global methods                  */
     /*  (These methods apply to all instances of */
     /*  Tempus, so don't put them on the proto)  */
     /*********************************************/
-    
+
     /**
      * Register an algorythm for parsing custom date formats
      *
@@ -213,7 +213,7 @@
         ,   ex = ob.exp[0];
 
         if (!ex) throw new Error('Missing type');
-        
+
         return ((TempusParsers[ex] || (TempusParsers[ex] = [])).push(ob));
     };
 
@@ -265,7 +265,7 @@
     /*               Prototype Methods             */
     /*              (Main Functionality)           */
     /***********************************************/
-    
+
     TProto = Tempus.prototype = {
 
         constructor: Tempus,
@@ -284,25 +284,25 @@
             // No arguments means set to "now"
             if (!(0 in ar)) {
                 this._d = new Date();
-            
+
             // If only argument is a Tempus object, then copy(Tempus);
             } else if (ar[0] instanceof Tempus) {
                 return this.copy(ar[0]);
-            
+
             // If we only have one arg, and its a Date obj, or its a number, then we can reasonably
             // just new up a Date() object with it and use that.
             } else if (!(1 in ar) && /numb|date/.test(aType)) {
                 this._d = new Date(ar[0]);
-                
+
             // If the first arg is a number, and the second arg is a number, assume that Tempus has
             // been given a set of numbers as arguments and can defer to Date() for parsing
             } else if (aType == TYPE_NUMBER && realTypeOf(ar[1]) == TYPE_NUMBER) {
                 this._d = new Date(ar[0], ar[1], ar[2] || 1, ar[3] || 0, ar[4] || 0, ar[5] || 0, ar[6] || 0);
-            
+
             // None of the standard attempts for date-parsing worked, lets try looping through
             // our date parser modules. Start with a subset that can accept the first argument.
             } else if ((modules = TempusParsers[aType])) {
-                
+
                 mods:
                 for (var i = 0, module; (module = modules[i]); ++i) {
 
@@ -335,25 +335,25 @@
                     }
                 }
             }
-            
+
             // We got all the way down to here without a date object, lets just
             // give up and throw a friendly error message
             if (isNaN(+this._d)) {
                 throw new Error('Invalid Date');
             }
-            
+
             // If we were passed `ar[7]` then we'll set a timezone.
             if (7 in ar) return this.timezone(ar[7]).hours(ar[3]);
-            
+
             return this.setTimezoneToLocale();
         },
-        
+
         clone: function () {
             var tempus = new Tempus(+this).timezone(this.timezone());
             tempus._tzisl = this._tzisl;
             return tempus;
         },
-        
+
         copy: function (tempusOrDateObject) {
             this.timezone(0)
                 .set(+tempusOrDateObject)
@@ -361,18 +361,18 @@
             this._tzisl = tempusOrDateObject._tzisl || false;
             return this;
         },
-        
+
         /*************************************/
         /*          New Date Methods         */
         /*************************************/
-        
+
         timeStamp: function (time) {
             if (0 in arguments) {
                 return this.time(time * 1000);
             }
             return ~~(this.time() / 1000);
         },
-        
+
         /*************************************/
         /*          New Year Methods         */
         /*************************************/
@@ -383,7 +383,7 @@
             }
             return -~(''+this.fullYear()).substr(0,2);
         },
-        
+
         isLeapYear: function (year) {
             return new Date(year || this.fullYear(),1,29).getDate() == 29;
         },
@@ -394,7 +394,7 @@
 
             return +(''+this.fullYear()).substr(2);
         },
-        
+
         /*************************************/
         /*         New Month Methods         */
         /*************************************/
@@ -413,43 +413,43 @@
             }
             return this._d.getUTCMonth();
         },
-        
+
         oneIndexedMonth: function (month) {
             return (0 in arguments) ? this.month(month - 1) : this.month()+1;
         },
-        
+
         getMonthName: function (full) {
             return LOCALES[this._l].SM[this.month()];
         },
-        
+
         getFullMonthName: function () {
             return LOCALES[this._l].FM[this.month()];
         },
-        
+
         getLastDayOfMonth: function () {
             var d = new Date(this._d);
             d.setMonth(d.getMonth() + 1);
             d.setDate(-1);
             return d.getDate() + 1;
         },
-        
+
         /*************************************/
         /*          New Week Methods         */
         /*************************************/
-        
+
         week: function (setter) {
             if (0 in arguments) {
 				// subtract the number of days since the last Friday on Jan 1st.
                 return trackDST(this.dayOfYear(setter * 7 - (this.dayOfYear(1).day() + 2) % 7));
             }
-            
+
             return Math.ceil(Tempus(this).day(4).dayOfYear() / 7);
         },
-        
+
         getWeekOrdinal: function () {
             return getOrdinal(this.week());
         },
-        
+
         eachWeekOfMonth: function (callback) {
             var d = Tempus(this).date(1)
             ,   firstWeek = d.week()
@@ -463,15 +463,15 @@
 
             return eachDate(this, firstWeek, lastWeek, 'week', 'week', callback, d);
         },
-        
+
         eachWeekOfYear: function (callback) {
             return eachDate(this, 1, 53, 'week', 'week', callback);
         },
-        
+
         /*************************************/
         /*           New Day Methods         */
         /*************************************/
-        
+
         day: function (setter) {
             if (0 in arguments) {
                 // The setter given is a day number, say, 4 (Thursday), so this op will set the
@@ -490,32 +490,36 @@
             }
             return this._d.getUTCDay();
         },
-        
+
         ISODay: function (setter) {
             return (0 in arguments) ? this.day(setter === 7 ? 0 : setter) : this.day() || 7;
         },
-        
-        getDayName: function () {
-            return LOCALES[this._l].SD[this.day()];
+
+        dayName: function (setter) {
+            return (0 in arguments) ?
+                this.day(arrIndexOf(LOCALES[this._l].SD, setter.charAt(0).toUpperCase() + setter.substr(1).toLowerCase())) :
+                LOCALES[this._l].SD[this.day()];
         },
-        
-        getFullDayName: function () {
-            return LOCALES[this._l].FD[this.day()];
+
+        fullDayName: function (setter) {
+            return (0 in arguments) ?
+                this.day(arrIndexOf(LOCALES[this._l].FD, setter.charAt(0).toUpperCase() + setter.substr(1).toLowerCase())) :
+                LOCALES[this._l].FD[this.day()];
         },
-        
+
         dayOfYear: function (day) {
             if (0 in arguments) {
                 return trackDST(this.month(0).date(day));
             }
-            
+
             day = this.date();
             var i = this.month()
             ,   d = Tempus(this);
-            
+
             while(i--) day += d.month(i + 1).date(-1).date() + 1;
             return day;
         },
-        
+
         getDateOrdinal: function () {
             return getOrdinal(this.date());
         },
@@ -529,36 +533,36 @@
             var d = Tempus(this).ISODay(1);
             return eachDate(this, d.date(), d.date() + 6, 'date', 'date', callback, d);
         },
-        
+
         eachDayOfMonth: function (callback) {
             return eachDate(this, 1, this.getLastDayOfMonth(), 'date', 'date', callback);
         },
-        
+
         eachDayOfYear: function (callback) {
             return eachDate(this, 1, 365+this.isLeapYear(), 'dayOfYear', 'dayOfYear', callback);
         },
-        
+
         /*************************************/
         /*          New Time Methods         */
         /*************************************/
-        
+
         // Fix hours to use a settable time-zone
         hours: function (hours) {
             if (0 in arguments) {
                 this._d.setUTCHours(+hours);
                 return trackDST(this);
             }
-            
+
             return this._d.getUTCHours();
         },
-        
+
         ordinalHours: function (setter) {
             if (0 in arguments) return this.hours(this.AMPM() === 'PM' ?  setter + 12 : setter);
 
             setter = this.hours();
             return setter ? setter > 12 ? setter - 12: setter : 12;
         },
-        
+
         // Fix minutes to use a settable time-zone
         minutes: function (setter) {
             if (0 in arguments) {
@@ -568,10 +572,10 @@
 
             return this._d.getUTCMinutes();
         },
-        
+
         microSeconds: function (setter) {
             if (0 in arguments) return this.milliseconds(~~(setter/1000));
-            
+
             return this.milliseconds()*1000;
         },
 
@@ -579,12 +583,12 @@
             if (0 in arguments) return this.milliseconds(stringPad((''+setter).substr(0, 3), 3, 0, 1));
             return this.milliseconds();
         },
-        
+
         AMPM: function (setter) {
             if (0 in arguments) return this.hours(this.hours() + (this.AMPM() === setter.toUpperCase() ? 0 : /am/i.test(setter) ? -12 : 12));
             return this.hours() > 11 ? LOCALES[this._l].AM[1] : LOCALES[this._l].AM[0];
         },
-        
+
         ampm: function (setter) {
             if (0 in arguments) return this.AMPM(setter);
             return this.hours() > 11 ? LOCALES[this._l].AM[3] : LOCALES[this._l].AM[2];
@@ -614,12 +618,12 @@
         clearTime: function () {
             return this.timeString('00:00:00').milliseconds(0);
         },
-    
+
         setTimeToNow: function () {
             var d = new Date();
             return this.hours(d.getHours()).minutes(d.getMinutes()).seconds(d.getSeconds()).milliseconds(d.getMilliseconds());
         },
-        
+
         timezoneOffset: function (tzoff) {
             if (0 in arguments) {
                 var tz = (tzoff) - (-this._tz || 0);
@@ -629,13 +633,13 @@
             }
             return -this._tz;
         },
-        
+
         setTimezoneToLocale: function () {
             this.timezoneOffset(this._d.getTimezoneOffset());
             this._tzisl = true;
             return this;
         },
-        
+
         timezone: function (tz) {
             if (realTypeOf(tz) == TYPE_NUMBER) return this.timezoneOffset(tz);
             if (0 in arguments) {
@@ -648,41 +652,41 @@
             if(tz < 0) tz = -tz;
             return (this._tz < 0 ? '-' : '+') + (stringPad(~~(tz/60),2)) + (stringPad(~~(tz%60),2));
         },
-        
+
         ISOTimezone: function (setter) {
             if (0 in arguments) return this.timezone(setter);
 
             return this.timezone().replace(/(\d{2})$/, ':$1');
         },
-        
+
         isDST: function () {
             return Tempus(this.fullYear(), 0)._tz < this._tz || Tempus(this.fullYear(), 5)._tz < this._tz;
         },
-                
+
         /*************************************/
         /*           String Methods          */
         /*************************************/
-        
+
         toString: function (format) {
             if (!format) format = '%a %b %d %Y %T %z';
-            
+
             var self = this;
-            
+
             // Shortcut to pre-created format CONSTANTS
             if (TIME_FORMATS[format]) format = TIME_FORMATS[format];
-            
+
             return format.replace(strftimeRegExp, function (chunk, prefix, proc) {
                 var newproc = FORMAT_PROCESSORS[proc];
-            
+
                 if (!newproc) return chunk;
-                
+
                 if (realTypeOf(newproc) == TYPE_ARRAY)
                     return stringPad(newproc[0].call(self), newproc[1], newproc[2]);
-                    
+
                 if (realTypeOf(newproc) == TYPE_FUNCTION) {
                     return newproc.call(self);
                 }
-                                
+
                 return self.toString.call(self, newproc);
             });
         },
@@ -698,7 +702,7 @@
         isBefore: function () {
             return +(this) < +Tempus(arguments);
         },
-        
+
         isAfter: function () {
             return +(this) > +Tempus(arguments);
         },
@@ -731,7 +735,7 @@
             return this;
         }
     };
-    
+
 
     /***********************************************/
     /*                Set date methods             */
@@ -745,7 +749,7 @@
         'toUTCString',
         'toGMTString'
     ];
-    
+
     function PDateMethod(methodname) {
         TProto[methodname] = function () {
             var value = this.toggleUTC(true)._d[methodname].apply(this._d, arguments);
@@ -753,24 +757,24 @@
             return value;
         };
     }
-    
+
     i = dateMethods.length;
     while (i--) PDateMethod(dateMethods[i]);
-    
-    
-    
+
+
+
     // Define getter/setter methods without the prefex so we can handle generically
     var dateSetMethods = [
         'year', 'fullYear',
         'month', 'oneIndexedMonth',
         'week',
-        'day', 'ISODay', 'date', 'dayOfYear',
+        'day', 'ISODay', 'date', 'dayOfYear', 'dayName', 'fullDayName',
         'hours', 'ordinalHours',
         'minutes',
         'seconds', 'milliseconds', 'microSeconds', 'secondFraction',
         'time', 'timezone', 'timezoneOffset', 'ISOTimezone', 'timeStamp', 'AMPM', 'ampm', 'century',
         'locale'];
-    
+
     function PDateSetMethod(methodName, isUTC) {
         var properMethodName = methodName;
 
@@ -785,7 +789,7 @@
         // If `get<(UTC)Method>` does not exist, then create it. We want to check,
         // because we may have already created it in TProto to work to a specific usecase
         if (!TProto['get' + properMethodName]) {
-            
+
 
             // If the method is a UTC method, it will always have a non-UTC
             // version available, so we can just use that, but reset the tz
@@ -813,11 +817,11 @@
                 };
             }
         }
-        
+
         // If `set<(UTC)Method>` does not exist, then create it. We want to check,
         // because we may have already created it in TProto to work to a specific usecase
         if(!TProto['set' + properMethodName]) {
-            
+
             // If the method is a UTC method, it will always have a non-UTC
             // version available, so we can just use that, but reset the tz
             if (isUTC) {
@@ -858,7 +862,7 @@
                 }
             };
         }
-        
+
         // For certain methods, we also want to have add<Method>/sub<Method>.
         // We'll use a regex to blacklist the ones we dont want to have these, which boils down to:
         //  - AMPM and ampm
@@ -891,7 +895,7 @@
         if (!isUTC && !/^[cw]e|ampm|i?s?o?time[sz]|time$|dayo|^locale/i.test(properMethodName))
             PDateSetMethod(isUTC ? properMethodName : methodName, true);
     }
-    
+
     i = dateSetMethods.length;
     while (i--) {
         PDateSetMethod(dateSetMethods[i]);
@@ -961,12 +965,12 @@
     /*************************************/
     /*        Default Date Parsers       */
     /*************************************/
-    
+
     /***********************************************/
     /*               Reverse Formatter             */
     /*         (for Tempus(string, string))        */
     /***********************************************/
-    
+
     // Define the set of reverse format processors to use
     var rg_word_boundary = '[^\\b]+'
     ,   rg_digit2 = '\\d{2}'
@@ -976,7 +980,7 @@
     ,   rg_time = '\\d{2}:\\d{2}:\\d{2}'
     ,   rg_date = '\\d{4}-\\d{2}-\\d{2}'
     ,   rg_tz = 'Z|GMT|(?:GMT)?[-+]\\d{2}\\:?\\d{2}';
-    
+
     REVERSE_FORMAT_PROCESSORS = {
         a: ['(?:\\w+)?,?'],
         A: ['(?:\\w+)?,?'],
@@ -1028,9 +1032,9 @@
             .replace(strftimeRegExp, function (chunk, prefix, proc) {
                 var newproc = REVERSE_FORMAT_PROCESSORS[proc];
                 if (!newproc) return chunk;
-                
+
                 formatFunction.push(newproc[1]);
-                
+
                 return '(' + newproc[0] + ')';
             });
     }
@@ -1041,7 +1045,7 @@
         function (a, b) {
             // If the second arg (formats) is array of formats, use the first one.
             b = realTypeOf(b) == TYPE_ARRAY && 0 in b? b[0] : b;
-            
+
             // lastIndex needs to be reset for some browsers, i.e Safari. Issue #11
             strftimeRegExp.lastIndex = 0;
 
@@ -1070,10 +1074,10 @@
             formatReg = format ? makeReverseRegex(format, formatFunction) : DEFAULT_REVERSE_FORMATTER;
 
             match = string.match('^' + formatReg + '$');
-            
+
             if (!match)
                 throw new Error("Cannot parse '" + string + "' with '" + format + "'");
-            
+
             i = match.length;
             while(i--) {
                 // Date should be set after month, that way it doesn't end up jumping to the next month
@@ -1156,5 +1160,5 @@
     } else {
         global.Tempus = Tempus;
     }
-    
+
 }(this, Date, [].slice));
