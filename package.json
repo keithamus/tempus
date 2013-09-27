@@ -12,7 +12,7 @@
         } 
     ],
     "licenses": [ { "type": "MIT", "url": "http://keithamus.mit-license.org/" } ],
-    "repositories": [ { "type": "git", "url": "https://github.com/keithamus/tempus" } ],
+    "repository": { "type": "git", "url": "https://github.com/keithamus/tempus" },
     "devDependencies": { 
         "qunit": "0.5.x",
         "grunt": "0.3.x"
