@@ -105,10 +105,10 @@
      * @returns {String} One of 'array, regexp, string, number, function, date, object, undefined, null'
      *
      */
-    var realTypeOf = function(v) {
+    var realTypeOf = function (v) {
         // If the var is an undefined or null var the easiest
         // way to get its type is just to coerce it to a string
-        if (v === undef || v === null) return ''+v;
+        if (v === undef || v === null) return '' + v;
         // Otherwise, the easiest way to get its type is to use
         // Object's toString() method, which returns [object <TYPE>] where
         // <TYPE> is the internal name for the object. This is pretty darn reliable!
@@ -169,8 +169,8 @@
      *
      */
     function stringPad(string, width, padString, trailing) {
-        width -= (''+string).length;
-        width = (width > 0 ? (new Array(width+1)).join(padString || 0) : '');
+        width -= ('' + string).length;
+        width = (width > 0 ? (new Array(width + 1)).join(padString || 0) : '');
         return trailing ? string + width : width + string;
     }
 
@@ -207,7 +207,7 @@
         var ob = {
                 test: tester,
                 parse: parser,
-                exp: ArSlice.call(arguments, 2+hasLength),
+                exp: ArSlice.call(arguments, 2 + hasLength),
                 length: (hasLength ? len : arguments.length - 2)
             }
         ,   ex = ob.exp[0];
@@ -257,7 +257,7 @@
                     return this.toString(TIME_FORMATS[a]);
                 };
             }
-            DEFAULT_REVERSE_FORMATTER_REGEX = new RegExp('^'+ DEFAULT_REVERSE_FORMATTER_REGEXS.join('|') + '$');
+            DEFAULT_REVERSE_FORMATTER_REGEX = new RegExp('^' + DEFAULT_REVERSE_FORMATTER_REGEXS.join('|') + '$');
         }
     };
 
@@ -379,20 +379,20 @@
 
         century: function (setter) {
             if (0 in arguments) {
-                return trackDST(this.fullYear(''+(setter-1)+stringPad(this.year(), 2)));
+                return trackDST(this.fullYear('' + (setter - 1) + stringPad(this.year(), 2)));
             }
-            return -~(''+this.fullYear()).substr(0,2);
+            return -~('' + this.fullYear()).substr(0, 2);
         },
 
         isLeapYear: function (year) {
-            return new Date(year || this.fullYear(),1,29).getDate() == 29;
+            return new Date(year || this.fullYear(), 1, 29).getDate() == 29;
         },
 
         // fix getYear because it's broken
         year: function (year) {
-            if (0 in arguments) return trackDST(this.fullYear(+(''+year).substr(0, 2)+2000));
+            if (0 in arguments) return trackDST(this.fullYear(+('' + year).substr(0, 2) + 2000));
 
-            return +(''+this.fullYear()).substr(2);
+            return +('' + this.fullYear()).substr(2);
         },
 
         /*************************************/
@@ -415,7 +415,7 @@
         },
 
         oneIndexedMonth: function (month) {
-            return (0 in arguments) ? this.month(month - 1) : this.month()+1;
+            return (0 in arguments) ? this.month(month - 1) : this.month() + 1;
         },
 
         getMonthName: function (full) {
@@ -516,7 +516,7 @@
             var i = this.month()
             ,   d = Tempus(this);
 
-            while(i--) day += d.month(i + 1).date(-1).date() + 1;
+            while (i--) day += d.month(i + 1).date(-1).date() + 1;
             return day;
         },
 
@@ -539,7 +539,7 @@
         },
 
         eachDayOfYear: function (callback) {
-            return eachDate(this, 1, 365+this.isLeapYear(), 'dayOfYear', 'dayOfYear', callback);
+            return eachDate(this, 1, 365 + this.isLeapYear(), 'dayOfYear', 'dayOfYear', callback);
         },
 
         /*************************************/
@@ -574,13 +574,13 @@
         },
 
         microSeconds: function (setter) {
-            if (0 in arguments) return this.milliseconds(~~(setter/1000));
+            if (0 in arguments) return this.milliseconds(~~(setter / 1000));
 
-            return this.milliseconds()*1000;
+            return this.milliseconds() * 1000;
         },
 
         secondFraction: function (setter) {
-            if (0 in arguments) return this.milliseconds(stringPad((''+setter).substr(0, 3), 3, 0, 1));
+            if (0 in arguments) return this.milliseconds(stringPad(('' + setter).substr(0, 3), 3, 0, 1));
             return this.milliseconds();
         },
 
@@ -644,13 +644,13 @@
             if (realTypeOf(tz) == TYPE_NUMBER) return this.timezoneOffset(tz);
             if (0 in arguments) {
                 if (/^[zZ0]|GMT$/.test(tz)) return this.timezoneOffset(0);
-                tz = (''+tz).match(/^(.)(\d{2}).?(\d{2})$/);
+                tz = ('' + tz).match(/^(.)(\d{2}).?(\d{2})$/);
                 var tzi = ~~(+(tz[2]) * 60) + ~~(+tz[3]);
                 return this.timezoneOffset(tz[1] === '-' ? tzi : -tzi);
             }
             tz = this._tz;
-            if(tz < 0) tz = -tz;
-            return (this._tz < 0 ? '-' : '+') + (stringPad(~~(tz/60),2)) + (stringPad(~~(tz%60),2));
+            if (tz < 0) tz = -tz;
+            return (this._tz < 0 ? '-' : '+') + (stringPad(~~(tz / 60), 2)) + (stringPad(~~(tz % 60), 2));
         },
 
         ISOTimezone: function (setter) {
@@ -726,7 +726,7 @@
                 this.timezoneOffset(this._oldTz);
                 this._tzisl = track;
                 delete this._oldTz;
-            } else if(!('_oldTz' in this) && force !== false) {
+            } else if (!('_oldTz' in this) && force !== false) {
                 track = this._tzisl;
                 this._oldTz = this.timezoneOffset();
                 this.timezone(0);
@@ -821,7 +821,7 @@
 
         // If `set<(UTC)Method>` does not exist, then create it. We want to check,
         // because we may have already created it in TProto to work to a specific usecase
-        if(!TProto['set' + properMethodName]) {
+        if (!TProto['set' + properMethodName]) {
 
             // If the method is a UTC method, it will always have a non-UTC
             // version available, so we can just use that, but reset the tz
@@ -1045,7 +1045,7 @@
         // The test function
         function (a, b) {
             // If the second arg (formats) is array of formats, use the first one.
-            b = realTypeOf(b) == TYPE_ARRAY && 0 in b? b[0] : b;
+            b = realTypeOf(b) == TYPE_ARRAY && 0 in b ? b[0] : b;
 
             // lastIndex needs to be reset for some browsers, i.e Safari. Issue #11
             strftimeRegExp.lastIndex = 0;
@@ -1066,8 +1066,8 @@
             format = format == undef ? DEFAULT_REVERSE_FORMATTER : format;
 
             if (realTypeOf(format) == TYPE_ARRAY) {
-                for(i = 0; i in format; i++)
-                    try { return this.set(string, format[i]); } catch(e){}
+                for (i = 0; i in format; i++)
+                    try { return this.set(string, format[i]); } catch (e) {}
                 throw new Error("Cannot parse '" + string + "' with '" + format + "'");
             }
 
@@ -1080,12 +1080,12 @@
                 throw new Error("Cannot parse '" + string + "' with '" + format + "'");
 
             i = match.length;
-            while(i--) {
+            while (i--) {
                 // Date should be set after month, that way it doesn't end up jumping to the next month
-                if (formatFunction[i-1] === TProto.date && (days = match[i])) continue;
+                if (formatFunction[i - 1] === TProto.date && (days = match[i])) continue;
 
-                if (realTypeOf(formatFunction[i-1]) == TYPE_FUNCTION) {
-                    formatFunction[i-1].call(this, match[i]);
+                if (realTypeOf(formatFunction[i - 1]) == TYPE_FUNCTION) {
+                    formatFunction[i - 1].call(this, match[i]);
                 }
             }
             this.date(days);

@@ -45,13 +45,13 @@
 
         if (neg) this.swap();
 
-        while(i--) {
+        while (i--) {
             value = this['diff' + intvlMethods[intvlShorthand[i]]]() - overlap;
             overlap = 0;
             if (value) {
                 // Value is negative
                 if (value < 0) {
-                    value = intvlUpperVals[i-1] + value - overlap;
+                    value = intvlUpperVals[i - 1] + value - overlap;
                     overlap = 1;
                 }
                 fragments.unshift(((dateQualifiers[value] || dateQualifiers[0])[i]).replace('%n', value));
@@ -61,7 +61,7 @@
 
         if (neg) this.swap();
 
-        if (fragments[fragments.length-1] == timeSep) fragments.pop();
+        if (fragments[fragments.length - 1] == timeSep) fragments.pop();
 
         return fragments.join(fragSep);
     }
@@ -143,7 +143,7 @@
         };
     }
 
-    for(var meth in intvlMethods) PSetIntvMethod(intvlMethods[meth]);
+    for (var meth in intvlMethods) PSetIntvMethod(intvlMethods[meth]);
     
     /***********************************************/
     /*           ISO8601 Interval Parser           */
@@ -157,7 +157,7 @@
         neg = neg ? 'sub' : 'add';
         
         // Loop through the matches...
-        while(i--) {
+        while (i--) {
             // value is the match (e.g. 3D) minus the last letter (e.g 3)
             matches[i] = matches[i].match(ISOIntervalFragmentRegex);
             
@@ -200,7 +200,7 @@
             if (1 in arguments) this.set.apply(this, ArSlice.call(arguments, 1));
             
             // Our regex to split up the neg/pos, day, and time values.
-            if (!(intveral_string = (''+intveral_string).match(ISOIntervalRegExp))) return false;
+            if (!(intveral_string = ('' + intveral_string).match(ISOIntervalRegExp))) return false;
             
             // Match the date portion:
             if (intveral_string[2] && (matches = intveral_string[2].match(/\d+(?:[,\.]\d+)?[YMWD]/g))) {
@@ -223,7 +223,7 @@
         '%n year', '%n month', '%n day',
         '%n hour', '%n minute', '%n second', '%n millisecond'
     ];
-    for(i = 0; i < qualifiers.length; ++i) pqualifiers[i] = qualifiers[i] + 's';
+    for (i = 0; i < qualifiers.length; ++i) pqualifiers[i] = qualifiers[i] + 's';
     TempusInterval.addLocale('en', [pqualifiers, qualifiers], ['%d ago', 'in %d', 'about %s'], ', ');
     Tempus.Interval = TempusInterval;
 
