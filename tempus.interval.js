@@ -170,14 +170,14 @@
             } else {
                 
                 // Set the property using "subValue() or addValue()"
-                this[ neg + intvlMethods[matches[i][3]] ].call(this, +matches[i][1]);
+                this[neg + intvlMethods[matches[i][3]]].call(this, +matches[i][1]);
                 
                 // If we have a decimal, look for the next property in the line
                 if ((+matches[i][2] || 0) > 0) {
                     // Parse the split decimal also:
                     n = arrIndexOf(intvlShorthand, +matches[i][3]) + 1 || intvlShorthand.length;
                     
-                    this[ neg + intvlMethods[ intvlShorthand[n] ] ](+matches[i][1] * intvlUpperVals[n]);
+                    this[neg + intvlMethods[intvlShorthand[n]]](+matches[i][1] * intvlUpperVals[n]);
                 }
             }
         }

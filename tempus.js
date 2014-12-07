@@ -170,7 +170,7 @@
      */
     function stringPad(string, width, padString, trailing) {
         width -= (''+string).length;
-        width = (width > 0 ? ( new Array(width+1) ).join( padString || 0 ) : '');
+        width = (width > 0 ? (new Array(width+1)).join(padString || 0) : '');
         return trailing ? string + width : width + string;
     }
 
