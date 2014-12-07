@@ -125,8 +125,8 @@
         // about the only reliable way to test for argument objects that don't declare their
         // internal class
         realTypeOf = function (v) {
-           if (v && v.hasOwnProperty && v.hasOwnProperty('callee')) return 'arguments';
-           return _realTypeOf(v);
+            if (v && v.hasOwnProperty && v.hasOwnProperty('callee')) return 'arguments';
+            return _realTypeOf(v);
         };
     }
 
@@ -773,7 +773,8 @@
         'minutes',
         'seconds', 'milliseconds', 'microSeconds', 'secondFraction',
         'time', 'timezone', 'timezoneOffset', 'ISOTimezone', 'timeStamp', 'AMPM', 'ampm', 'century',
-        'locale'];
+        'locale'
+    ];
 
     function PDateSetMethod(methodName, isUTC) {
         var properMethodName = methodName;

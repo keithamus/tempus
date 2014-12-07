@@ -41,29 +41,29 @@
             ,   neg = this.valueOf() < 0
             ,   overlap = 0
             ,   i = intvlCount;
-            fragSep = fragSep || '';
+        fragSep = fragSep || '';
 
-            if (neg) this.swap();
+        if (neg) this.swap();
 
-            while(i--) {
-                value = this['diff' + intvlMethods[intvlShorthand[i]]]() - overlap;
-                overlap = 0;
-                if (value) {
-                    // Value is negative
-                    if (value < 0) {
-                        value = intvlUpperVals[i-1] + value - overlap;
-                        overlap = 1;
-                    }
-                    fragments.unshift(((dateQualifiers[value] || dateQualifiers[0])[i]).replace('%n', value));
+        while(i--) {
+            value = this['diff' + intvlMethods[intvlShorthand[i]]]() - overlap;
+            overlap = 0;
+            if (value) {
+                // Value is negative
+                if (value < 0) {
+                    value = intvlUpperVals[i-1] + value - overlap;
+                    overlap = 1;
                 }
-                if (i == 3 && timeSep) fragments.unshift(timeSep);
+                fragments.unshift(((dateQualifiers[value] || dateQualifiers[0])[i]).replace('%n', value));
             }
+            if (i == 3 && timeSep) fragments.unshift(timeSep);
+        }
 
-            if (neg) this.swap();
+        if (neg) this.swap();
 
-            if (fragments[fragments.length-1] == timeSep) fragments.pop();
+        if (fragments[fragments.length-1] == timeSep) fragments.pop();
 
-            return fragments.join(fragSep);
+        return fragments.join(fragSep);
     }
 
     
