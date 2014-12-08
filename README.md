@@ -1,5 +1,7 @@
 # Tempus JS [![Build Status](https://secure.travis-ci.org/keithamus/Tempus.png?branch=master)](http://travis-ci.org/keithamus/Tempus)
 
+[![Gitter](https://badges.gitter.im/Join Chat.svg)](https://gitter.im/keithamus/tempus?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
+
 Tempus is a full replacement for the Date object. It's official home is at 
 [tempus-js.com](http://tempus-js.com), you can read lots more about the project
 there.
