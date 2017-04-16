@@ -22,6 +22,7 @@
     "loopfunc": true,
 
     "maxlen": 150,
-    "indent": 4
-    
+    "indent": 4,
+    "white": false
+
 }
