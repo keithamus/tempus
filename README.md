@@ -1,4 +1,5 @@
-# NOTICE: Thinking of contributing? Read [issue #34](https://github.com/keithamus/tempus/issues/34) first
+> # No Longer Actively Maintained
+> If someone would like to take over maintainence, feel free to get in touch ([@keithamus on twitter](https://twitter.com/keithamus)). I'll happily transfer this over.
 
 # Tempus JS [![Build Status](https://secure.travis-ci.org/keithamus/Tempus.png?branch=master)](http://travis-ci.org/keithamus/Tempus)
 
